@@ -24,4 +24,14 @@ public class PersonServiceImpl implements PersonService{
     public List<Person> findAll() {
         return (List<Person>) this.personRepository.findAll();
     }
+
+    @Override
+    public List<Person> findBySkill(String skillName) {
+        return (List<Person>) this.personRepository.findBySkillDescription(skillName);
+    }
+
+    @Override
+    public List<Person> findByLocation(String location) {
+        return (List<Person>) this.personRepository.findPersonByLocation(location);
+    }
 }

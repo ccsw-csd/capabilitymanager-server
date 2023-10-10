@@ -9,4 +9,9 @@ public interface PersonService {
 
     // Person findById(Long id) throws EntityNotFoundException;
     List<Person> findAll();
+
+    List<Person> findBySkill(String skillName);
+
+    List<Person> findByLocation(String location);
+
 }
