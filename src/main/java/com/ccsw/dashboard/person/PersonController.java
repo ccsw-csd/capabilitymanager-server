@@ -1,8 +1,11 @@
-package com.ccsw.dashboard.config.person;
+package com.ccsw.dashboard.person;
 
-import com.ccsw.dashboard.config.person.model.Person;
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.ccsw.dashboard.person.model.Person;
+import com.ccsw.dashboard.person.model.PersonDto;
 
 import java.util.List;
 
@@ -13,11 +16,13 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+    
+    @Autowired
+    DozerBeanMapper mapper;
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Person> findAll(){
-        List<Person> people = this.personService.findAll();
-        return people;
+    public List<PersonDto> findAll(){
+        return this.personService.findAll().stream().map(g->mapper.map(g,PersonDto.class)).toList();
     }
 
     @RequestMapping(path = "/skill/{skill}", method = RequestMethod.GET)

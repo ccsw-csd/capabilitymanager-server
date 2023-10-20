@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.config.person.model;
+package com.ccsw.dashboard.person.model;
 
 
 public class PersonDto {

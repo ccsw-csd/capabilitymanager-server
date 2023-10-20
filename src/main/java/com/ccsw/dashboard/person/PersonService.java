@@ -1,9 +1,10 @@
-package com.ccsw.dashboard.config.person;
+package com.ccsw.dashboard.person;
 
-import com.ccsw.dashboard.config.person.model.Person;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
+
+import com.ccsw.dashboard.person.model.Person;
 
 public interface PersonService {
 

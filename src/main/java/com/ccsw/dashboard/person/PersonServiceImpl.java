@@ -1,10 +1,11 @@
-package com.ccsw.dashboard.config.person;
+package com.ccsw.dashboard.person;
 
-import com.ccsw.dashboard.config.person.model.Person;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ccsw.dashboard.person.model.Person;
 
 import java.util.List;
 
