@@ -1,0 +1,37 @@
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `dashboard`@`%` 
+    SQL SECURITY DEFINER
+VIEW `dashboard`.`vista_grados_roles` AS
+    SELECT 
+        `fr`.`Id` AS `id`,
+        `g`.`vc_Grado` AS `vc_Grado`,
+        `fr`.`vc_Profile_Rol_L1` AS `vc_Profile_Rol_L1`
+    FROM
+        ((`dashboard`.`aux_grados` `g`
+        LEFT JOIN `dashboard`.`dm_staffing_import` `sg` ON ((`g`.`vc_Grado` = `sg`.`vc_Profile_Grado`)))
+        LEFT JOIN `dashboard`.`dm_formdata_import` `fr` ON ((`sg`.`vc_Profile_SAGA` = `fr`.`vc_Profile_SAGA`)))
+    WHERE
+        ((`fr`.`vc_Profile_Rol_L1` LIKE 'Software%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Business%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Engagement%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Solution%'))
+    
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `dashboard`@`%` 
+    SQL SECURITY DEFINER
+VIEW `dashboard`.`vista_grados_roles` AS
+    SELECT 
+        `fr`.`Id` AS `id`,
+        `sg`.`vc_Profile_Grado` AS `vc_Grado`,
+        `fr`.`vc_Profile_Rol_L1` AS `vc_Profile_Rol_L1`
+    FROM
+        (`dashboard`.`dm_staffing_import` `sg`
+        JOIN `dashboard`.`dm_formdata_import` `fr` ON ((`sg`.`vc_Profile_SAGA` = `fr`.`vc_Profile_SAGA`)))
+    WHERE
+        ((NOT ((`sg`.`vc_Profile_Grado` LIKE 'B')))
+            AND ((`fr`.`vc_Profile_Rol_L1` LIKE 'Software%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Business%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Engagement%')
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Solution%')))

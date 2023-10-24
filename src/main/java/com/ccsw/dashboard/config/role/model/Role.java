@@ -9,15 +9,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "aux_roles")
-public class Role {
-	
+public class Role implements Comparable<Role>{
+		
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
     @Column(name="vc_Roles", nullable = false)
     private String role;
-
+    
 	public int getId() {
 		return id;
 	}
@@ -34,6 +34,9 @@ public class Role {
 		this.role = role;
 	}
 
-	
+	@Override
+	public int compareTo(Role r) {
+		return role.compareToIgnoreCase(r.getRole());
+	}
     
 }

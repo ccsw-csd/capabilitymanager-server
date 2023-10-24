@@ -1,10 +1,12 @@
 package com.ccsw.dashboard.config.grade.model;
 
+import com.ccsw.dashboard.config.role.model.Role;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "aux_grados")
-public class Grade {
+public class Grade  implements Comparable<Grade>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -27,6 +29,11 @@ public class Grade {
 
 	public void setGrade(String grade) {
 		this.grade = grade;
-	}	
+	}
+	
+	@Override
+	public int compareTo(Grade g) {
+		return grade.compareToIgnoreCase(g.getGrade());
+	}
 		
 }
