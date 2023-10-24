@@ -1,8 +1,7 @@
 package com.ccsw.dashboard.config.grade.model;
 
 
-public class GradeDto {
-	
+public class GradeDto {	
 
 	private int id;
     private String grade;

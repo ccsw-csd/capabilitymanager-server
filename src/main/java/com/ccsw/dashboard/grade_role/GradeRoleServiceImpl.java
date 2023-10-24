@@ -34,8 +34,7 @@ public class GradeRoleServiceImpl implements GradeRoleService{
     @Autowired
     private GradeRoleRepository gradeRoleRepository;
     
-    @Autowired
-    DozerBeanMapper mapper;
+    
     
     @Autowired
     private GradeService gradeService;
@@ -51,8 +50,8 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 	@Override
 	public GradeRoleAll findAlll() {
 		GradeRoleAll gradeRoleAll = new GradeRoleAll();
-		gradeRoleAll.setGrades(gradeService.findAll().stream().map(gr->mapper.map(gr,GradeDto.class)).toList());
-		gradeRoleAll.setRoles(roleService.findAll().stream().map(gr->mapper.map(gr,RoleDto.class)).toList());
+		gradeRoleAll.setGrades(gradeService.findAll().stream().sorted().toList());
+		gradeRoleAll.setRoles(roleService.findAll().stream().sorted().toList());
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
 		gradeRoleAll.setGradeRole(sortedGradeRolMap);

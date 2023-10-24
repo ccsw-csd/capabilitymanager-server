@@ -38,5 +38,4 @@ public class Role implements Comparable<Role>{
 	public int compareTo(Role r) {
 		return role.compareToIgnoreCase(r.getRole());
 	}
-    
 }

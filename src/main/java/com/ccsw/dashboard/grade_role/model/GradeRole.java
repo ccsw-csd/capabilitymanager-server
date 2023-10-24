@@ -16,9 +16,6 @@ public class GradeRole {
     @Column(name="vc_Profile_Rol_L1")
     private String role;
     
-//    @Column(name="total")
-//    private String total;
-
 	public String getGrade() {
 		return grade;
 	}
@@ -34,14 +31,6 @@ public class GradeRole {
 	public void setRole(String role) {
 		this.role = role;
 	}
-
-//	public String getTotal() {
-//		return total;
-//	}
-//
-//	public void setTotal(String total) {
-//		this.total = total;
-//	}
 
 	public int getId() {
 		return id;

@@ -35,5 +35,5 @@ public class Grade  implements Comparable<Grade>{
 	public int compareTo(Grade g) {
 		return grade.compareToIgnoreCase(g.getGrade());
 	}
-		
+
 }
