@@ -19,7 +19,6 @@ import com.ccsw.dashboard.grade_role.model.GradeRoleAllDto;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
 
-
 @RequestMapping(value = "/grade-role")
 @RestController
 public class GradeRoleController {
@@ -30,33 +29,28 @@ public class GradeRoleController {
     @Autowired
     DozerBeanMapper mapper;
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public Map<String, Map<String, Long>> findAllBasic(){
+    @RequestMapping(path = "/db", method = RequestMethod.GET)
+    public Map<String, Map<String, Long>> findAllDb(){
         return this.gradeRoleService.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
     }
     
-    @RequestMapping(path = "/all", method = RequestMethod.GET)
-    public GradeRoleAll findAll(){
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<GradeRoleTotal> findAll(){
         return this.gradeRoleService.findAlll();
     }
     
-    @RequestMapping(path = "/alll", method = RequestMethod.GET)
-    public GradeRoleAllDto findAllll(){
-    	GradeRoleAllDto gradeRoleAllDto = new GradeRoleAllDto();    	
-    	GradeRoleAll findAlll = this.gradeRoleService.findAlll();
-		List<GradeDto> grades = findAlll.getGrades().stream().map(g -> mapper.map(g, GradeDto.class)).toList();
-		gradeRoleAllDto.setGrades(grades);
-		List<RoleDto> roles = findAlll.getRoles().stream().map(g -> mapper.map(g, RoleDto.class)).toList();
-		gradeRoleAllDto.setRoles(roles);
-		List<GradeRoleTotalDto> gradeRolListDto = new ArrayList<GradeRoleTotalDto>();
-		List<GradeRoleTotal> gradeRole = findAlll.getGradeRoleTotal();
-		for (GradeRoleTotal gradeRoleTotal : gradeRole) {
+    @RequestMapping(path = "/objects", method = RequestMethod.GET)
+    public List<GradeRoleTotalDto> findAlll(){    	 	
+    	List<GradeRoleTotal> GradeRoleTotalList = this.gradeRoleService.findAlll();
+		List<GradeDto> grades = this.gradeRoleService.getGrades().stream().map(g -> mapper.map(g, GradeDto.class)).toList();
+		List<RoleDto> roles = gradeRoleService.getRoles().stream().map(g -> mapper.map(g, RoleDto.class)).toList();
+		List<GradeRoleTotalDto> gradeRolListDto = new ArrayList<GradeRoleTotalDto>();		
+		for (GradeRoleTotal gradeRoleTotal : GradeRoleTotalList) {
 			GradeDto gradeDto = grades.stream().filter(g -> g.getGrade().equals(gradeRoleTotal.getGrade())).limit(1).toList().get(0);
 			RoleDto roleDto = roles.stream().filter(g -> g.getRole().equals(gradeRoleTotal.getRole())).limit(1).toList().get(0);
 			GradeRoleTotalDto gradeRoleTotalDto = new GradeRoleTotalDto(gradeDto, roleDto, gradeRoleTotal.getTotal());
 			gradeRolListDto.add(gradeRoleTotalDto);
-		}		
-		gradeRoleAllDto.setGradeRole(gradeRolListDto);
-		return gradeRoleAllDto;
+		}
+		return gradeRolListDto;
     }    
 }

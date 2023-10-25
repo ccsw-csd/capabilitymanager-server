@@ -41,15 +41,11 @@ public class GradeRoleServiceImpl implements GradeRoleService{
     }
 
 	@Override
-	public GradeRoleAll findAlll() {
+	public List<GradeRoleTotal> findAlll() {
 		
-		GradeRoleAll gradeRoleAll = new GradeRoleAll();
-		gradeRoleAll.setGrades(gradeService.findAll());
-		gradeRoleAll.setRoles(roleService.findAll());
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
-		gradeRoleAll.setGradeRoleTotal(LinkedtoList(sortedGradeRolMap));
-		return gradeRoleAll;
+		return LinkedtoList(sortedGradeRolMap);
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Long>> addZeros(Map<String, Map<String, Long>> gradeRoleMap, List<Grade> grades, List<Role> roles) {
@@ -111,5 +107,15 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 			}
 		}
 		return gradeRolList;
+	}
+	
+	@Override
+	public List<Grade> getGrades() {
+		return gradeService.findAll();
+	}
+	
+	@Override
+	public List<Role> getRoles() {
+		return roleService.findAll();
 	}
 }
