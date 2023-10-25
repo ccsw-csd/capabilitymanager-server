@@ -19,7 +19,7 @@ import com.ccsw.dashboard.config.role.model.RoleDto;
 import com.ccsw.dashboard.grade_role.model.GradeRole;
 import com.ccsw.dashboard.grade_role.model.GradeRoleAll;
 import com.ccsw.dashboard.grade_role.model.GradeRoleAllDto;
-import com.ccsw.dashboard.grade_role.model.GradeRoleDto;
+import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
 
 
 @RequestMapping(value = "/grade-role")
@@ -50,7 +50,7 @@ public class GradeRoleController {
 		gradeRoleAllDto.setGrades(grades);
 		List<RoleDto> roles = findAlll.getRoles().stream().map(g -> mapper.map(g, RoleDto.class)).toList();
 		gradeRoleAllDto.setRoles(roles);
-		List<GradeRoleDto> gradeRolListDto = new ArrayList<GradeRoleDto>();
+		List<GradeRoleTotalDto> gradeRolListDto = new ArrayList<GradeRoleTotalDto>();
 		LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole = findAlll.getGradeRole();
 		for (Entry<String, LinkedHashMap<String, Long>> entry : gradeRole.entrySet()) {
 			String grade = entry.getKey();
@@ -62,7 +62,7 @@ public class GradeRoleController {
 				linkedHashMap.put(roles.stream().filter(r -> r.getRole().equals(role)).limit(1).toList().get(0), count);
 				GradeDto gradeDto = grades.stream().filter(g -> g.getGrade().equals(grade)).limit(1).toList().get(0);
 				RoleDto roleDto = roles.stream().filter(g -> g.getRole().equals(role)).limit(1).toList().get(0);
-				GradeRoleDto gradeRoleDto = new GradeRoleDto(gradeDto, roleDto, count);
+				GradeRoleTotalDto gradeRoleDto = new GradeRoleTotalDto(gradeDto, roleDto, count);
 				gradeRolListDto.add(gradeRoleDto);
 			}
 		}

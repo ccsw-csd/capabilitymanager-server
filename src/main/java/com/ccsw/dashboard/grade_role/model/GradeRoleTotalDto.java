@@ -3,7 +3,7 @@ package com.ccsw.dashboard.grade_role.model;
 import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.RoleDto;
 
-public class GradeRoleDto {	
+public class GradeRoleTotalDto {	
 
     private GradeDto grade;
     private RoleDto role;
@@ -26,7 +26,7 @@ public class GradeRoleDto {
 	public void setTotal(Long total) {
 		this.total = total;
 	}
-	public GradeRoleDto(GradeDto grade, RoleDto role, Long total) {
+	public GradeRoleTotalDto(GradeDto grade, RoleDto role, Long total) {
 		super();
 		this.grade = grade;
 		this.role = role;

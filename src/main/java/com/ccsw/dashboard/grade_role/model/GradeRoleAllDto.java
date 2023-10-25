@@ -13,7 +13,7 @@ import com.ccsw.dashboard.config.role.model.RoleDto;
 public class GradeRoleAllDto {	
 	
 	//private LinkedHashMap<GradeDto, LinkedHashMap<RoleDto, Long>> gradeRole;
-	private List<GradeRoleDto> gradeRole;
+	private List<GradeRoleTotalDto> gradeRole;
 	private List<GradeDto> grades;
 	private List<RoleDto> roles;
 	
@@ -29,10 +29,10 @@ public class GradeRoleAllDto {
 	public void setRoles(List<RoleDto> roles) {
 		this.roles = roles;
 	}
-	public List<GradeRoleDto> getGradeRole() {
+	public List<GradeRoleTotalDto> getGradeRole() {
 		return gradeRole;
 	}
-	public void setGradeRole(List<GradeRoleDto> gradeRole) {
+	public void setGradeRole(List<GradeRoleTotalDto> gradeRole) {
 		this.gradeRole = gradeRole;
 	}	
 }
