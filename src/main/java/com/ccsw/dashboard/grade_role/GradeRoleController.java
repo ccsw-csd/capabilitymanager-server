@@ -1,24 +1,22 @@
 package com.ccsw.dashboard.grade_role;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.grade.model.GradeDto;
-import com.ccsw.dashboard.config.role.model.Role;
 import com.ccsw.dashboard.config.role.model.RoleDto;
 import com.ccsw.dashboard.grade_role.model.GradeRole;
 import com.ccsw.dashboard.grade_role.model.GradeRoleAll;
 import com.ccsw.dashboard.grade_role.model.GradeRoleAllDto;
+import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
 
 
@@ -51,21 +49,13 @@ public class GradeRoleController {
 		List<RoleDto> roles = findAlll.getRoles().stream().map(g -> mapper.map(g, RoleDto.class)).toList();
 		gradeRoleAllDto.setRoles(roles);
 		List<GradeRoleTotalDto> gradeRolListDto = new ArrayList<GradeRoleTotalDto>();
-		LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole = findAlll.getGradeRole();
-		for (Entry<String, LinkedHashMap<String, Long>> entry : gradeRole.entrySet()) {
-			String grade = entry.getKey();
-			LinkedHashMap<String, Long> val = entry.getValue();
-			LinkedHashMap<RoleDto, Long> linkedHashMap = new LinkedHashMap<RoleDto, Long>();
-			for (Map.Entry<String, Long> rol : val.entrySet()) {
-				String role = rol.getKey();
-				Long count = rol.getValue();
-				linkedHashMap.put(roles.stream().filter(r -> r.getRole().equals(role)).limit(1).toList().get(0), count);
-				GradeDto gradeDto = grades.stream().filter(g -> g.getGrade().equals(grade)).limit(1).toList().get(0);
-				RoleDto roleDto = roles.stream().filter(g -> g.getRole().equals(role)).limit(1).toList().get(0);
-				GradeRoleTotalDto gradeRoleDto = new GradeRoleTotalDto(gradeDto, roleDto, count);
-				gradeRolListDto.add(gradeRoleDto);
-			}
-		}
+		List<GradeRoleTotal> gradeRole = findAlll.getGradeRoleTotal();
+		for (GradeRoleTotal gradeRoleTotal : gradeRole) {
+			GradeDto gradeDto = grades.stream().filter(g -> g.getGrade().equals(gradeRoleTotal.getGrade())).limit(1).toList().get(0);
+			RoleDto roleDto = roles.stream().filter(g -> g.getRole().equals(gradeRoleTotal.getRole())).limit(1).toList().get(0);
+			GradeRoleTotalDto gradeRoleTotalDto = new GradeRoleTotalDto(gradeDto, roleDto, gradeRoleTotal.getTotal());
+			gradeRolListDto.add(gradeRoleTotalDto);
+		}		
 		gradeRoleAllDto.setGradeRole(gradeRolListDto);
 		return gradeRoleAllDto;
     }    

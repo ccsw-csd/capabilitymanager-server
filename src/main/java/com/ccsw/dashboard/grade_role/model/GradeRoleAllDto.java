@@ -1,18 +1,12 @@
 package com.ccsw.dashboard.grade_role.model;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.grade.model.GradeDto;
-import com.ccsw.dashboard.config.role.model.Role;
 import com.ccsw.dashboard.config.role.model.RoleDto;
 
 public class GradeRoleAllDto {	
 	
-	//private LinkedHashMap<GradeDto, LinkedHashMap<RoleDto, Long>> gradeRole;
 	private List<GradeRoleTotalDto> gradeRole;
 	private List<GradeDto> grades;
 	private List<RoleDto> roles;

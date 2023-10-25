@@ -1,7 +1,7 @@
-package com.ccsw.dashboard.person.model;
+package com.ccsw.dashboard.skill.model;
 
 
-public class PersonDto {
+public class SkillDto {
 
     private Long id;
     private String name;

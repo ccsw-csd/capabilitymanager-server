@@ -1,8 +1,11 @@
 package com.ccsw.dashboard.config.grade.model;
 
-import com.ccsw.dashboard.config.role.model.Role;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "aux_grados")

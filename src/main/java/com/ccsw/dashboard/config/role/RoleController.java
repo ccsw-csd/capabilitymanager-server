@@ -1,15 +1,17 @@
 package com.ccsw.dashboard.config.role;
 
 
+import java.util.List;
+
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.Role;
 import com.ccsw.dashboard.config.role.model.RoleDto;
-
-import java.util.List;
 
 
 @RequestMapping(value = "/role")

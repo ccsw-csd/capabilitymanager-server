@@ -1,21 +1,20 @@
 package com.ccsw.dashboard.grade_role.model;
 
-import java.util.LinkedHashMap;
 import java.util.List;
+
 import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.role.model.Role;
 
 public class GradeRoleAll {	
 	
-	private LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole;	
+	private List<GradeRoleTotal> gradeRoleTotal;	
 	private List<Grade> grades;
 	private List<Role> roles;
-	
-	public LinkedHashMap<String, LinkedHashMap<String, Long>> getGradeRole() {
-		return gradeRole;
+	public List<GradeRoleTotal> getGradeRoleTotal() {
+		return gradeRoleTotal;
 	}
-	public void setGradeRole(LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole) {
-		this.gradeRole = gradeRole;
+	public void setGradeRoleTotal(List<GradeRoleTotal> gradeRoleTotal) {
+		this.gradeRoleTotal = gradeRoleTotal;
 	}
 	public List<Grade> getGrades() {
 		return grades;
@@ -28,5 +27,5 @@ public class GradeRoleAll {
 	}
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
-	}	
+	}		
 }

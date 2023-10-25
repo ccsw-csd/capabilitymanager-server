@@ -1,10 +1,10 @@
-package com.ccsw.dashboard.person.model;
+package com.ccsw.dashboard.skill.model;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "dm_synthesisdata_import")
-public class Person {
+public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,14 +46,14 @@ public class Person {
     @Column(name = "vc_Profile_Mentor")
     private String mentor;
 
-    public Person() {
+    public Skill() {
     }
 
-    public Person(String name) {
+    public Skill(String name) {
         this.name = name;
     }
 
-    public Person(Long id, String name) {
+    public Skill(Long id, String name) {
         this.id = id;
         this.name = name;
     }

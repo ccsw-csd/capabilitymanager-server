@@ -1,33 +1,25 @@
 package com.ccsw.dashboard.grade_role;
 
-import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
-import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.config.grade.GradeService;
 import com.ccsw.dashboard.config.grade.model.Grade;
-import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.RoleService;
 import com.ccsw.dashboard.config.role.model.Role;
-import com.ccsw.dashboard.config.role.model.RoleDto;
 import com.ccsw.dashboard.grade_role.model.GradeRole;
 import com.ccsw.dashboard.grade_role.model.GradeRoleAll;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
-import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -36,8 +28,6 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 
     @Autowired
     private GradeRoleRepository gradeRoleRepository;
-    
-    
     
     @Autowired
     private GradeService gradeService;
@@ -52,12 +42,13 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 
 	@Override
 	public GradeRoleAll findAlll() {
+		
 		GradeRoleAll gradeRoleAll = new GradeRoleAll();
 		gradeRoleAll.setGrades(gradeService.findAll());
 		gradeRoleAll.setRoles(roleService.findAll());
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
-		gradeRoleAll.setGradeRole(sortedGradeRolMap);
+		gradeRoleAll.setGradeRoleTotal(LinkedtoList(sortedGradeRolMap));
 		return gradeRoleAll;
 	}
 	
@@ -106,19 +97,19 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 		return sortedGradeRoleMap;
 	}
 	
-//	private List<GradeRoleTotal> LinkedtoList(LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole) {
-//		
-//		List<GradeRoleTotal> gradeRolList = new ArrayList<GradeRoleTotal>();
-//		for (Entry<String, LinkedHashMap<String, Long>> entry : gradeRole.entrySet()) {
-//			String grade = entry.getKey();
-//			LinkedHashMap<String, Long> val = entry.getValue();
-//			LinkedHashMap<RoleDto, Long> linkedHashMap = new LinkedHashMap<RoleDto, Long>();
-//			for (Map.Entry<String, Long> rol : val.entrySet()) {
-//				String role = rol.getKey();
-//				Long count = rol.getValue();
-//				GradeRoleTotal gradeRoleTotal = new GradeRoleTotal(grade, role, count);
-//				gradeRolList.add(gradeRoleTotal);
-//			}
-//		}
-//	}
+	private List<GradeRoleTotal> LinkedtoList(LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole) {
+		
+		List<GradeRoleTotal> gradeRolList = new ArrayList<GradeRoleTotal>();
+		for (Entry<String, LinkedHashMap<String, Long>> entry : gradeRole.entrySet()) {
+			String grade = entry.getKey();
+			LinkedHashMap<String, Long> val = entry.getValue();			
+			for (Map.Entry<String, Long> rol : val.entrySet()) {
+				String role = rol.getKey();
+				Long count = rol.getValue();
+				GradeRoleTotal gradeRoleTotal = new GradeRoleTotal(grade, role, count);
+				gradeRolList.add(gradeRoleTotal);
+			}
+		}
+		return gradeRolList;
+	}
 }
