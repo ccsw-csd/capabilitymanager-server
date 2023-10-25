@@ -26,7 +26,7 @@ public class GradeController {
     @Autowired
     DozerBeanMapper mapper;
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
+    @RequestMapping(path = "/config", method = RequestMethod.GET)
     public List<GradeDto> findAll(){
         return this.gradeService.findAll().stream().map(g->mapper.map(g,GradeDto.class)).toList();
     }  

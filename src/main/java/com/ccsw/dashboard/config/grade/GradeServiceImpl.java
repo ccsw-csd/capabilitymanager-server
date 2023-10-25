@@ -17,7 +17,7 @@ public class GradeServiceImpl implements GradeService{
     
     @Override
     public List<Grade> findAll() {
-        return (List<Grade>) this.gradeRepository.findAll();
+        return (List<Grade>) this.gradeRepository.findAll().stream().sorted().toList();
     }
 
     @Override

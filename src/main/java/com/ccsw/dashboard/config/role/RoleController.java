@@ -22,7 +22,7 @@ public class RoleController {
     @Autowired
     DozerBeanMapper mapper;
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
+    @RequestMapping(path = "/config", method = RequestMethod.GET)
     public List<RoleDto> findAll(){
         return this.roleService.findAll().stream().map(g->mapper.map(g,RoleDto.class)).toList();
     }  

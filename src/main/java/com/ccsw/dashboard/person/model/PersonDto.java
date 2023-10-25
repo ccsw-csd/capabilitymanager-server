@@ -5,8 +5,28 @@ public class PersonDto {
 
     private Long id;
     private String name;
+    
+    private String skillDescription;
+    private int skyllLevel;
+    
 
-    public Long getId() {
+    public String getSkillDescription() {
+		return skillDescription;
+	}
+
+	public void setSkillDescription(String skillDescription) {
+		this.skillDescription = skillDescription;
+	}
+
+	public int getSkyllLevel() {
+		return skyllLevel;
+	}
+
+	public void setSkyllLevel(int skyllLevel) {
+		this.skyllLevel = skyllLevel;
+	}
+
+	public Long getId() {
         return id;
     }
 
