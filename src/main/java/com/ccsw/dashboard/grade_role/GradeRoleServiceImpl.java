@@ -16,8 +16,8 @@ import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.role.RoleService;
 import com.ccsw.dashboard.config.role.model.Role;
 import com.ccsw.dashboard.grade_role.model.GradeRole;
-import com.ccsw.dashboard.grade_role.model.GradeRoleAll;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
+import com.ccsw.dashboard.grade_role.model.GradeTotal;
 
 import jakarta.transaction.Transactional;
 
@@ -46,6 +46,26 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
 		return LinkedtoList(sortedGradeRolMap);
+	}
+	
+	@Override
+	public List<GradeTotal> findAllGradeTotals() {
+		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
+		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
+		ArrayList<GradeTotal> gradeTotalList = new ArrayList<GradeTotal>();		
+		for (Map.Entry<String, LinkedHashMap<String, Long>> entry : sortedGradeRolMap.entrySet()) {
+			String key = entry.getKey();
+			LinkedHashMap<String, Long> val = entry.getValue();
+			GradeTotal gradeTotal = new GradeTotal();
+			ArrayList<Long> totals = new ArrayList<Long>();
+			for (Map.Entry<String, Long> rol : val.entrySet()) {								
+				totals.add(rol.getValue());				
+			}
+			gradeTotal.setGrade(key);
+			gradeTotal.setTotals(totals);
+			gradeTotalList.add(gradeTotal);
+		}		
+		return gradeTotalList;
 	}
 	
 	private LinkedHashMap<String, LinkedHashMap<String, Long>> addZeros(Map<String, Map<String, Long>> gradeRoleMap, List<Grade> grades, List<Role> roles) {

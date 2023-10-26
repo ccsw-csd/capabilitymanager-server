@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.RoleDto;
 import com.ccsw.dashboard.grade_role.model.GradeRole;
-import com.ccsw.dashboard.grade_role.model.GradeRoleAll;
-import com.ccsw.dashboard.grade_role.model.GradeRoleAllDto;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
 import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
+import com.ccsw.dashboard.grade_role.model.GradeTotal;
 
 @RequestMapping(value = "/grade-role")
 @RestController
@@ -53,4 +52,9 @@ public class GradeRoleController {
 		}
 		return gradeRolListDto;
     }    
+    
+    @RequestMapping(path = "/gradetotals", method = RequestMethod.GET)
+    public List<GradeTotal> findAllGradeTotals(){    	 	
+    	return this.gradeRoleService.findAllGradeTotals();
+    }
 }
