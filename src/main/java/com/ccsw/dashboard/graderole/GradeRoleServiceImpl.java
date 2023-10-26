@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.grade_role;
+package com.ccsw.dashboard.graderole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +15,9 @@ import com.ccsw.dashboard.config.grade.GradeService;
 import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.role.RoleService;
 import com.ccsw.dashboard.config.role.model.Role;
-import com.ccsw.dashboard.grade_role.model.GradeRole;
-import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
-import com.ccsw.dashboard.grade_role.model.GradeTotal;
+import com.ccsw.dashboard.graderole.model.GradeRole;
+import com.ccsw.dashboard.graderole.model.GradeRoleTotal;
+import com.ccsw.dashboard.graderole.model.GradeTotal;
 
 import jakarta.transaction.Transactional;
 

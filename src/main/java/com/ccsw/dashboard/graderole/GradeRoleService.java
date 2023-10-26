@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.grade_role;
+package com.ccsw.dashboard.graderole;
 
 
 
@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.ccsw.dashboard.config.grade.model.Grade;
 import com.ccsw.dashboard.config.role.model.Role;
-import com.ccsw.dashboard.grade_role.model.GradeRole;
-import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
-import com.ccsw.dashboard.grade_role.model.GradeTotal;
+import com.ccsw.dashboard.graderole.model.GradeRole;
+import com.ccsw.dashboard.graderole.model.GradeRoleTotal;
+import com.ccsw.dashboard.graderole.model.GradeTotal;
 
 public interface GradeRoleService {
 

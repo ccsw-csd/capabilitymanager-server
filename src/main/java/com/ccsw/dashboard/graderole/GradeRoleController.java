@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.grade_role;
+package com.ccsw.dashboard.graderole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.RoleDto;
-import com.ccsw.dashboard.grade_role.model.GradeRole;
-import com.ccsw.dashboard.grade_role.model.GradeRoleTotal;
-import com.ccsw.dashboard.grade_role.model.GradeRoleTotalDto;
-import com.ccsw.dashboard.grade_role.model.GradeTotal;
+import com.ccsw.dashboard.graderole.model.GradeRole;
+import com.ccsw.dashboard.graderole.model.GradeRoleTotal;
+import com.ccsw.dashboard.graderole.model.GradeRoleTotalDto;
+import com.ccsw.dashboard.graderole.model.GradeTotal;
 
 @RequestMapping(value = "/grade-role")
 @RestController

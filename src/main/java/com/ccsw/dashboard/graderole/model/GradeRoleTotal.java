@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.grade_role.model;
+package com.ccsw.dashboard.graderole.model;
 
 public class GradeRoleTotal {	
 

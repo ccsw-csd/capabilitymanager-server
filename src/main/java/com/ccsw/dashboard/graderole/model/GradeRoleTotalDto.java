@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.grade_role.model;
+package com.ccsw.dashboard.graderole.model;
 
 import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.RoleDto;
