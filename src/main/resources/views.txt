@@ -16,3 +16,25 @@ VIEW `dashboard`.`vista_grados_roles` AS
             OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Business%')
             OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Engagement%')
             OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Solution%')))
+ 
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `dashboard`@`%` 
+    SQL SECURITY DEFINER
+VIEW `dashboard`.`vista_staff_tmp_roles` AS
+    SELECT 
+        `rol`.`num_IdImport` AS `num_IdImport`,
+        `rol`.`vc_Profile_SAGA` AS `vc_Profile_SAGA`,
+        `rol`.`vc_Profile_Rol_Actual` AS `vc_Profile_Rol_Actual`,
+        `rol`.`vc_Profile_Rol_Perfil` AS `vc_Profile_Rol_Perfil`,
+        `rol`.`vc_Profile_Rol_Perfil_Tecnico` AS `vc_Profile_Rol_Perfil_Tecnico`,
+        `rol`.`vc_Profile_Rol_Perfil_Experiencia` AS `vc_Profile_Rol_Perfil_Experiencia`,
+        `rol`.`vc_Profile_Skill_Cloud_Native` AS `vc_Profile_Skill_Cloud_Native`,
+        `rol`.`vc_Profile_Skill_Cloud_Native_Experiencia` AS `vc_Profile_Skill_Cloud_Native_Experiencia`,
+        `rol`.`vc_Profile_Skill_Low_Code` AS `vc_Profile_Skill_Low_Code`,
+        `rol`.`vc_Profile_Sector_Experiencia` AS `vc_Profile_Sector_Experiencia`,
+        `sg`.`vc_Profile_Centro` AS `vc_Profile_Centro`,
+        `sg`.`vc_Profile_Grado` AS `vc_Profile_Grado`,
+        `sg`.`vc_Profile_Practica` AS `vc_Profile_Practica`
+    FROM   (`dashboard`.`tmp_prod_formdata` `rol`
+    LEFT JOIN `dashboard`.`dm_staffing_import` `sg` ON ((`rol`.`vc_Profile_SAGA` = `sg`.`vc_Profile_SAGA`)))
