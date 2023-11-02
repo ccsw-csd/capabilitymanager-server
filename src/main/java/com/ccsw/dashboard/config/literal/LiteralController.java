@@ -34,6 +34,11 @@ public class LiteralController {
     @RequestMapping(path = "/config/{id}", method = RequestMethod.GET)
     public List<LiteralDto> findAllByType(@PathVariable String id){
     	 return this.literalService.findByType(id).stream().map(l->mapper.map(l,LiteralDto.class)).toList();
+    }
+    
+    @RequestMapping(path = "/config/{id}/{subtype}", method = RequestMethod.GET)
+    public List<LiteralDto> findAllByType(@PathVariable String id, @PathVariable String subtype){
+    	 return this.literalService.findByTypeAndSubtype(id, subtype).stream().map(l->mapper.map(l,LiteralDto.class)).toList();
     } 
     
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)

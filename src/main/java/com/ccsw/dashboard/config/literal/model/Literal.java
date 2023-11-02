@@ -1,7 +1,5 @@
 package com.ccsw.dashboard.config.literal.model;
 
-import java.util.Comparator;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -61,7 +59,6 @@ public class Literal  implements Comparable<Literal> {
 		this.desc = desc;
 	}
 	
-
 	@Override	
 	public int compareTo(Literal o) {
 	    if (this.getSubtype() != o.getSubtype()) {
@@ -69,4 +66,5 @@ public class Literal  implements Comparable<Literal> {
 	    }
 	    return Integer.valueOf(this.ord).compareTo(o.getOrd());
 	}	
+		
 }
