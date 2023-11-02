@@ -15,7 +15,7 @@ VIEW `dashboard`.`vista_grados_roles` AS
             AND ((`fr`.`vc_Profile_Rol_L1` LIKE 'Software%')
             OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Business%')
             OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Engagement%')
-            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Solution%')))
+            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Architect%')))
  
 CREATE 
     ALGORITHM = UNDEFINED 

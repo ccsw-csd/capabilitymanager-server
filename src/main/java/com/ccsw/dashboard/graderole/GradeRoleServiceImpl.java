@@ -49,16 +49,14 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 	public List<GradeRoleTotal> findAlll() {
 		
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
-		//LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
-		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "r"), literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "c"));
+		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZerosAndOrdGradeRole(gradeRoleMap, gradeService.findAll(), roleService.findAll());
 		return LinkedtoList(sortedGradeRolMap);
 	}
 	
 	@Override
 	public List<GradeTotal> findAllGradeTotals() {
 		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
-		//LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, gradeService.findAll(), roleService.findAll());
-		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZeros(gradeRoleMap, literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "r"), literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "c"));
+		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZerosAndOrd(gradeRoleMap, getLiteralGrades(), getLiteralRoles());
 		ArrayList<GradeTotal> gradeTotalList = new ArrayList<GradeTotal>();		
 		for (Map.Entry<String, LinkedHashMap<String, Long>> entry : sortedGradeRolMap.entrySet()) {
 			String key = entry.getKey();
@@ -75,7 +73,7 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 		return gradeTotalList;
 	}
 	
-	private LinkedHashMap<String, LinkedHashMap<String, Long>> addZeros(Map<String, Map<String, Long>> gradeRoleMap, List<Literal> grades, List<Literal> roles) {
+	private LinkedHashMap<String, LinkedHashMap<String, Long>> addZerosAndOrd(Map<String, Map<String, Long>> gradeRoleMap, List<Literal> grades, List<Literal> roles) {
 		
 		HashMap<String, Long> hashMapZeros = new HashMap<String, Long>();
 		for (Literal role : roles) {			
@@ -120,6 +118,51 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 		return sortedGradeRoleMap;
 	}
 	
+private LinkedHashMap<String, LinkedHashMap<String, Long>> addZerosAndOrdGradeRole(Map<String, Map<String, Long>> gradeRoleMap, List<Grade> grades, List<Role> roles) {
+		
+		HashMap<String, Long> hashMapZeros = new HashMap<String, Long>();
+		for (Role role : roles) {			
+			hashMapZeros.put(role.getRole(), 0L);
+		}		
+		
+		for (Grade grade : grades) {								
+			gradeRoleMap.putIfAbsent(grade.getGrade(), hashMapZeros);
+			Map<String, Long> roleMap = gradeRoleMap.get(grade.getGrade());
+			for (Role role : roles) {
+				roleMap.putIfAbsent(role.getRole(), 0L);				
+			}
+		}		
+		
+		roles = roles.stream().sorted().toList();
+		grades = grades.stream().sorted().collect(Collectors.toList());		
+		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRoleMap = new LinkedHashMap<>();
+		for (Grade grade : grades) {
+			LinkedHashMap<String, Long> sortedRoleMap = new LinkedHashMap<>();
+			Map<String, Long> roleMap = gradeRoleMap.get(grade.getGrade());
+			
+			/*
+			sortedRoleMap = roleMap.entrySet().stream()
+	                .sorted(Map.Entry.comparingByKey())
+	                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+	                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+			*/			
+			for (Role role : roles) {				
+				for (Map.Entry entry : roleMap.entrySet()) {
+					String key = (String) entry.getKey();
+					Long val = (Long) entry.getValue();
+					if (entry.getKey().equals(role.getRole())) {
+	                    sortedRoleMap.put(key, val);
+	                }				
+				}
+			}			
+			
+			gradeRoleMap.put(grade.getGrade(), sortedRoleMap);
+			sortedGradeRoleMap.put(grade.getGrade(), sortedRoleMap);
+		}
+		
+		return sortedGradeRoleMap;
+	}
+	
 	private List<GradeRoleTotal> LinkedtoList(LinkedHashMap<String, LinkedHashMap<String, Long>> gradeRole) {
 		
 		List<GradeRoleTotal> gradeRolList = new ArrayList<GradeRoleTotal>();
@@ -134,6 +177,16 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 			}
 		}
 		return gradeRolList;
+	}
+	
+	@Override
+	public List<Literal> getLiteralGrades() {
+		return literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "r");
+	}
+	
+	@Override
+	public List<Literal> getLiteralRoles() {
+		return literalService.findByTypeAndSubtype("Pyramid Grade-Rol", "c");
 	}
 	
 	@Override

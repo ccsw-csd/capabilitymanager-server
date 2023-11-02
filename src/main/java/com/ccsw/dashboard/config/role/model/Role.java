@@ -1,5 +1,7 @@
 package com.ccsw.dashboard.config.role.model;
 
+import com.ccsw.dashboard.config.grade.model.Grade;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +17,11 @@ public class Role implements Comparable<Role>{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-    @Column(name="vc_Roles", nullable = false)
+    @Column(name="vc_rol", nullable = false)
     private String role;
+    
+    @Column(name="vc_ord", nullable = false)
+    private int ord;
     
 	public int getId() {
 		return id;
@@ -33,9 +38,24 @@ public class Role implements Comparable<Role>{
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	public int getOrd() {
+		return ord;
+	}
 
-	@Override
-	public int compareTo(Role r) {
-		return role.compareToIgnoreCase(r.getRole());
+	public void setOrd(int ord) {
+		this.ord = ord;
+	}
+	
+//	@Override
+//	public int compareTo(Role r) {
+//		return role.compareToIgnoreCase(r.getRole());
+//	}
+	
+	@Override	
+	public int compareTo(Role o) {
+		if (this.ord != o.getOrd())
+			return Integer.valueOf(this.ord).compareTo(o.getOrd());
+		return this.role.compareTo(o.getRole());
 	}
 }
