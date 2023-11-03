@@ -39,9 +39,18 @@ public class ProfileServiceImpl implements ProfileService{
 			  return engagementManagers(findByTypeAndSubtype, list);	
 		  case "Architects":
 			  return Architects(findByTypeAndSubtype, list);
+		  case "Business Analyst":
+			  // TODO Business Analyst
+			  return null;
+		  case "Software Engineer":
+			  // TODO Software Engineer
+			  return null;
+		  case "Industry Experts":
+			  // TODO  Industry Experts
+			  return null;
 		  default:
-		    System.out.println("ddddddddddddddddddddddddddddddddddddddddddddd");
-		    //TODO lanzar exception
+			  System.out.println("entrada no válida");
+			  //TODO lanzar exception
 		}
 		return null;		
 	}
