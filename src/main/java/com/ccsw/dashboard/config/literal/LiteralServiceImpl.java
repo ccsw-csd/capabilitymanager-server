@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.config.literal.model.Literal;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service

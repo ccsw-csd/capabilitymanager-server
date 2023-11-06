@@ -27,8 +27,13 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public List<Profile> findAll() {
         return (List<Profile>) this.profileRepository.findAll();
-    }	
-	
+    }    
+    
+    @Override
+	public List<ProfileTotal> findAllExperienceTotals() {	
+    	List<Profile> list = this.profileRepository.findAll();    	
+     	return industryExperts(list);	
+    }
 	@Override
 	public List<ProfileTotal> findAllProfileTotals(String id) {		
 						
@@ -40,14 +45,9 @@ public class ProfileServiceImpl implements ProfileService{
 		  case "Architects":
 			  return Architects(findByTypeAndSubtype, list);
 		  case "Business Analyst":
-			  // TODO Business Analyst
-			  return null;
-		  case "Software Engineer":
-			  // TODO Software Engineer
-			  return null;
-		  case "Industry Experts":
-			  // TODO  Industry Experts
-			  return null;
+		      return businessAnalyst(findByTypeAndSubtype, list);
+		  case "Software Engineer":			 
+			  return softwareEngineer(findByTypeAndSubtype, list);		  
 		  default:
 			  System.out.println("entrada no válida");
 			  //TODO lanzar exception
@@ -100,7 +100,66 @@ public class ProfileServiceImpl implements ProfileService{
 		}		
 		
 		return profileTotalList;
+	}	
+	
+	private List<ProfileTotal> businessAnalyst(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+		
+		List<ProfileTotal> profileTotalList = new ArrayList<>();		
+		for (Literal literal : findByTypeAndSubtype) {
+//			List<Profile> listBusinessAnalyst = list.stream().filter(p->p.getPerfil().contains(literal.getDesc())).toList();
+			ArrayList<Long> totals = new ArrayList<Long>();
+			totals.add(Long.valueOf(list.size()));
+			ProfileTotal profileTotal = new ProfileTotal();
+			profileTotal.setProfile(literal.getDesc());
+			profileTotal.setTotals(totals);			
+			profileTotalList.add(profileTotal);			
+		}		
+		
+		return profileTotalList;
 	}
 	
+private List<ProfileTotal> softwareEngineer(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+		
+		List<ProfileTotal> profileTotalList = new ArrayList<>();		
+		for (Literal literal : findByTypeAndSubtype) {
+//			List<Profile> listSoftwareEngineer = list.stream().filter(p->p.getPerfil().contains(literal.getDesc())).toList();
+			ArrayList<Long> totals = new ArrayList<Long>();
+			totals.add(Long.valueOf(list.size()));
+			ProfileTotal profileTotal = new ProfileTotal();
+			profileTotal.setProfile(literal.getDesc());
+			profileTotal.setTotals(totals);			
+			profileTotalList.add(profileTotal);			
+		}		
+		
+		return profileTotalList;
+	}
+
+private List<ProfileTotal> industryExperts(List<Profile> list) {	
+	
+	List<ProfileTotal> profileTotalList = new ArrayList<>();
+	List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype("Industry Experts", "r");
+	for (Literal literal : findByTypeAndSubtype) {		
+		List<Profile> listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Consumer Goods & Retail")).toList();
+		ArrayList<Long> totals = new ArrayList<Long>();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Energy & Utilities")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Manufacturing")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Life Science")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Public Sector")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Telco, Media & Technologies")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		listIndustryExperts = list.stream().filter(p->p.getSectorExperiencia().contains("Financial Services")).toList();
+		totals.add(Long.valueOf(listIndustryExperts.size()));
+		ProfileTotal profileTotal = new ProfileTotal();
+		profileTotal.setProfile(literal.getDesc());
+		profileTotal.setTotals(totals);			
+		profileTotalList.add(profileTotal);			
+	}	
+	return profileTotalList;
+}
 	
 }

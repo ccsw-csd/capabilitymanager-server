@@ -1,7 +1,5 @@
 package com.ccsw.dashboard.config.role.model;
 
-import com.ccsw.dashboard.config.grade.model.Grade;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

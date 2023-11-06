@@ -21,6 +21,9 @@ public class Profile {
     
     @Column(name="vc_Profile_Rol_Perfil_Experiencia")
     private String experiencia;
+    
+    @Column(name="vc_Profile_Sector_Experiencia")
+    private String sectorExperiencia;
 
 	public int getId() {
 		return id;
@@ -60,6 +63,14 @@ public class Profile {
 
 	public void setExperiencia(String experiencia) {
 		this.experiencia = experiencia;
+	}
+
+	public String getSectorExperiencia() {
+		return sectorExperiencia;
+	}
+
+	public void setSectorExperiencia(String sectorExperiencia) {
+		this.sectorExperiencia = sectorExperiencia;
 	}    
 			
 }
