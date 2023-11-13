@@ -11,6 +11,5 @@ public interface ProfileService {
 
 	List<Profile> findAll();
 	List<ProfileTotal> findAllProfileTotals(String id);
-	List<ProfileTotal> findAllExperienceTotals();
 	
 }

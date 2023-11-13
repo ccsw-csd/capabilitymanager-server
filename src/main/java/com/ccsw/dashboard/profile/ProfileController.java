@@ -34,8 +34,4 @@ public class ProfileController {
     	return this.profileService.findAllProfileTotals(id);
     }
     
-    @RequestMapping(path = "/experiencetotals", method = RequestMethod.GET)
-    public List<ProfileTotal> findAllProfileTotals(){    	 	
-    	return this.profileService.findAllExperienceTotals();
-    }
 }
