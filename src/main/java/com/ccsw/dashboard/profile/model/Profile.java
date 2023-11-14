@@ -24,6 +24,13 @@ public class Profile {
     
     @Column(name="vc_Profile_Sector_Experiencia")
     private String sectorExperiencia;
+    
+    @Column(name="vc_Profile_Skill_Cloud_Native")
+    private String skillCloudNative;
+    
+    @Column(name="vc_Profile_Skill_Low_Code")
+    private String skillLowCode;    
+    
 
 	public int getId() {
 		return id;
@@ -71,6 +78,22 @@ public class Profile {
 
 	public void setSectorExperiencia(String sectorExperiencia) {
 		this.sectorExperiencia = sectorExperiencia;
-	}    
-			
+	}
+
+	public String getSkillCloudNative() {
+		return skillCloudNative;
+	}
+
+	public void setSkillCloudNative(String skillCloudNative) {
+		this.skillCloudNative = skillCloudNative;
+	}
+
+	public String getSkillLowCode() {
+		return skillLowCode;
+	}
+
+	public void setSkillLowCode(String skillLowCode) {
+		this.skillLowCode = skillLowCode;
+	}		
+	
 }

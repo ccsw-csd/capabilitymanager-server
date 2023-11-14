@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.profile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -45,7 +46,11 @@ public class ProfileServiceImpl implements ProfileService{
 		  case "Software Engineer":			 
 			  return softwareEngineer(findByTypeAndSubtype, listId);
 		  case "Industry Experts":			     	
-		      return industryExperts(list);	
+		      return industryExperts(list);
+		  case "Architects & SE Custom Apps Development":
+			  return ArchitectsAndSECustomAppsDevelopment(list);
+		  case "Architects & SE Integration & APIs":
+			  return ArchitectsAndSEIntegrationAndApis(list);
 		  default:
 			  System.out.println("entrada no válida");
 			  //TODO lanzar exception
@@ -173,72 +178,81 @@ private List<ProfileTotal> ArchitectsAndSECustomAppsDevelopment(List<Profile> li
 	
 	List<ProfileTotal> profileTotalList = new ArrayList<>();
 	List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype("Architects & SE Custom Apps Development", "r");
-	for (Literal literal : findByTypeAndSubtype) {		
-		List<Profile> listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Back end Java")).toList();
+	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
+		String actual = i==0?"Architects":"Software Engineer";
+		String perfil = i==0?"Solution":"SE";
+		List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
 		ArrayList<Long> totals = new ArrayList<Long>();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Back end .Net")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Backend JAVA")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Full Stack Java")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Backend .NET")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Full Stack .Net")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Full stack JAVA")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Front End")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Full stack .NET")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("SW Dev Mainframe")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("FrontEnd")).toList(); //TODO FRONTEND no lo toma
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("DevOps Automation")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("MainFrame")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Other")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("DevOps Automation")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("AWS")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Otro")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Azure")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillCloudNative().contains("AWS")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("GCP")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillCloudNative().contains("Azure")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Other clouds")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillCloudNative().contains("GCP")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Outsystems")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillCloudNative().contains("Other Clouds")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("PowerApps")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Outsystems")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Mendix")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("PowerApps")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Others")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Mendix")).toList(); //TODO 0
+		totals.add(Long.valueOf(listArchitects.size()));
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Other")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));		
 		ProfileTotal profileTotal = new ProfileTotal();
-		profileTotal.setProfile(literal.getDesc());
-		profileTotal.setTotals(totals);			
-		profileTotalList.add(profileTotal);			
-	}	
+		profileTotal.setProfile(findByTypeAndSubtype.get(i).getDesc());
+		profileTotal.setTotals(totals);
+		profileTotalList.add(profileTotal);
+	}
+					
+		
 	return profileTotalList;
 }
-	
-private List<ProfileTotal> ArchitectsAndSEIntegrationAndAPIs(List<Profile> list) {	
+
+private List<ProfileTotal> ArchitectsAndSEIntegrationAndApis(List<Profile> list) {	
 	
 	List<ProfileTotal> profileTotalList = new ArrayList<>();
 	List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype("Architects & SE Integration & APIs", "r");
-	for (Literal literal : findByTypeAndSubtype) {		
-		List<Profile> listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Mulesoft")).toList();
+	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
+		String actual = i==0?"Architects":"Software Engineer";
+		String perfil = i==0?"Integration":"SE";
+		List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
 		ArrayList<Long> totals = new ArrayList<Long>();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Boomi")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Mulesoft")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Software AG")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Boomi")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Tibco")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Software AG")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Other vendor")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Tibco")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getSectorExperiencia().contains("Open Source")).toList();
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Other vendor")).toList(); 
 		totals.add(Long.valueOf(listArchitects.size()));
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Open Source")).toList();
+		totals.add(Long.valueOf(listArchitects.size()));			
 		ProfileTotal profileTotal = new ProfileTotal();
-		profileTotal.setProfile(literal.getDesc());
-		profileTotal.setTotals(totals);			
-		profileTotalList.add(profileTotal);			
-	}	
-	return profileTotalList;
+		profileTotal.setProfile(findByTypeAndSubtype.get(i).getDesc());
+		profileTotal.setTotals(totals);
+		profileTotalList.add(profileTotal);
+	}
+	return profileTotalList;	
 }
-	
 }
