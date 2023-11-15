@@ -1,5 +1,6 @@
 package com.ccsw.dashboard.profile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.dashboard.profile.model.Profile;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RequestMapping(value = "/profile")
 @RestController
@@ -32,6 +35,16 @@ public class ProfileController {
     @RequestMapping(path = "/profiletotals/{id}", method = RequestMethod.GET)
     public List<ProfileTotal> findAllProfileTotals(@PathVariable String id){    	 	
     	return this.profileService.findAllProfileTotals(id);
+    }
+    
+    @RequestMapping(path = "/profiletotals/{id}/csv", method = RequestMethod.GET)
+    public void findAllProfileTotalsCsv(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{ 
+    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id)).writeProfileTotalsToCsv(id, servletResponse);
+    }
+    
+    @RequestMapping(path = "/profiletotals/{id}/excel", method = RequestMethod.GET)
+    public void findAllProfileTotalsExcel(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{
+    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id)).writeProfileTotalsToExcel(id, servletResponse);
     }
     
 }
