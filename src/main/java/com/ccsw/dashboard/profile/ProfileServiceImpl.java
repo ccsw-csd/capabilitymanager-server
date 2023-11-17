@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ccsw.dashboard.config.literal.LiteralService;
 import com.ccsw.dashboard.config.literal.model.Literal;
 import com.ccsw.dashboard.profile.model.Profile;
+import com.ccsw.dashboard.profile.model.ProfileGroup;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
 
 import jakarta.transaction.Transactional;
@@ -37,27 +38,27 @@ public class ProfileServiceImpl implements ProfileService {
 		List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
 		switch (id) {
 		  case "Engagement Managers":
-			  return engagementManagers(findByTypeAndSubtype, listActual);	
+			  return engagementManagersTotal(findByTypeAndSubtype, listActual);	
 		  case "Architects":
-			  return Architects(findByTypeAndSubtype, listActual);
+			  return ArchitectsTotal(findByTypeAndSubtype, listActual);
 		  case "Business Analyst":
-		      return businessAnalyst(findByTypeAndSubtype, listActual);
+		      return businessAnalystTotal(findByTypeAndSubtype, listActual);
 		  case "Software Engineer":			 
-			  return softwareEngineer(findByTypeAndSubtype, listActual);
+			  return softwareEngineerTotal(findByTypeAndSubtype, listActual);
 		  case "Industry Experts":			     	
-		      return industryExperts(findByTypeAndSubtype, listAll);
+		      return industryExpertsTotal(findByTypeAndSubtype, listAll);
 		  case "Architects & SE Custom Apps Development":
-			  return ArchitectsAndSECustomAppsDevelopment(findByTypeAndSubtype, listAll);
+			  return ArchitectsAndSECustomAppsDevelopmentTotal(findByTypeAndSubtype, listAll);
 		  case "Architects & SE Integration & APIs":
-			  return ArchitectsAndSEIntegrationAndApis(findByTypeAndSubtype, listAll);
+			  return ArchitectsAndSEIntegrationAndApisTotal(findByTypeAndSubtype, listAll);
 		  default:
 			  System.out.println("entrada no válida");
 			  //TODO lanzar exception
 		}
 		return null;		
 	}
-
-	private List<ProfileTotal> engagementManagers(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	
+	private List<ProfileTotal> engagementManagersTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {
 						
 		List<Profile> listEM = list.stream().filter(p->p.getPerfil().contains("Engagement Managers")).toList();
 		ArrayList<Long> totals = new ArrayList<Long>();
@@ -86,7 +87,7 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileTotalList;
 	}
 	
-	private List<ProfileTotal> Architects(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	private List<ProfileTotal> ArchitectsTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {
 		
 		List<ProfileTotal> profileTotalList = new ArrayList<>();		
 		for (Literal literal : findByTypeAndSubtype) {
@@ -104,7 +105,7 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileTotalList;
 	}	
 	
-	private List<ProfileTotal> businessAnalyst(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	private List<ProfileTotal> businessAnalystTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {
 		
 		List<ProfileTotal> profileTotalList = new ArrayList<>();		
 		for (Literal literal : findByTypeAndSubtype) {
@@ -119,7 +120,7 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileTotalList;
 	}
 	
-private List<ProfileTotal> softwareEngineer(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+private List<ProfileTotal> softwareEngineerTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {
 		
 		List<ProfileTotal> profileTotalList = new ArrayList<>();		
 		for (Literal literal : findByTypeAndSubtype) {
@@ -134,7 +135,7 @@ private List<ProfileTotal> softwareEngineer(List<Literal> findByTypeAndSubtype, 
 		return profileTotalList;
 	}
 
-private List<ProfileTotal> industryExperts(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileTotal> industryExpertsTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
 	
 	List<ProfileTotal> profileTotalList = new ArrayList<>();
 	for (Literal literal : findByTypeAndSubtype) {		
@@ -170,10 +171,9 @@ private List<ProfileTotal> industryExperts(List<Literal> findByTypeAndSubtype, L
 	return profileTotalList;
 }
 
-private List<ProfileTotal> ArchitectsAndSECustomAppsDevelopment(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileTotal> ArchitectsAndSECustomAppsDevelopmentTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
 	
-	List<ProfileTotal> profileTotalList = new ArrayList<>();
-	//List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype("Architects & SE Custom Apps Development", "r");
+	List<ProfileTotal> profileTotalList = new ArrayList<>();	
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
 		String actual = i==0?"Architects":"Software Engineer";
 		String perfil = i==0?"Solution":"SE";
@@ -222,10 +222,9 @@ private List<ProfileTotal> ArchitectsAndSECustomAppsDevelopment(List<Literal> fi
 	return profileTotalList;
 }
 
-private List<ProfileTotal> ArchitectsAndSEIntegrationAndApis(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileTotal> ArchitectsAndSEIntegrationAndApisTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
 	
 	List<ProfileTotal> profileTotalList = new ArrayList<>();
-	//List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype("Architects & SE Integration & APIs", "r");
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
 		String actual = i==0?"Architects":"Software Engineer";
 		String perfil = i==0?"Integration":"SE";
@@ -251,4 +250,145 @@ private List<ProfileTotal> ArchitectsAndSEIntegrationAndApis(List<Literal> findB
 	}
 	return profileTotalList;	
 }
+
+@Override
+public List<ProfileGroup> findAllProfile(String id) {		
+					
+	List<Profile> listAll = this.profileRepository.findAll();
+	List<Profile> listActual = listAll.stream().filter(p->p.getActual().equals(id)).toList();
+	List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
+	switch (id) {
+	  case "Engagement Managers":
+		  return engagementManagers(findByTypeAndSubtype, listActual);	
+	  case "Architects":
+		  return Architects(findByTypeAndSubtype, listActual);
+	  case "Business Analyst":
+	      return businessAnalyst(findByTypeAndSubtype, listActual);
+	  case "Software Engineer":			 
+		  return softwareEngineer(findByTypeAndSubtype, listActual);
+	  case "Industry Experts":			     	
+	      return industryExperts(findByTypeAndSubtype, listAll);
+	  case "Architects & SE Custom Apps Development":
+		  return ArchitectsAndSECustomAppsDevelopment(findByTypeAndSubtype, listAll);
+	  case "Architects & SE Integration & APIs":
+		  return ArchitectsAndSEIntegrationAndApis(findByTypeAndSubtype, listAll);
+	  default:
+		  System.out.println("entrada no válida");
+		  //TODO lanzar exception
+	}
+	return null;		
+}
+
+private List<ProfileGroup> engagementManagers(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	
+	ArrayList<ProfileGroup> profileList = new ArrayList<ProfileGroup>();
+	List<Profile> listEM = list.stream().filter(p->p.getPerfil().contains("Engagement Managers")).toList();	
+	ProfileGroup profileGroup = new ProfileGroup();
+	profileGroup.setGroup(findByTypeAndSubtype.get(0).getDesc());
+	profileGroup.setProfile(listEM);
+	profileList.add(profileGroup);
+	
+	profileGroup = new ProfileGroup();
+	profileGroup.setGroup(findByTypeAndSubtype.get(1).getDesc());	
+	List<Profile> listPmo = list.stream().filter(p->p.getPerfil().contains("PMO")).toList();
+	List<Profile> listScr = list.stream().filter(p->p.getPerfil().contains("Scrum Master")).toList();
+	List<Profile> listSum  = new ArrayList<Profile>();
+	listSum.addAll(listPmo);
+	listSum.addAll(listScr);
+	profileGroup.setProfile(listSum);
+	profileList.add(profileGroup);
+	return profileList;
+}
+
+private List<ProfileGroup> Architects(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	
+	List<ProfileGroup> profileList = new ArrayList<>();		
+	for (Literal literal : findByTypeAndSubtype) {
+		List<Profile> listArchitects = list.stream().filter(p->p.getPerfil().contains(literal.getDesc())).toList();		
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(literal.getDesc());
+		profileGroup.setProfile(listArchitects);			
+		profileList.add(profileGroup);			
+	}		
+	
+	return profileList;
+}	
+
+private List<ProfileGroup> businessAnalyst(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	
+	List<ProfileGroup> profileList = new ArrayList<>();		
+	for (Literal literal : findByTypeAndSubtype) {
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(literal.getDesc());
+		profileGroup.setProfile(list);		
+		profileList.add(profileGroup);			
+	}		
+	
+	return profileList;
+}
+
+private List<ProfileGroup> softwareEngineer(List<Literal> findByTypeAndSubtype, List<Profile> list) {
+	
+	List<ProfileGroup> profileList = new ArrayList<>();		
+	for (Literal literal : findByTypeAndSubtype) {
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(literal.getDesc());
+		profileGroup.setProfile(list);
+		profileList.add(profileGroup);
+	}	
+	return profileList;
+}
+
+private List<ProfileGroup> industryExperts(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+
+	List<ProfileGroup> profileList = new ArrayList<>();
+	for (Literal literal : findByTypeAndSubtype) {
+		List<Profile> listIndustryExperts = new ArrayList<Profile>();
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Consumer Goods & Retail")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Energy & Utilities")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Manufacturing")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Life Science")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Public Sector")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Telco, Media & Technologies")).toList());
+		listIndustryExperts.addAll(list.stream().filter(p->p.getSectorExperiencia().contains("Financial Services")).toList());
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(literal.getDesc());
+		profileGroup.setProfile(listIndustryExperts);
+		profileList.add(profileGroup);
+	}	
+	return profileList;
+}
+
+private List<ProfileGroup> ArchitectsAndSECustomAppsDevelopment(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+
+	List<ProfileGroup> profileList = new ArrayList<>();	
+	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
+		String actual = i==0?"Architects":"Software Engineer";
+		String perfil = i==0?"Solution":"SE";
+		List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(findByTypeAndSubtype.get(i).getDesc());
+		profileGroup.setProfile(listArchitects);
+		profileList.add(profileGroup);
+	}				
+	
+	return profileList;
+}
+
+private List<ProfileGroup> ArchitectsAndSEIntegrationAndApis(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+
+	List<ProfileGroup> profileList = new ArrayList<>();
+	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
+		String actual = i==0?"Architects":"Software Engineer";
+		String perfil = i==0?"Integration":"SE";
+		List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(findByTypeAndSubtype.get(i).getDesc());
+		profileGroup.setProfile(listArchitects);
+		profileList.add(profileGroup);
+	}
+	return profileList;	
+}
+
+
 }

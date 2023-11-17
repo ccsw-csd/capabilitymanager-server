@@ -39,12 +39,17 @@ public class ProfileController {
     
     @RequestMapping(path = "/profiletotals/{id}/csv", method = RequestMethod.GET)
     public void findAllProfileTotalsCsv(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{ 
-    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id)).writeProfileTotalsToCsv(id, servletResponse);
+    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id), null).writeProfileTotalsToCsv(id, servletResponse);
     }
     
     @RequestMapping(path = "/profiletotals/{id}/excel", method = RequestMethod.GET)
     public void findAllProfileTotalsExcel(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{
-    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id)).writeProfileTotalsToExcel(id, servletResponse);
+    	new ExportServiceImpl(this.profileService.findAllProfileTotals(id), null).writeProfileTotalsToExcel(id, servletResponse);
+    }
+    
+    @RequestMapping(path = "/profilelist/{id}/excel", method = RequestMethod.GET)
+    public void findAllProfileExcel(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{
+    	new ExportServiceImpl(null, this.profileService.findAllProfile(id)).writeProfileToExcel(id, servletResponse);
     }
     
 }

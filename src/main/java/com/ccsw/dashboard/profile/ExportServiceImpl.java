@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.dashboard.profile.model.Profile;
+import com.ccsw.dashboard.profile.model.ProfileGroup;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
 
 import jakarta.servlet.ServletOutputStream;
@@ -31,10 +34,12 @@ import jakarta.transaction.Transactional;
 public class ExportServiceImpl {
 	
 	List<ProfileTotal> profileTotals;
+	List<ProfileGroup> profileGroup;
 	
-	public ExportServiceImpl(List<ProfileTotal> profileTotals) {
+	public ExportServiceImpl(List<ProfileTotal> profileTotals, List<ProfileGroup> profileGroup) {
 		super();
 		this.profileTotals = profileTotals;
+		this.profileGroup = profileGroup;
 	}	
 
 	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
@@ -96,6 +101,70 @@ public class ExportServiceImpl {
 			cell = row.createCell(1);
 			cell.setCellValue((Long)profileTotal.getTotals().get(0));
 			cell.setCellStyle(style);			
+		}
+				
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+		
+//		File currDir = new File(".");
+//		String path = currDir.getAbsolutePath();
+//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
+//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
+
+		ServletOutputStream outputStream = servletResponse.getOutputStream();		
+		servletResponse.setContentType("application/octet-stream");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
+		servletResponse.setHeader(headerKey, headerValue);
+		
+		workbook.write(outputStream);
+		workbook.close();
+		outputStream.close();
+	}
+	
+	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
+		
+		Workbook workbook = new XSSFWorkbook();
+
+		Sheet sheet = workbook.createSheet(id);
+		sheet.setColumnWidth(0, 8000);
+		sheet.setColumnWidth(1, 20000);
+
+		Row header = sheet.createRow(0);
+
+		CellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(true);
+		headerStyle.setFont(font);
+
+		Cell headerCell = header.createCell(0);
+		headerCell.setCellValue("Empleado");
+		headerCell.setCellStyle(headerStyle);
+
+		headerCell = header.createCell(1);
+		headerCell.setCellValue(id);
+		headerCell.setCellStyle(headerStyle);
+		
+		CellStyle style = workbook.createCellStyle();
+		style.setWrapText(true);
+
+		int i=1;
+		for (ProfileGroup pgroup : profileGroup) {
+			List<Profile> profileList = pgroup.getProfile();
+			for (Profile profile : profileList) {
+				Row row = sheet.createRow(i++);
+				Cell cell = row.createCell(0);
+				cell.setCellValue(profile.getSaga());
+				cell.setCellStyle(style);
+				cell = row.createCell(1);
+				cell.setCellValue(pgroup.getGroup());
+				cell.setCellStyle(style);
+			}						
 		}
 				
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");

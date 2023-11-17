@@ -3,7 +3,7 @@ package com.ccsw.dashboard.profile.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tmp_prod_formdata")
+@Table(name = "tmp_export_formdata") //tmp_export_formdata  tmp_prod_formdata
 public class Profile {
 	
 	@Id
@@ -29,7 +29,10 @@ public class Profile {
     private String skillCloudNative;
     
     @Column(name="vc_Profile_Skill_Low_Code")
-    private String skillLowCode;    
+    private String skillLowCode;
+    
+    @Column(name="vc_Profile_SAGA")
+    private String saga;  
     
 
 	public int getId() {
@@ -94,6 +97,15 @@ public class Profile {
 
 	public void setSkillLowCode(String skillLowCode) {
 		this.skillLowCode = skillLowCode;
+	}
+
+	public String getSaga() {
+		return saga;
+	}
+
+	public void setSaga(String saga) {
+		this.saga = saga;
 	}		
+	
 	
 }
