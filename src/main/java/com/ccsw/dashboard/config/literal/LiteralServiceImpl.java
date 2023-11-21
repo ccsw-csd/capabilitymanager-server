@@ -41,6 +41,11 @@ public class LiteralServiceImpl implements LiteralService{
     }
     
     @Override
+	public List<Literal> findBySubtype(String subtype) {
+		return this.literalRepository.findBySubtype(subtype);
+	}
+    
+    @Override
     public Literal findById(Long id) {
         return this.literalRepository.findById(id).orElse(null);
     }
