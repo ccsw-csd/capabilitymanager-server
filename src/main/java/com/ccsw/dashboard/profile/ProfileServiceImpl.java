@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.profile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.config.literal.LiteralService;
 import com.ccsw.dashboard.config.literal.model.Literal;
+import com.ccsw.dashboard.graderole.GradeRoleService;
+import com.ccsw.dashboard.graderole.model.GradeRole;
 import com.ccsw.dashboard.profile.model.Profile;
 import com.ccsw.dashboard.profile.model.ProfileGroup;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
@@ -23,7 +26,10 @@ public class ProfileServiceImpl implements ProfileService {
     private ProfileRepository profileRepository;
     
     @Autowired
-    private LiteralService literalService;    
+    private LiteralService literalService;
+    
+    @Autowired
+    private GradeRoleService gradeRoleService;
     
     @Override
     public List<Profile> findAll() {
@@ -269,9 +275,11 @@ public List<ProfileGroup> findAllProfile(String id) {
 	  case "Industry Experts":			     	
 	      return industryExperts(findByTypeAndSubtype, listAll);
 	  case "Architects & SE Custom Apps Development":
-		  return ArchitectsAndSECustomAppsDevelopment(findByTypeAndSubtype, listAll);
+		  return architectsAndSECustomAppsDevelopment(findByTypeAndSubtype, listAll);
 	  case "Architects & SE Integration & APIs":
-		  return ArchitectsAndSEIntegrationAndApis(findByTypeAndSubtype, listAll);
+		  return architectsAndSEIntegrationAndApis(findByTypeAndSubtype, listAll);
+	  case "Pyramid Grade-Rol":
+//		  return pyramid(findByTypeAndSubtype, listAll);
 	  default:
 		  System.out.println("entrada no válida");
 		  //TODO lanzar exception
@@ -359,7 +367,7 @@ private List<ProfileGroup> industryExperts(List<Literal> findByTypeAndSubtype, L
 	return profileList;
 }
 
-private List<ProfileGroup> ArchitectsAndSECustomAppsDevelopment(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileGroup> architectsAndSECustomAppsDevelopment(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
 
 	List<ProfileGroup> profileList = new ArrayList<>();	
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
@@ -375,7 +383,7 @@ private List<ProfileGroup> ArchitectsAndSECustomAppsDevelopment(List<Literal> fi
 	return profileList;
 }
 
-private List<ProfileGroup> ArchitectsAndSEIntegrationAndApis(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileGroup> architectsAndSEIntegrationAndApis(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
 
 	List<ProfileGroup> profileList = new ArrayList<>();
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
@@ -387,6 +395,28 @@ private List<ProfileGroup> ArchitectsAndSEIntegrationAndApis(List<Literal> findB
 		profileGroup.setProfile(listArchitects);
 		profileList.add(profileGroup);
 	}
+	return profileList;	
+}
+
+private List<ProfileGroup> pyramid(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+
+	List<ProfileGroup> profileList = new ArrayList<>();
+	List<GradeRole> findGradeRoleAll = gradeRoleService.findAll();
+	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
+		String grupo = findByTypeAndSubtype.get(i).getDesc();
+		List<Profile> listGroup = list.stream().filter(p->p.getGrado().equals(grupo)).toList();
+		List<Profile> listGrouptoRemove = new ArrayList<Profile>();
+		listGrouptoRemove.addAll(listGroup);
+		ProfileGroup profileGroup = new ProfileGroup();
+		profileGroup.setGroup(grupo);
+		profileGroup.setProfile(listGrouptoRemove);
+		profileList.add(profileGroup);
+		for (Profile profile : listGroup) {
+			if (findGradeRoleAll.stream().filter(p->p.getId()==profile.getId()).count()==0) {
+				listGrouptoRemove.removeIf(p->p.getId()==profile.getId());
+			}				
+		}
+	}	
 	return profileList;	
 }
 

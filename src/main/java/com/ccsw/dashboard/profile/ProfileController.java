@@ -40,12 +40,12 @@ public class ProfileController {
     	return this.profileService.findAllProfileTotals(id);
     }
     
-    @RequestMapping(path = "/profiletotals/{id}/csv", method = RequestMethod.GET)
-    public void findAllProfileTotalsCsv(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{
-    	exportService.setProfileTotals(this.profileService.findAllProfileTotals(id));
-    	exportService.writeProfileTotalsToCsv(id, servletResponse);
-    	//new ExportServiceImpl(this.profileService.findAllProfileTotals(id), null).writeProfileTotalsToCsv(id, servletResponse);
-    }
+//    @RequestMapping(path = "/profiletotals/{id}/csv", method = RequestMethod.GET)
+//    public void findAllProfileTotalsCsv(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{
+//    	exportService.setProfileTotals(this.profileService.findAllProfileTotals(id));
+//    	exportService.writeProfileTotalsToCsv(id, servletResponse);
+//    	//new ExportServiceImpl(this.profileService.findAllProfileTotals(id), null).writeProfileTotalsToCsv(id, servletResponse);
+//    }
     
     @RequestMapping(path = "/profiletotals/{id}/excel", method = RequestMethod.GET)
     public void findAllProfileTotalsExcel(HttpServletResponse servletResponse, @PathVariable String id) throws IOException{

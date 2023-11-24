@@ -65,25 +65,25 @@ public class ExportServiceImpl implements ExportService {
 		this.profileGroup = profileGroup;
 	}
 
-	@Override
-	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
-
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-		String currentDateTime = dateFormatter.format(new Date());
-		
-		servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
-		
-        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
-            csvPrinter.printRecord(id, "Total");
-            for (ProfileTotal profileTotal : profileTotals) {
-                csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
-            }
-        } catch (IOException e) {
-//			log.error("Error While writing CSV ", e);
-        }
-		
-	}
+//	@Override
+//	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
+//
+//		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+//		String currentDateTime = dateFormatter.format(new Date());
+//		
+//		servletResponse.setContentType("text/csv");
+//        servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
+//		
+//        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
+//            csvPrinter.printRecord(id, "Total");
+//            for (ProfileTotal profileTotal : profileTotals) {
+//                csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
+//            }
+//        } catch (IOException e) {
+////			log.error("Error While writing CSV ", e);
+//        }
+//		
+//	}
 	
 	@Override
 	public void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException {
@@ -91,7 +91,7 @@ public class ExportServiceImpl implements ExportService {
 		Workbook workbook = new XSSFWorkbook();
 
 		Sheet sheet = workbook.createSheet(id);
-		sheet.setColumnWidth(0, 20000);
+		sheet.setColumnWidth(0, 10000);
 		sheet.setColumnWidth(1, 2000);
 
 		Row header = sheet.createRow(0);
@@ -151,7 +151,6 @@ public class ExportServiceImpl implements ExportService {
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
 		
 		Workbook workbook = new XSSFWorkbook();
-
 		Sheet sheet = workbook.createSheet(id);
 //		sheet.setColumnWidth(0, 8000);
 //		sheet.setColumnWidth(1, 20000);
@@ -177,9 +176,6 @@ public class ExportServiceImpl implements ExportService {
 		sheet.setColumnWidth(j++, 15000);
 		sheet.setColumnWidth(j++, 15000);
 
-		
-		Row header = sheet.createRow(0);
-
 		CellStyle headerStyle = workbook.createCellStyle();
 		headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -189,15 +185,8 @@ public class ExportServiceImpl implements ExportService {
 		font.setFontHeightInPoints((short) 10);
 		font.setBold(true);
 		headerStyle.setFont(font);
-
-//		Cell headerCell = header.createCell(0);
-//		headerCell.setCellValue("Empleado");
-//		headerCell.setCellStyle(headerStyle);
-//		
-//		headerCell = header.createCell(1);
-//		headerCell.setCellValue(id);
-//		headerCell.setCellStyle(headerStyle);
 		
+		Row header = sheet.createRow(0);
 		List<Literal> findByTypeAndSubtype = literalService.findBySubtype("d");
 		j=0;
 		for (Literal literal : findByTypeAndSubtype) {
@@ -214,13 +203,7 @@ public class ExportServiceImpl implements ExportService {
 			List<Profile> profileList = pgroup.getProfile();
 			for (Profile profile : profileList) {
 				j=0;
-				Row row = sheet.createRow(i++);
-//				Cell cell = row.createCell(0);
-//				cell.setCellValue(profile.getSaga());
-//				cell.setCellStyle(style);
-//				cell = row.createCell(1);
-//				cell.setCellValue(pgroup.getGroup());
-//				cell.setCellStyle(style);				
+				Row row = sheet.createRow(i++);			
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
 				cell.setCellStyle(style);

@@ -105,7 +105,7 @@ public class GradeRoleServiceImpl implements GradeRoleService{
 				for (Map.Entry entry : roleMap.entrySet()) {
 					String key = (String) entry.getKey();
 					Long val = (Long) entry.getValue();
-					if (entry.getKey().equals(role.getDesc())) {
+					if (entry.getKey().equals(role.getDesc())) { // if (((String)entry.getKey()).contains(role.getDesc())) {
 	                    sortedRoleMap.put(key, val);
 	                }				
 				}

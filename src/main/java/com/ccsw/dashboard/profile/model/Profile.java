@@ -9,8 +9,8 @@ public class Profile {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;    
-    
-    @Column(name="vc_Profile_Staffing_GGID")
+
+	@Column(name="vc_Profile_Staffing_GGID")
     private String ggid;
     
     @Column(name="vc_Profile_SAGA")
@@ -67,7 +67,15 @@ public class Profile {
     @Column(name="vc_Profile_Sector_Experiencia")
     private String sectorExperiencia;
 
-	public String getGgid() {
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+    
+    public String getGgid() {
 		return ggid;
 	}
 

@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface ExportService {
 
-	void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse);
+//	void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse);
 
 	void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException;
 
