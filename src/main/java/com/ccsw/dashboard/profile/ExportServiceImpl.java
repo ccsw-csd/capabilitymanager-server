@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 //import org.apache.commons.csv.CSVFormat;
 //import org.apache.commons.csv.CSVPrinter;
 import org.apache.poi.ss.usermodel.Cell;
@@ -71,25 +73,25 @@ public class ExportServiceImpl implements ExportService {
 		this.profileGroup = profileGroup;
 	}
 
-//	@Override
-//	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
-//
-//		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-//		String currentDateTime = dateFormatter.format(new Date());
-//		
-//		servletResponse.setContentType("text/csv");
-//        servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
-//		
-//        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
-//            csvPrinter.printRecord(id, "Total");
-//            for (ProfileTotal profileTotal : profileTotals) {
-//                csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
-//            }
-//        } catch (IOException e) {
-////			log.error("Error While writing CSV ", e);
-//        }
-//		
-//	}
+	@Override
+	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
+
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+		
+		servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
+		
+        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(id, "Total");
+            for (ProfileTotal profileTotal : profileTotals) {
+                csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
+            }
+        } catch (IOException e) {
+//			log.error("Error While writing CSV ", e);
+        }
+		
+	}
 	
 	@Override
 	public void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException {

@@ -41,21 +41,21 @@ public class GradeRoleServiceImpl implements GradeRoleService{
     private LiteralService literalService;
     
     @Override
-    public List<GradeRole> findAll() {
-        return (List<GradeRole>) this.gradeRoleRepository.findAll();
+    public List<GradeRole> findAll(int idImport) {
+        return (List<GradeRole>) this.gradeRoleRepository.findAll().stream().filter(gr->gr.getIdImport()==idImport).toList();
     }
 
 	@Override
-	public List<GradeRoleTotal> findAlll() {
+	public List<GradeRoleTotal> findAlll(int idImport) {
 		
-		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
+		Map<String, Map<String, Long>> gradeRoleMap = this.findAll(idImport).stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZerosAndOrdGradeRole(gradeRoleMap, gradeService.findAll(), roleService.findAll());
 		return LinkedtoList(sortedGradeRolMap);
 	}
 	
 	@Override
-	public List<GradeTotal> findAllGradeTotals() {
-		Map<String, Map<String, Long>> gradeRoleMap = this.gradeRoleRepository.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
+	public List<GradeTotal> findAllGradeTotals(int idImport) {
+		Map<String, Map<String, Long>> gradeRoleMap = this.findAll(idImport).stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
 		LinkedHashMap<String, LinkedHashMap<String, Long>> sortedGradeRolMap = addZerosAndOrd(gradeRoleMap, getLiteralGrades(), getLiteralRoles());
 		ArrayList<GradeTotal> gradeTotalList = new ArrayList<GradeTotal>();		
 		for (Map.Entry<String, LinkedHashMap<String, Long>> entry : sortedGradeRolMap.entrySet()) {

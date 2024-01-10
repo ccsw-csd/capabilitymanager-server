@@ -16,7 +16,10 @@ public class GradeRole {
     @Column(name="vc_Profile_Rol_L1")
     private String role;
     
-	public String getGrade() {
+    @Column(name="id_Import")
+    private int idImport;
+    
+    public String getGrade() {
 		return grade;
 	}
 
@@ -39,5 +42,15 @@ public class GradeRole {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public int getIdImport() {
+		return idImport;
+	}
+
+	public void setIdImport(int idImport) {
+		this.idImport = idImport;
+	}
+	
+	
 		
 }

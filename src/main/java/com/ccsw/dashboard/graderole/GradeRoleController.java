@@ -9,6 +9,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.dashboard.config.grade.model.GradeDto;
@@ -29,18 +30,19 @@ public class GradeRoleController {
     DozerBeanMapper mapper;
 
     @RequestMapping(path = "/db", method = RequestMethod.GET)
-    public Map<String, Map<String, Long>> findAllDb(){
-        return this.gradeRoleService.findAll().stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
+    public Map<String, Map<String, Long>> findAllDb(@RequestParam(value = "idImport", required = true) int idImport) {
+        return this.gradeRoleService.findAll(idImport).stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
     }
     
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<GradeRoleTotal> findAll(){
-        return this.gradeRoleService.findAlll();
+    public List<GradeRoleTotal> findAll(@RequestParam(value = "idImport", required = true) int idImport) {
+        return this.gradeRoleService.findAlll(idImport);
     }
     
+   
     @RequestMapping(path = "/objects", method = RequestMethod.GET)
-    public List<GradeRoleTotalDto> findAlll(){    	 	
-    	List<GradeRoleTotal> GradeRoleTotalList = this.gradeRoleService.findAlll();
+    public List<GradeRoleTotalDto> findAlll(@RequestParam(value = "idImport", required = true) int idImport) {
+    	List<GradeRoleTotal> GradeRoleTotalList = this.gradeRoleService.findAlll(idImport);
 		List<GradeDto> grades = this.gradeRoleService.getGrades().stream().map(g -> mapper.map(g, GradeDto.class)).toList();
 		List<RoleDto> roles = gradeRoleService.getRoles().stream().map(g -> mapper.map(g, RoleDto.class)).toList();
 		List<GradeRoleTotalDto> gradeRolListDto = new ArrayList<GradeRoleTotalDto>();		
@@ -54,7 +56,8 @@ public class GradeRoleController {
     }    
     
     @RequestMapping(path = "/gradetotals", method = RequestMethod.GET)
-    public List<GradeTotal> findAllGradeTotals(){    	 	
-    	return this.gradeRoleService.findAllGradeTotals();
+    public List<GradeTotal> findAllGradeTotals(@RequestParam(value = "idImport", required = true) int idImport) {
+    	return this.gradeRoleService.findAllGradeTotals(idImport);
     }
+    
 }

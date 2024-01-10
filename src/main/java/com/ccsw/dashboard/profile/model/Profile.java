@@ -66,7 +66,10 @@ public class Profile {
     
     @Column(name="vc_Profile_Sector_Experiencia")
     private String sectorExperiencia;
-
+    
+    @Column(name="id_Import")
+    private int idImport;
+    
     public int getId() {
 		return id;
 	}
@@ -226,5 +229,13 @@ public class Profile {
 	public void setSectorExperiencia(String sectorExperiencia) {
 		this.sectorExperiencia = sectorExperiencia;
 	}
+
+	public int getIdImport() {
+		return idImport;
+	}
+
+	public void setIdImport(int idImport) {
+		this.idImport = idImport;
+	}	
 	
 }

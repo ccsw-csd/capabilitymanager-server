@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.config.literal.LiteralService;
 import com.ccsw.dashboard.config.literal.model.Literal;
+import com.ccsw.dashboard.exception.MyBadAdviceException;
 import com.ccsw.dashboard.graderole.GradeRoleService;
 import com.ccsw.dashboard.graderole.model.GradeRole;
 import com.ccsw.dashboard.graderole.model.GradeTotal;
@@ -34,14 +35,14 @@ public class ProfileServiceImpl implements ProfileService {
     private GradeRoleService gradeRoleService;
     
     @Override
-    public List<Profile> findAll() {
-        return (List<Profile>) this.profileRepository.findAll();
+    public List<Profile> findAll(int idImport) {
+        return (List<Profile>) this.profileRepository.findAll().stream().filter(p->p.getIdImport()==idImport).toList();
     }    
     
 	@Override
-	public List<ProfileTotal> findAllProfileTotals(String id) {		
+	public List<ProfileTotal> findAllProfileTotals(String id, int idImport) {		
 						
-		List<Profile> listAll = this.profileRepository.findAll();
+		List<Profile> listAll = this.findAll(idImport);
 		List<Profile> listActual = listAll.stream().filter(p->p.getActual().equals(id)).toList();
 		List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
 		switch (id) {
@@ -60,14 +61,12 @@ public class ProfileServiceImpl implements ProfileService {
 		  case "Architects & SE Integration & APIs":
 			  return architectsAndSEIntegrationAndApisTotal(findByTypeAndSubtype, listAll);
 		  case "Pyramid Grade-Rol":
-			  return pyramidTotal(this.gradeRoleService.findAllGradeTotals());
+			  return pyramidTotal(this.gradeRoleService.findAllGradeTotals(idImport));
 		  case "All":
 			  return allTotal(findByTypeAndSubtype, listAll);
 		  default:
-			  System.out.println("entrada no válida");
-			  //TODO lanzar exception
-		}
-		return null;		
+			 throw new MyBadAdviceException("entrada no válida");
+		}		
 	}
 	
 	private List<ProfileTotal> engagementManagersTotal(List<Literal> findByTypeAndSubtype, List<Profile> list) {
@@ -215,7 +214,7 @@ private List<ProfileTotal> architectsAndSECustomAppsDevelopmentTotal(List<Litera
 		totals.add(Long.valueOf(listArchitects.size()));
 		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("Full stack .NET")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("FrontEnd")).toList(); //TODO FRONTEND no lo toma
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("FrontEnd")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
 		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getTecnico().contains("MainFrame")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
@@ -235,7 +234,7 @@ private List<ProfileTotal> architectsAndSECustomAppsDevelopmentTotal(List<Litera
 		totals.add(Long.valueOf(listArchitects.size()));
 		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("PowerApps")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
-		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Mendix")).toList(); //TODO 0
+		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Mendix")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));
 		listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).filter(p->p.getSkillLowCode().contains("Other")).toList();
 		totals.add(Long.valueOf(listArchitects.size()));		
@@ -297,9 +296,9 @@ private List<ProfileTotal> pyramidTotal(List<GradeTotal> list) {
 }
 
 @Override
-public List<ProfileGroup> findAllProfile(String id) {		
+public List<ProfileGroup> findAllProfile(String id, int idImport) {		
 					
-	List<Profile> listAll = this.profileRepository.findAll();
+	List<Profile> listAll = this.profileRepository.findAll().stream().filter(p->p.getIdImport()==idImport).toList();
 	List<Profile> listActual = listAll.stream().filter(p->p.getActual().equals(id)).toList();
 	List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
 	switch (id) {
@@ -318,14 +317,12 @@ public List<ProfileGroup> findAllProfile(String id) {
 	  case "Architects & SE Integration & APIs":
 		  return architectsAndSEIntegrationAndApis(findByTypeAndSubtype, listAll);
 	  case "Pyramid Grade-Rol":
-		  return pyramid(findByTypeAndSubtype, listAll);
+		  return pyramid(findByTypeAndSubtype, listAll, idImport);
 	  case "All Profiles":
 		  return allProfiles(findByTypeAndSubtype, listAll);
 	  default:
-		  System.out.println("entrada no válida");
-		  //TODO lanzar exception
+		  throw new MyBadAdviceException("entrada no válida");
 	}
-	return null;		
 }
 
 private List<ProfileGroup> engagementManagers(List<Literal> findByTypeAndSubtype, List<Profile> list) {
@@ -442,10 +439,10 @@ private List<ProfileGroup> architectsAndSEIntegrationAndApis(List<Literal> findB
 	return profileList;	
 }
 
-private List<ProfileGroup> pyramid(List<Literal> findByTypeAndSubtype, List<Profile> list) {	
+private List<ProfileGroup> pyramid(List<Literal> findByTypeAndSubtype, List<Profile> list, int idImport) {	
 
 	List<ProfileGroup> profileList = new ArrayList<>();
-	List<GradeRole> findGradeRoleAll = gradeRoleService.findAll();
+	List<GradeRole> findGradeRoleAll = gradeRoleService.findAll(idImport);
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
 		String grupo = findByTypeAndSubtype.get(i).getDesc();
 		List<Profile> listGroup = list.stream().filter(p->p.getGrado().equals(grupo)).toList();

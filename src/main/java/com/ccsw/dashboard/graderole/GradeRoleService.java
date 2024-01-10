@@ -13,11 +13,11 @@ import com.ccsw.dashboard.graderole.model.GradeTotal;
 
 public interface GradeRoleService {
 
-	List<GradeRole> findAll();
-	List<GradeRoleTotal> findAlll();
+	List<GradeRole> findAll(int idImport);
+	List<GradeRoleTotal> findAlll(int idImport);
 	List<Literal> getLiteralGrades();
 	List<Literal> getLiteralRoles();
-	List<GradeTotal> findAllGradeTotals();
+	List<GradeTotal> findAllGradeTotals(int idImport);
 	List<Grade> getGrades();
 	List<Role> getRoles();
 	
