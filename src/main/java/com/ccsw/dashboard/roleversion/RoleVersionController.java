@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.RoleVersion;
+package com.ccsw.dashboard.roleversion;
 
 
 import java.util.List;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.dashboard.RoleVersion.model.RoleVersion;
-import com.ccsw.dashboard.RoleVersion.model.RoleVersionDto;
+import com.ccsw.dashboard.roleversion.model.RoleVersion;
+import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
 
 @RequestMapping(value = "/roleimports")
 @RestController
@@ -31,7 +31,19 @@ public class RoleVersionController {
     
     @RequestMapping(path = "/all/{year}", method = RequestMethod.GET)
     public List<RoleVersionDto> findAllYear(@PathVariable String year){       
-    	return this.roleVersionService.findAll().stream().filter(rv->String.valueOf(rv.getFechaImportacion().getYear()).equals(year)).map(rv->mapper.map(rv, RoleVersionDto.class)).toList();
+    	return this.roleVersionService.findAll().stream().filter(rv->String.valueOf(rv.getFechaImportacion().getYear()).equals(year))
+    			//.map(rv->mapper.map(rv, RoleVersionDto.class))
+    			.map(rv-> { 
+	    			RoleVersionDto rvdto = new RoleVersionDto();
+	    			rvdto.setFechaimportacion(rv.getFechaImportacion());
+	    			rvdto.setComentarios(rv.getComentarios());
+	    			rvdto.setDescripcion(rv.getDescripcion());
+	    			rvdto.setId(rv.getId());
+	    			rvdto.setNombreFichero(rv.getNombreFichero());
+	    			rvdto.setNumRegistros(rv.getNumRegistros());
+	    			return rvdto;
+    			})
+    			.toList();
     }
     
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)

@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.RoleVersion;
+package com.ccsw.dashboard.roleversion;
 
 import jakarta.transaction.Transactional;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.dashboard.RoleVersion.model.RoleVersion;
-import com.ccsw.dashboard.RoleVersion.model.RoleVersionDto;
 import com.ccsw.dashboard.exception.MyBadAdviceException;
+import com.ccsw.dashboard.roleversion.model.RoleVersion;
+import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;

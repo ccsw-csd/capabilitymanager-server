@@ -1,11 +1,11 @@
-package com.ccsw.dashboard.RoleVersion;
+package com.ccsw.dashboard.roleversion;
 
 
 
 import java.util.List;
 
-import com.ccsw.dashboard.RoleVersion.model.RoleVersion;
-import com.ccsw.dashboard.RoleVersion.model.RoleVersionDto;
+import com.ccsw.dashboard.roleversion.model.RoleVersion;
+import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
 
 public interface RoleVersionService {
 

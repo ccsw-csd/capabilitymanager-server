@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.RoleVersion.model;
+package com.ccsw.dashboard.staffingversion.model;
 
 import java.time.LocalDateTime;
 
@@ -9,15 +9,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
-public class RoleVersionDto {
+@Entity
+@Table(name = "version_staffing")
+public class StaffingVersion  implements Comparable<StaffingVersion>{
 	
-
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	
+//	@Column(name="id_Tipo_interfaz", nullable = false)
+//    private int idTipoInterfaz;
+
+    @Column(name="importacion", nullable = false)
     private LocalDateTime fechaImportacion;
+    
+    @Column(name="num_Registros", nullable = false)
     private int numRegistros;
+    
+    @Column(name="nombre_Fichero", nullable = false)
     private String nombreFichero;
+    
+    @Column(name="descripcion", nullable = false)
     private String descripcion;
+    
+    @Column(name="comentarios", nullable = false)
     private String comentarios;
 
 	public int getId() {
@@ -26,15 +41,7 @@ public class RoleVersionDto {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getFechaImportacion() {
-		return fechaImportacion;
-	}
-
-	public void setFechaimportacion(LocalDateTime fechaImportacion) {
-		this.fechaImportacion = fechaImportacion;
-	}
+	}	
 
 	public int getNumRegistros() {
 		return numRegistros;
@@ -66,5 +73,27 @@ public class RoleVersionDto {
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
-	}	
+	}
+	
+//	public int getIdTipoInterfaz() {
+//		return idTipoInterfaz;
+//	}
+//
+//	public void setIdTipoInterfaz(int idTipoInterfaz) {
+//		this.idTipoInterfaz = idTipoInterfaz;
+//	}
+
+	public LocalDateTime getFechaImportacion() {
+		return fechaImportacion;
+	}
+
+	public void setFechaImportacion(LocalDateTime fechaImportacion) {
+		this.fechaImportacion = fechaImportacion;
+	}
+
+	@Override	
+	public int compareTo(StaffingVersion o) {
+		return Integer.valueOf(o.getId()).compareTo(this.id);
+	}
+	
 }
