@@ -42,6 +42,7 @@ public class StaffingVersionController {
 	    			svdto.setDescripcion(sv.getDescripcion());
 	    			svdto.setId(sv.getId());
 	    			svdto.setNombreFichero(sv.getNombreFichero());
+	    			svdto.setIdTipoInterfaz(sv.getIdTipoInterfaz());
 	    			svdto.setNumRegistros(sv.getNumRegistros());
 	    			return svdto;
     			})

@@ -17,8 +17,8 @@ public class StaffingVersion  implements Comparable<StaffingVersion>{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-//	@Column(name="id_Tipo_interfaz", nullable = false)
-//    private int idTipoInterfaz;
+	@Column(name="id_Tipo_interfaz", nullable = false)
+    private int idTipoInterfaz;
 
     @Column(name="importacion", nullable = false)
     private LocalDateTime fechaImportacion;
@@ -75,13 +75,13 @@ public class StaffingVersion  implements Comparable<StaffingVersion>{
 		this.comentarios = comentarios;
 	}
 	
-//	public int getIdTipoInterfaz() {
-//		return idTipoInterfaz;
-//	}
-//
-//	public void setIdTipoInterfaz(int idTipoInterfaz) {
-//		this.idTipoInterfaz = idTipoInterfaz;
-//	}
+	public int getIdTipoInterfaz() {
+		return idTipoInterfaz;
+	}
+
+	public void setIdTipoInterfaz(int idTipoInterfaz) {
+		this.idTipoInterfaz = idTipoInterfaz;
+	}
 
 	public LocalDateTime getFechaImportacion() {
 		return fechaImportacion;

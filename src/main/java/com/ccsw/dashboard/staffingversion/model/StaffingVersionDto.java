@@ -14,7 +14,7 @@ public class StaffingVersionDto {
 	
 
 	private int id;
-//	private int idTipoInterfaz;
+	private int idTipoInterfaz;
     private LocalDateTime fechaImportacion;
     private int numRegistros;
     private String nombreFichero;
@@ -61,13 +61,13 @@ public class StaffingVersionDto {
 		this.comentarios = comentarios;
 	}
 
-//	public int getIdTipoInterfaz() {
-//		return idTipoInterfaz;
-//	}
-//
-//	public void setIdTipoInterfaz(int idTipoInterfaz) {
-//		this.idTipoInterfaz = idTipoInterfaz;
-//	}
+	public int getIdTipoInterfaz() {
+		return idTipoInterfaz;
+	}
+
+	public void setIdTipoInterfaz(int idTipoInterfaz) {
+		this.idTipoInterfaz = idTipoInterfaz;
+	}
 
 	public LocalDateTime getFechaImportacion() {
 		return fechaImportacion;
