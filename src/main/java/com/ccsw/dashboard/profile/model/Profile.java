@@ -70,6 +70,9 @@ public class Profile {
     @Column(name="id_Import")
     private int idImport;
     
+    @Column(name="id_Import_staffing")
+    private int idImportStaffing;
+    
     public int getId() {
 		return id;
 	}
@@ -236,6 +239,14 @@ public class Profile {
 
 	public void setIdImport(int idImport) {
 		this.idImport = idImport;
+	}
+
+	public int getIdImportStaffing() {		
+		return idImportStaffing;
+	}
+
+	public void setIdImportStaffing(int idImportStaffing) {
+		this.idImportStaffing = idImportStaffing;
 	}	
 	
 }

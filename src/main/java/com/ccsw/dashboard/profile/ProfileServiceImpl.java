@@ -17,6 +17,8 @@ import com.ccsw.dashboard.graderole.model.GradeTotal;
 import com.ccsw.dashboard.profile.model.Profile;
 import com.ccsw.dashboard.profile.model.ProfileGroup;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
+import com.ccsw.dashboard.roleversion.RoleVersionService;
+import com.ccsw.dashboard.roleversion.model.RoleVersion;
 
 import jakarta.transaction.Transactional;
 
@@ -34,10 +36,14 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private GradeRoleService gradeRoleService;
     
+    @Autowired
+    private RoleVersionService roleVersionService;
+    
     @Override
     public List<Profile> findAll(int idImport) {
-        return (List<Profile>) this.profileRepository.findAll().stream().filter(p->p.getIdImport()==idImport).toList();
-    }    
+    	RoleVersion rv = roleVersionService.findById(Long.valueOf(idImport));
+        return (List<Profile>) this.profileRepository.findAll().stream().filter(p->p.getIdImport()==idImport).filter(p->p.getIdImportStaffing()==rv.getIdVersionStaffing()).toList();
+    }
     
 	@Override
 	public List<ProfileTotal> findAllProfileTotals(String id, int idImport) {		

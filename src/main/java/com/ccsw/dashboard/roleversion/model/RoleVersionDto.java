@@ -14,6 +14,9 @@ public class RoleVersionDto {
 	
 
 	private int id;
+    private int idTipoInterfaz;
+    private int idVersionStaffing;
+    private int lineaBase;
     private LocalDateTime fechaImportacion;
     private int numRegistros;
     private String nombreFichero;
@@ -32,7 +35,7 @@ public class RoleVersionDto {
 		return fechaImportacion;
 	}
 
-	public void setFechaimportacion(LocalDateTime fechaImportacion) {
+	public void setFechaImportacion(LocalDateTime fechaImportacion) {
 		this.fechaImportacion = fechaImportacion;
 	}
 
@@ -66,5 +69,29 @@ public class RoleVersionDto {
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public int getIdTipoInterfaz() {
+		return idTipoInterfaz;
+	}
+
+	public void setIdTipoInterfaz(int idTipoInterfaz) {
+		this.idTipoInterfaz = idTipoInterfaz;
+	}
+
+	public int getIdVersionStaffing() {
+		return idVersionStaffing;
+	}
+
+	public void setIdVersionStaffing(int idVersionStaffing) {
+		this.idVersionStaffing = idVersionStaffing;
+	}
+
+	public int getLineaBase() {
+		return lineaBase;
+	}
+
+	public void setLineaBase(int lineaBase) {
+		this.lineaBase = lineaBase;
 	}	
 }

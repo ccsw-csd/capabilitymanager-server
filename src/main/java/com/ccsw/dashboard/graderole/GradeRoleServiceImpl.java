@@ -20,6 +20,8 @@ import com.ccsw.dashboard.config.role.model.Role;
 import com.ccsw.dashboard.graderole.model.GradeRole;
 import com.ccsw.dashboard.graderole.model.GradeRoleTotal;
 import com.ccsw.dashboard.graderole.model.GradeTotal;
+import com.ccsw.dashboard.roleversion.RoleVersionService;
+import com.ccsw.dashboard.roleversion.model.RoleVersion;
 
 import jakarta.transaction.Transactional;
 
@@ -40,9 +42,13 @@ public class GradeRoleServiceImpl implements GradeRoleService{
     @Autowired
     private LiteralService literalService;
     
+    @Autowired
+    private RoleVersionService roleVersionService;
+    
     @Override
     public List<GradeRole> findAll(int idImport) {
-        return (List<GradeRole>) this.gradeRoleRepository.findAll().stream().filter(gr->gr.getIdImport()==idImport).toList();
+    	RoleVersion rv = roleVersionService.findById(Long.valueOf(idImport));
+        return (List<GradeRole>) this.gradeRoleRepository.findAll().stream().filter(gr->gr.getIdImport()==idImport).filter(gr->gr.getIdImportStaffing()==rv.getIdVersionStaffing()).toList();
     }
 
 	@Override
