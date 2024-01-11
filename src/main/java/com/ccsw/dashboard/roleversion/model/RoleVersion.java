@@ -16,6 +16,15 @@ public class RoleVersion  implements Comparable<RoleVersion>{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name="id_Tipo_interfaz", nullable = false)
+    private int idTipoInterfaz;
+	
+	@Column(name="id_Version_staffing", nullable = false)
+    private int idVersionStaffing;
+	
+	@Column(name="linea_Base", nullable = false)
+    private int lineaBase;
 
     @Column(name="importacion", nullable = false)
     private LocalDateTime fechaImportacion;
@@ -44,7 +53,7 @@ public class RoleVersion  implements Comparable<RoleVersion>{
 		return fechaImportacion;
 	}
 
-	public void setFechaimportacion(LocalDateTime fechaImportacion) {
+	public void setFechaImportacion(LocalDateTime fechaImportacion) {
 		this.fechaImportacion = fechaImportacion;
 	}
 
@@ -78,6 +87,30 @@ public class RoleVersion  implements Comparable<RoleVersion>{
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public int getIdTipoInterfaz() {
+		return idTipoInterfaz;
+	}
+
+	public void setIdTipoInterfaz(int idTipoInterfaz) {
+		this.idTipoInterfaz = idTipoInterfaz;
+	}
+
+	public int getIdVersionStaffing() {
+		return idVersionStaffing;
+	}
+
+	public void setIdVersionStaffing(int idVersionStaffing) {
+		this.idVersionStaffing = idVersionStaffing;
+	}
+
+	public int getLineaBase() {
+		return lineaBase;
+	}
+
+	public void setLineaBase(int lineaBase) {
+		this.lineaBase = lineaBase;
 	}
 
 	@Override	
