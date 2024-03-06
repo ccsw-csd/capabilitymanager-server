@@ -162,14 +162,7 @@ public class DataImportServiceImpl implements DataImportService {
 			verCap = createCapacityVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(),dto.getUser(), 
 					dto.getDocumentType(), dto.getFileData().getBytes());
 		} catch (Exception e) {
-			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(e.getLocalizedMessage());
-			logger.error(errorData.toString());
-			importResponseDto.setError(e.getMessage());
-			importResponseDto.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
-			importResponseDto.setMessage(errorData.toString());
-			logger.error("[ERROR]");
-			logger.error(errorData.toString());
+			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e, HttpStatus.UNPROCESSABLE_ENTITY );
 			return importResponseDto;
 		}
 		FormDataImport data = new FormDataImport();
@@ -250,13 +243,7 @@ public class DataImportServiceImpl implements DataImportService {
 			verStaf = createStaffingVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(), dto.getUser(), 
 					dto.getDocumentType(), dto.getFileData().getBytes());
 		} catch (Exception e) {
-			logger.error("[ERROR]");
-			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(e.getLocalizedMessage());
-			importResponseDto.setError(e.getMessage());
-			importResponseDto.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
-			importResponseDto.setMessage(errorData.toString());
-			logger.error(errorData.toString());
+			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e, HttpStatus.UNPROCESSABLE_ENTITY );
 			return importResponseDto;
 		}
 		
@@ -380,6 +367,7 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 		return result;
 	}
+
 	/**
 	 * Create an save on database CapacityVersion Object
 	 * @param numReg			num registers on Excel
@@ -403,6 +391,7 @@ public class DataImportServiceImpl implements DataImportService {
 		
 		return versionCapatidadesRepository.save(versionCap);
 	}
+
 	/**
 	 * Create an save on database VersionStaffing Object
 	 * @param numReg			num registers on Excel
@@ -426,6 +415,7 @@ public class DataImportServiceImpl implements DataImportService {
 		
 		return versionStaffingRepository.save(versionStaf);
 	}
+
 	/**
 	 * Get Grade Value from row
 	 * @param row		Excel row
@@ -435,6 +425,7 @@ public class DataImportServiceImpl implements DataImportService {
 	private String getGradeValue(Row row, int colum) {
 		return getStringValue(row, colum).substring(0,1);
 	}
+
 	/**
 	 * Save list FormDataImport on database
 	 * @param formDataImportList	List Object FormDataImport
@@ -469,7 +460,12 @@ public class DataImportServiceImpl implements DataImportService {
 		}
     }
 	
-
+	private  void setErrorToReturn( String function, ImportResponseDto importResponseDto, Exception e, HttpStatus status) {
+		StringBuilder errorData = new StringBuilder();
+		errorData.append(ERROR_INIT).append( function ).append(ERROR_INIT2);
+		
+		setErrorToReturn(function, importResponseDto, e.getMessage(), e.getLocalizedMessage(), e.getStackTrace().toString(), status);
+    }
 	private  void setErrorToReturn( String function, ImportResponseDto importResponseDto, String errorMessage , String message, String trace, HttpStatus status) {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append( function ).append(ERROR_INIT2);
