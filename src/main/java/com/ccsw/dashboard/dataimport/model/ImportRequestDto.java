@@ -5,11 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportRequestDto {
 
 	private String documentType;
-	private String user;
-	private String description;
 	// 1- Staffing
 	// 2- Roles
 	// 3- Certificates
+	private String user;
+	private String description;
 	private MultipartFile fileData;
 	
 	public String getDocumentType() {
