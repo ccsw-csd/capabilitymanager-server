@@ -306,7 +306,9 @@ public class DataImportServiceImpl implements DataImportService {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(" Funcion isnt developed");
 		logger.error(errorData.toString());
-
+		importResponseDto.setMessage(EMPTY);
+		importResponseDto.setError(errorData.toString());
+		importResponseDto.setStatus(HttpStatus.I_AM_A_TEAPOT);
 		logger.debug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
 		return importResponseDto;
 	}

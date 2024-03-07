@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.graderole;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.config.grade.GradeService;
@@ -22,6 +24,7 @@ import com.ccsw.dashboard.graderole.model.GradeRoleTotal;
 import com.ccsw.dashboard.graderole.model.GradeTotal;
 import com.ccsw.dashboard.reportversion.ReportVersionService;
 import com.ccsw.dashboard.reportversion.model.ReportVersion;
+import com.ccsw.dashboard.views.ViewGradosRolesService;
 
 import jakarta.transaction.Transactional;
 
@@ -29,10 +32,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class GradeRoleServiceImpl implements GradeRoleService{
-
-    @Autowired
-    private GradeRoleRepository gradeRoleRepository;
-    
+   
     @Autowired
     private GradeService gradeService;
     
@@ -45,12 +45,14 @@ public class GradeRoleServiceImpl implements GradeRoleService{
     @Autowired
     private ReportVersionService reportVersionService;
     
+    @Autowired
+    private ViewGradosRolesService viewGradosRoleService;
+    
     @Override
-    public List<GradeRole> findAll(int idReport) {
+    @Cacheable("gradeRole")
+    public Collection<GradeRole> findAll(int idReport) {
     	ReportVersion rv = reportVersionService.findById(Long.valueOf(idReport));
-        return (List<GradeRole>) this.gradeRoleRepository.findAll().stream().filter(gr->gr.getIdImportCapacidades()==rv.getIdVersionCapacidades())
-        		.filter(gr->gr.getIdImportStaffing()==rv.getIdVersionStaffing())
-        		.toList();
+        return viewGradosRoleService.getAll(rv.getIdVersionCapacidades(),rv.getIdVersionStaffing());        		
     }
 
 	@Override

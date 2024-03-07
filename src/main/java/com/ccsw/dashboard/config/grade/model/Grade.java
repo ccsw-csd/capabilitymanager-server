@@ -13,7 +13,7 @@ public class Grade  implements Comparable<Grade>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
     @Column(name="vc_grado", nullable = false)
     private String grade;
@@ -21,11 +21,11 @@ public class Grade  implements Comparable<Grade>{
     @Column(name="vc_ord", nullable = false)
     private int ord;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

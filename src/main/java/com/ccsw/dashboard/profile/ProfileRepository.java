@@ -14,7 +14,7 @@ import com.ccsw.dashboard.profile.model.Profile;
 
 
 @Repository
-public interface ProfileRepository extends CrudRepository<Profile, Long>, JpaRepository<Profile, Long> {
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
 	List <Profile> findAllByActual(String actual);
 	List <Profile> findAllByActualAndPerfil(String actual, String perfil);

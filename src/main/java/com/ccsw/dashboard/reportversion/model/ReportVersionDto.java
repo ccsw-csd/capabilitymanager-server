@@ -2,37 +2,41 @@ package com.ccsw.dashboard.reportversion.model;
 
 import java.time.LocalDateTime;
 
+import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
+import com.ccsw.dashboard.staffingversion.model.StaffingVersionDto;
+
 
 public class ReportVersionDto {
 	
 
-	private int id;
-    private int idVersionCapacidades;
-    private int idVersionStaffing;
+	private Long id;
+    private RoleVersionDto roleVersion;
+    private StaffingVersionDto staffingVersion;
     private int screenshot;
     private LocalDateTime fechaImportacion;
     private String descripcion;
     private String usuario;
     private LocalDateTime fechaModificacion;
-    private String comentarios;
+    private String comentarios;       
     
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
+	}	
+
+	public RoleVersionDto getRoleVersion() {
+		return roleVersion;
 	}
-	public int getIdVersionCapacidades() {
-		return idVersionCapacidades;
+	public void setRoleVersion(RoleVersionDto roleVersion) {
+		this.roleVersion = roleVersion;
 	}
-	public void setIdVersionCapacidades(int idVersionCapacidades) {
-		this.idVersionCapacidades = idVersionCapacidades;
+	public StaffingVersionDto getStaffingVersion() {
+		return staffingVersion;
 	}
-	public int getIdVersionStaffing() {
-		return idVersionStaffing;
-	}
-	public void setIdVersionStaffing(int idVersionStaffing) {
-		this.idVersionStaffing = idVersionStaffing;
+	public void setStaffingVersion(StaffingVersionDto staffingVersion) {
+		this.staffingVersion = staffingVersion;
 	}
 	public int getScreenshot() {
 		return screenshot;

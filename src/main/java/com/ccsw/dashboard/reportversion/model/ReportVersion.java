@@ -15,7 +15,7 @@ public class ReportVersion  implements Comparable<ReportVersion>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column(name="id_Version_capacidades", nullable = false)
     private int idVersionCapacidades;
@@ -41,11 +41,11 @@ public class ReportVersion  implements Comparable<ReportVersion>{
     @Column(name="comentarios", nullable = true)
     private String comentarios;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -115,6 +115,6 @@ public class ReportVersion  implements Comparable<ReportVersion>{
 
 	@Override
 	public int compareTo(ReportVersion o) {
-		return Integer.valueOf(o.getId()).compareTo(this.id);
+		return Long.valueOf(o.getId()).compareTo(this.id);
 	}
 }

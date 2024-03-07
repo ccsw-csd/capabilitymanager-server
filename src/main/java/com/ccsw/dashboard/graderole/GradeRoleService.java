@@ -2,6 +2,7 @@ package com.ccsw.dashboard.graderole;
 
 
 
+import java.util.Collection;
 import java.util.List;
 
 import com.ccsw.dashboard.config.grade.model.Grade;
@@ -13,7 +14,7 @@ import com.ccsw.dashboard.graderole.model.GradeTotal;
 
 public interface GradeRoleService {
 
-	List<GradeRole> findAll(int idImport);
+	Collection<GradeRole> findAll(int idImport);
 	List<GradeRoleTotal> findAlll(int idImport);
 	List<Literal> getLiteralGrades();
 	List<Literal> getLiteralRoles();

@@ -7,11 +7,10 @@ import java.util.stream.Collectors;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.ccsw.dashboard.config.grade.model.GradeDto;
 import com.ccsw.dashboard.config.role.model.RoleDto;
 import com.ccsw.dashboard.graderole.model.GradeRole;
@@ -29,18 +28,18 @@ public class GradeRoleController {
     @Autowired
     DozerBeanMapper mapper;
 
-    @RequestMapping(path = "/db", method = RequestMethod.GET)
+    @GetMapping("/db")
     public Map<String, Map<String, Long>> findAllDb(@RequestParam(value = "idReport", required = true) int idReport) {
         return this.gradeRoleService.findAll(idReport).stream().collect(Collectors.groupingBy(GradeRole::getGrade, Collectors.groupingBy(GradeRole::getRole, Collectors.counting())));
     }
     
-    @RequestMapping(path = "", method = RequestMethod.GET)
+    @GetMapping("")
     public List<GradeRoleTotal> findAll(@RequestParam(value = "idReport", required = true) int idReport) {
         return this.gradeRoleService.findAlll(idReport);
     }
     
    
-    @RequestMapping(path = "/objects", method = RequestMethod.GET)
+    @GetMapping("/objects")
     public List<GradeRoleTotalDto> findAlll(@RequestParam(value = "idReport", required = true) int idReport) {
     	List<GradeRoleTotal> GradeRoleTotalList = this.gradeRoleService.findAlll(idReport);
 		List<GradeDto> grades = this.gradeRoleService.getGrades().stream().map(g -> mapper.map(g, GradeDto.class)).toList();
@@ -55,7 +54,7 @@ public class GradeRoleController {
 		return gradeRolListDto;
     }    
     
-    @RequestMapping(path = "/gradetotals", method = RequestMethod.GET)
+    @GetMapping("/gradetotals")
     public List<GradeTotal> findAllGradeTotals(@RequestParam(value = "idReport", required = true) int idReport) {
     	return this.gradeRoleService.findAllGradeTotals(idReport);
     }

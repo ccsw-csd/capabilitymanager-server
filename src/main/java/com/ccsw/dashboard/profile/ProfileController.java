@@ -7,12 +7,7 @@ import java.util.stream.Collectors;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.ccsw.dashboard.profile.model.Profile;
 import com.ccsw.dashboard.profile.model.ProfileTotal;
 import com.ccsw.dashboard.profile.model.InformeRoles;
@@ -32,18 +27,18 @@ public class ProfileController {
     @Autowired
     DozerBeanMapper mapper;
 
-    @RequestMapping(path = "/db", method = RequestMethod.GET)
+    @GetMapping("/db")
     public Map<String, Map<String, Long>> findAllDb(@RequestParam(value = "idReport", required = true) int idReport) {
         return this.profileService.findAll(idReport).stream().collect(Collectors.groupingBy(Profile::getActual, Collectors.groupingBy(Profile::getPerfil, Collectors.counting())));
     }
     
-    @RequestMapping(path = "/profiletotals/{id}", method = RequestMethod.GET)
+    @GetMapping("/profiletotals/{id}")
     public List<ProfileTotal> findAllProfileTotals(@PathVariable String id, 
     		@RequestParam(value = "idReport", required = true) int idReport) {    	 	
     	return this.profileService.findAllProfileTotals(id, idReport);
     }
     
-    @RequestMapping(path = "/informeRoles", method = RequestMethod.GET)
+    @GetMapping("/informeRoles")
     public InformeRoles findAllInformeRoles(@RequestParam(value = "idReport", required = true) int idReport) {    	 	
     	return this.profileService.findAllInformeRoles(idReport);
     }

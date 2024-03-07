@@ -15,7 +15,7 @@ public class StaffingVersion  implements Comparable<StaffingVersion>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column(name="id_Tipo_interfaz", nullable = false)
     private int idTipoInterfaz;
@@ -33,15 +33,15 @@ public class StaffingVersion  implements Comparable<StaffingVersion>{
     private String descripcion;
     
     @Column(name="usuario", nullable = false)
-    private String usuario;
+    private String usuario;    
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
-	}	
+	}
 
 	public int getNumRegistros() {
 		return numRegistros;
@@ -93,7 +93,7 @@ public class StaffingVersion  implements Comparable<StaffingVersion>{
 
 	@Override	
 	public int compareTo(StaffingVersion o) {
-		return Integer.valueOf(o.getId()).compareTo(this.id);
+		return Long.valueOf(o.getId()).compareTo(this.id);
 	}
 	
 }

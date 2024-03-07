@@ -13,7 +13,7 @@ public class Literal  implements Comparable<Literal> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
     @Column(name="vc_type", nullable = false)
     private String type;
@@ -25,13 +25,12 @@ public class Literal  implements Comparable<Literal> {
     private int ord;
     
     @Column(name="vc_desc", nullable = false)
-	public String desc;
+	public String desc;	
 
-	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getType() {

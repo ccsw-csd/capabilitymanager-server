@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.profile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import com.ccsw.dashboard.profile.model.ProfileTotal;
 import com.ccsw.dashboard.profile.model.InformeRoles;
 import com.ccsw.dashboard.reportversion.ReportVersionService;
 import com.ccsw.dashboard.reportversion.model.ReportVersion;
+import com.ccsw.dashboard.views.CounterSummaryService;
+import com.ccsw.dashboard.views.ViewGradosRolesService;
 
 import jakarta.transaction.Transactional;
 
@@ -27,10 +30,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
-
-    @Autowired
-    private ProfileRepository profileRepository;
-    
+   
     @Autowired
     private LiteralService literalService;
     
@@ -40,24 +40,24 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private ReportVersionService reportVersionService;
     
+    @Autowired
+    private CounterSummaryService counterSummaryService;
+    
+    @Autowired
+    private ViewGradosRolesService viewGradosRolesService;
+    
     @Cacheable("findAll")
     @Override
     public List<Profile> findAll(int idReport) {
     	ReportVersion rv = reportVersionService.findById(Long.valueOf(idReport));
-        /*return (List<Profile>) this.profileRepository.findAll().stream().filter(p->p.getIdImportCapacidades()==rv.getIdVersionCapacidades())
-        		.filter(p->p.getIdImportStaffing()==rv.getIdVersionStaffing())
-        		.toList();*/
-        /*return (List<Profile>) this.profileRepository.findAllByIdImportCapacidadesAndIdImportStaffing(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing()).stream().filter(p->p.getIdImportCapacidades()==rv.getIdVersionCapacidades())
-        		.filter(p->p.getIdImportStaffing()==rv.getIdVersionStaffing())
-        		.toList();*/
-    	return (List<Profile>) this.profileRepository.findAllByIdImportCapacidadesAndIdImportStaffing(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing()).stream()
+    	return (List<Profile>) this.counterSummaryService.recoverCounterSummaryAll(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing()).stream()
         		.toList();
     }
     
     @Cacheable("findAllActual")
     public List<Profile> findAllActual(String actual, int idReport) {
     	ReportVersion rv = reportVersionService.findById(Long.valueOf(idReport));
-    	return (List<Profile>) this.profileRepository.findAllByIdImportCapacidadesAndIdImportStaffingAndActual(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing(), actual).stream()
+    	return (List<Profile>) this.counterSummaryService.recoverCounterSummary(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing(), actual).stream()
         		.toList();
     }
 
@@ -506,7 +506,8 @@ private List<ProfileGroup> architectsAndSEIntegrationAndApis(List<Literal> findB
 private List<ProfileGroup> pyramid(List<Literal> findByTypeAndSubtype, List<Profile> list, int idImport) {	
 
 	List<ProfileGroup> profileList = new ArrayList<>();
-	List<GradeRole> findGradeRoleAll = gradeRoleService.findAll(idImport);
+	ReportVersion rv = reportVersionService.findById(Long.valueOf(idImport));
+	Collection<GradeRole> findGradeRoleAll = viewGradosRolesService.getAll(rv.getIdVersionCapacidades(),rv.getIdVersionStaffing());
 	for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
 		String grupo = findByTypeAndSubtype.get(i).getDesc();
 		List<Profile> listGroup = list.stream().filter(p->p.getGrado().equals(grupo)).toList();

@@ -8,7 +8,7 @@ public class GradeRole {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
     @Column(name="vc_Grado")
     private String grade;
@@ -17,10 +17,10 @@ public class GradeRole {
     private String role;
     
     @Column(name="id_Import_capacidades")
-    private int idImportCapacidades;
+    private Long idImportCapacidades;
     
     @Column(name="id_Import_staffing")
-    private int idImportStaffing;
+    private Long idImportStaffing;
     
     public String getGrade() {
 		return grade;
@@ -36,30 +36,32 @@ public class GradeRole {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public int getId() {
+	}	
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getIdImportCapacidades() {
+	public Long getIdImportCapacidades() {
 		return idImportCapacidades;
 	}
 
-	public void setIdImportCapacidades(int idImportCapacidades) {
+	public void setIdImportCapacidades(Long idImportCapacidades) {
 		this.idImportCapacidades = idImportCapacidades;
 	}
 
-	public int getIdImportStaffing() {
+	public Long getIdImportStaffing() {
 		return idImportStaffing;
 	}
 
-	public void setIdImportStaffing(int idImportStaffing) {
+	public void setIdImportStaffing(Long idImportStaffing) {
 		this.idImportStaffing = idImportStaffing;
 	}
+
+	
 		
 }

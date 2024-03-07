@@ -15,7 +15,7 @@ public class RoleVersion  implements Comparable<RoleVersion>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column(name="id_Tipo_interfaz", nullable = false)
     private int idTipoInterfaz;	
@@ -35,11 +35,11 @@ public class RoleVersion  implements Comparable<RoleVersion>{
     @Column(name="usuario", nullable = false)
     private String usuario;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -93,6 +93,6 @@ public class RoleVersion  implements Comparable<RoleVersion>{
 
 	@Override	
 	public int compareTo(RoleVersion o) {
-		return Integer.valueOf(o.getId()).compareTo(this.id);
+		return Long.valueOf(o.getId()).compareTo(this.id);
 	}	
 }

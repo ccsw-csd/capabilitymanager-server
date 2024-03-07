@@ -13,7 +13,7 @@ public class Role implements Comparable<Role>{
 		
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
     @Column(name="vc_rol", nullable = false)
     private String role;
@@ -21,11 +21,13 @@ public class Role implements Comparable<Role>{
     @Column(name="vc_ord", nullable = false)
     private int ord;
     
-	public int getId() {
+
+    
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
