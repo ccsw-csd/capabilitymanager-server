@@ -47,6 +47,15 @@ public class DataImportServiceImpl implements DataImportService {
 	private static final int FIRST_SHEET = 0;
 	private static final int ROW_EVIDENCE_LIST_START = 1;
 	private static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
+	
+	private static final String VCPROFILEROLL1_OP1  = "Software Engineer";
+	private static final String VCPROFILEROLL1EX_OP1  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
+	private static final String VCPROFILEROLL1_OP2  = "Business Analyst";
+	private static final String VCPROFILEROLL1EX_OP2  = "Business Analyst (Functional Analyst, Product Owner)";
+	private static final String VCPROFILEROLL1_OP3  = "Engagement Manager";
+	private static final String VCPROFILEROLL1EX_OP3  = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
+	private static final String VCPROFILEROLL1_OP4  = "Architects";
+	private static final String VCPROFILEROLL1EX_OP4  = "Architects";
 
 	private static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
 	private static final String ERROR_INIT2  = ") ERROR: ";
@@ -204,6 +213,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setVcProfileSkillCloudExp(vcProfileSkillCloudExp);
 
 			data.setNumImportCodeId(verCap.getId());
+			setVcProfileRolL1(data);
 			
 			formDataImportList.add(data);
 			currentRow = sheet.getRow(i);
@@ -482,4 +492,22 @@ public class DataImportServiceImpl implements DataImportService {
 		logger.error(errorData.toString() + " TRACE: " + trace);
 		importResponseDto.setTrace(trace);
     }
+	
+	private void setVcProfileRolL1(FormDataImport formDataImport) {
+		switch (formDataImport.getVcProfileRolL1extendido()) {
+			case VCPROFILEROLL1EX_OP1:
+				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP1);
+				break;
+			case VCPROFILEROLL1EX_OP2:
+				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP2);
+				break;
+			case VCPROFILEROLL1EX_OP3:
+				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP3);
+				break;
+			case VCPROFILEROLL1EX_OP4:
+				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP4);
+				
+		}
+		
+	}
 }
