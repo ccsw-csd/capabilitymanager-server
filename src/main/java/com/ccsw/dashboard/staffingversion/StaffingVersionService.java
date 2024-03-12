@@ -4,8 +4,6 @@ package com.ccsw.dashboard.staffingversion;
 
 import java.util.List;
 
-import com.ccsw.dashboard.roleversion.model.RoleVersion;
-import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
 import com.ccsw.dashboard.staffingversion.model.StaffingVersion;
 import com.ccsw.dashboard.staffingversion.model.StaffingVersionDto;
 
