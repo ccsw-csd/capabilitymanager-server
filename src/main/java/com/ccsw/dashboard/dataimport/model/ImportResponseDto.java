@@ -2,6 +2,7 @@ package com.ccsw.dashboard.dataimport.model;
 
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ImportResponseDto {
 
@@ -11,7 +12,7 @@ public class ImportResponseDto {
 	private String error;
 	private String trace;
 	private String path;
-	
+
 	public ImportResponseDto(){
 		this.timestamp= LocalDateTime.now();
 		this.status = HttpStatus.ACCEPTED;
