@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RequestMapping(value = "/version-rols")
+@RequestMapping(value = "/version-role")
 @RestController
 public class VersionCapacidadesController {
 	private static final Logger logger = LoggerFactory.getLogger(VersionCapacidadesController.class);
