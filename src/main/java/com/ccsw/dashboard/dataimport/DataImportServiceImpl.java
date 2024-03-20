@@ -88,7 +88,7 @@ public class DataImportServiceImpl implements DataImportService {
 		Sheet sheet = obtainSheet(dto.getFileData());
 		List<FormDataImport> formDataImportList = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
-		int sizeSheet = sheet.getPhysicalNumberOfRows();
+		int sizeSheet = sheet.getPhysicalNumberOfRows() -1;
 		VersionCapacidades verCap = null;
 		try {
 			verCap = createCapacityVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(),dto.getUser(), 
@@ -100,7 +100,6 @@ public class DataImportServiceImpl implements DataImportService {
 		FormDataImport data = new FormDataImport();
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new FormDataImport();
-			//TODO: VCPROFILEROLL1 Se saca de unas formulas hacer las formulas
 			String vcProfileSAGA = getStringValue (currentRow, Constants.RolsDatabasePos.COL_VCPROFILESAGA.getPosition());
 			String vcProfileEmail = getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEEMAIL.getPosition());
 			String vcProfileName =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILENAME.getPosition());
@@ -172,7 +171,7 @@ public class DataImportServiceImpl implements DataImportService {
 		Sheet sheet = obtainSheet(dto.getFileData());
 		List<StaffingDataImport> staffingDataImportList = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
-		int sizeSheet = sheet.getPhysicalNumberOfRows();
+		int sizeSheet = sheet.getPhysicalNumberOfRows() -1;
 		VersionStaffing verStaf = null;
 		try {
 			verStaf = createStaffingVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(), dto.getUser(), 
@@ -300,7 +299,7 @@ public class DataImportServiceImpl implements DataImportService {
 		Cell col = row.getCell(column);
 		if(col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {
-				result = String.valueOf(col.getNumericCellValue());
+				result = String.valueOf((int) col.getNumericCellValue());
 			} else if (col.getCellType() == CellType.STRING){
 				result = col.getStringCellValue();
 			} else if(col.getCellType() == CellType.BOOLEAN) {
