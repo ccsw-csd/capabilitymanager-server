@@ -11,7 +11,6 @@ public class ImportRequestDto {
 	private String user;
 	private String description;
 	private MultipartFile fileData;
-	
 	public String getDocumentType() {
 		return documentType;
 	}
@@ -35,5 +34,5 @@ public class ImportRequestDto {
 	}
 	public void setFileData(MultipartFile fileData) {
 		this.fileData = fileData;
-	}
+	}	
 }

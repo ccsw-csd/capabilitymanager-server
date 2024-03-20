@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.exception.MyBadAdviceException;
+import com.ccsw.dashboard.reportversion.model.GenerateReportVersionDto;
 import com.ccsw.dashboard.reportversion.model.ReportVersion;
 import com.ccsw.dashboard.reportversion.model.ReportVersionDto;
 
@@ -103,12 +104,34 @@ public class ReportVersionServiceImpl implements ReportVersionService{
         BeanUtils.copyProperties(dto, reportVersion, "usuario", "fechaModificacion", "idVersionCapacidades", "idVersionStaffing", "fechaImportacion", "descripcion");
         //roleVersion.setFechaimportacion(dto.getFechaImportacion());
         this.reportVersionRepository.save(reportVersion);
-		
 	}
 
 	@Override
 	public ReportVersion findById(Long id) {
 		return reportVersionRepository.findById(id).orElse(null);
 	}
-	    
+
+	
+	@Override
+	public ReportVersion generateReport(GenerateReportVersionDto dto) {
+		ReportVersion reportVersion = getReportVersion(dto);
+		return reportVersionRepository.save(reportVersion);
+	}
+	
+    private ReportVersion getReportVersion(GenerateReportVersionDto dto) {
+    	LocalDateTime ldt = LocalDateTime.now();
+    	ReportVersion reportVersion = new ReportVersion();
+    	
+    	reportVersion.setScreenshot(0);
+    	
+    	reportVersion.setIdVersionCapacidades( dto.getIdRoleVersion());
+    	reportVersion.setIdVersionStaffing( dto.getIdStaffingVersion());
+
+    	reportVersion.setDescripcion(dto.getDescription());
+    	reportVersion.setComentarios(dto.getComments());
+    	reportVersion.setUsuario(dto.getUser());
+    	reportVersion.setFechaImportacion(ldt);
+    	reportVersion.setFechaModificacion(ldt);
+    	return reportVersion;
+    }
 }

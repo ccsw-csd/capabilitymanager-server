@@ -2,7 +2,6 @@ package com.ccsw.dashboard.dataimport;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.common.exception.BadRequestException;
 import com.ccsw.dashboard.common.exception.UnprocessableEntityException;
 import com.ccsw.dashboard.common.exception.UnsupportedMediaTypeException;
@@ -37,85 +37,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class DataImportServiceImpl implements DataImportService {
-	private static final Logger logger = LoggerFactory.getLogger(DataImportServiceImpl.class);
-
-	private static final String EMPTY = "";
-	private static final String XLS_FILE_FORMAT = "application/vnd.ms-excel";
-	private static final String XLSX_FILE_FORMAT = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	private static final List<String> ALLOWED_FORMATS = Arrays.asList(XLS_FILE_FORMAT, XLSX_FILE_FORMAT);
-
-	private static final int FIRST_SHEET = 0;
-	private static final int ROW_EVIDENCE_LIST_START = 1;
-	private static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
-	
-	private static final String VCPROFILEROLL1_OP1  = "Software Engineer";
-	private static final String VCPROFILEROLL1EX_OP1  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
-	private static final String VCPROFILEROLL1_OP2  = "Business Analyst";
-	private static final String VCPROFILEROLL1EX_OP2  = "Business Analyst (Functional Analyst, Product Owner)";
-	private static final String VCPROFILEROLL1_OP3  = "Engagement Manager";
-	private static final String VCPROFILEROLL1EX_OP3  = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
-	private static final String VCPROFILEROLL1_OP4  = "Architects";
-	private static final String VCPROFILEROLL1EX_OP4  = "Architects";
-
-	private static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
-	private static final String ERROR_INIT2  = ") ERROR: ";
-	private static final String ERROR_EMPTY_ROL_FILE = " Rols List File is null or empty";
-	private static final String ERROR_EMPTY_STAFFING_FILE = " Staffing List File is null or empty";
-	private static final String ERROR_DOCUMENT_TYPE = "ERROR: 'documentType' param is not valid (select value 1, 2 or 3)";
-
-	private static enum RolsDatabasePos { 
-		COL_VCPROFILEEMAIL(3), 
-		COL_VCPROFILENAME(4),
-		COL_VCPROFILESAGA(5), 
-//TODO:    	COL_VCPROFILEROLL1(0), inserta datos con unos scripts
-		COL_VCPROFILEROLL1EXTENDIDO(6), 
-		COL_VCPROFILEROLL2EM(7),
-		COL_VCPROFILEROLL2AR(8), 
-		COL_VCPROFILEROLL2AN(9),
-		COL_VCPROFILEROLL2SE(10),
-        COL_VCPROFILEROLEXPERIENCEEM(11),
-        COL_VCPROFILEROLEXPERIENCEAR(12),
-		COL_VCPROFILEROLL3(13), 
-		COL_VCPROFILESKILLCLOUDNATIVEEXPERIENCE(14),
-		COL_VCPROFILESKILLLOWCODEEXPERIENCE(15),
-		COL_VCPROFILEROLL4(16), 
-		COL_VCPROFILESECTOREXPERIENCE(17), 
-		COL_VCPROFILESKILLCLOUDEXP(18);
-
-		private final int excelPosition;
-		RolsDatabasePos(int position) {
-			this.excelPosition = position;
-		}
-
-		public int getPosition() {
-			return excelPosition;
-		}
-	}
-	
-	private static enum StaffingDatabasePos {
-		COL_VCPROFILESAGA(0),
-		COL_VCPROFILEGGID(1),
-		COL_VCPROFILENOMBRE(2),
-		COL_VCPROFILEAPELLIDOS(3),
-		COL_VCPROFILECATEGORIA(4),
-		COL_VCPROFILEPRACTICA(5),
-		COL_VCPROFILEGRADO(6),
-		COL_VCPROFILECENTRO(7),
-		COL_VCPROFILELOCALIZACION(8),
-		COL_VCPROFILEPERFILTECNICO(9),
-		COL_VCPROFILESTATUS(15);
-
-		private final int excelPosition;
-
-		StaffingDatabasePos(int position) {
-			this.excelPosition = position;
-		}
-
-		public int getPosition() {
-			return excelPosition;
-		}
-	}
-//TODO: Add Enum CertificatesDatabasePos   
+	private static final Logger logger = LoggerFactory.getLogger(DataImportServiceImpl.class);  
 
 	@Autowired
 	private FormDataImportRepository formDataImportRepository;
@@ -145,7 +67,8 @@ public class DataImportServiceImpl implements DataImportService {
 			importResponseDto = processCertificatesDoc(dto);
 			break;
 		default:
-			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(),importResponseDto, ERROR_DOCUMENT_TYPE, ERROR_DOCUMENT_TYPE, EMPTY, HttpStatus.BAD_REQUEST);
+			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(),importResponseDto, 
+					Constants.ERROR_DOCUMENT_TYPE, Constants.ERROR_DOCUMENT_TYPE, Constants.EMPTY, HttpStatus.BAD_REQUEST);
 		}
 		logger.debug("[DataImportServiceImpl]       processObject >>>>");
 		return importResponseDto;
@@ -164,8 +87,8 @@ public class DataImportServiceImpl implements DataImportService {
 
 		Sheet sheet = obtainSheet(dto.getFileData());
 		List<FormDataImport> formDataImportList = new ArrayList<>();
-		Row currentRow = sheet.getRow(ROW_EVIDENCE_LIST_START);
-		int sizeSheet = sheet.getPhysicalNumberOfRows();
+		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
+		int sizeSheet = sheet.getPhysicalNumberOfRows() -1;
 		VersionCapacidades verCap = null;
 		try {
 			verCap = createCapacityVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(),dto.getUser(), 
@@ -175,25 +98,24 @@ public class DataImportServiceImpl implements DataImportService {
 			return importResponseDto;
 		}
 		FormDataImport data = new FormDataImport();
-		for (int i = ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
+		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new FormDataImport();
-			//TODO: VCPROFILEROLL1 Se saca de unas formulas hacer las formulas
-			String vcProfileSAGA = getStringValue (currentRow, RolsDatabasePos.COL_VCPROFILESAGA.getPosition());
-			String vcProfileEmail = getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEEMAIL.getPosition());
-			String vcProfileName =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILENAME.getPosition());
-			String vcProfileRoll1Extendido =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL1EXTENDIDO.getPosition());
-			String vcProfileRoll2EM =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL2EM.getPosition());
-			String vcProfileRoll2AR =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL2AR.getPosition());
-			String vcProfileRoll2AN =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL2AN.getPosition());
-			String vcProfileRoll2SE =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL2SE.getPosition());
-			String vcProfileRolExperienceEM =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLEXPERIENCEEM.getPosition());
-			String vcProfileRolExperienceAR =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLEXPERIENCEAR.getPosition());
-			String vcProfileRoll3 =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL3.getPosition());
-			String vcProfileSkillCloudNativeExperience =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILESKILLCLOUDNATIVEEXPERIENCE.getPosition());
-			String vcProfileSkillLowCodeExperience =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILESKILLLOWCODEEXPERIENCE.getPosition());		
-			String vcProfileRoll4 =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILEROLL4.getPosition());
-			String vcProfileSectorExperience =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILESECTOREXPERIENCE.getPosition());
-			String vcProfileSkillCloudExp =  getStringValue(currentRow, RolsDatabasePos.COL_VCPROFILESKILLCLOUDEXP.getPosition());
+			String vcProfileSAGA = getStringValue (currentRow, Constants.RolsDatabasePos.COL_VCPROFILESAGA.getPosition());
+			String vcProfileEmail = getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEEMAIL.getPosition());
+			String vcProfileName =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILENAME.getPosition());
+			String vcProfileRoll1Extendido =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL1EXTENDIDO.getPosition());
+			String vcProfileRoll2EM =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL2EM.getPosition());
+			String vcProfileRoll2AR =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL2AR.getPosition());
+			String vcProfileRoll2AN =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL2AN.getPosition());
+			String vcProfileRoll2SE =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL2SE.getPosition());
+			String vcProfileRolExperienceEM =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLEXPERIENCEEM.getPosition());
+			String vcProfileRolExperienceAR =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLEXPERIENCEAR.getPosition());
+			String vcProfileRoll3 =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL3.getPosition());
+			String vcProfileSkillCloudNativeExperience =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILESKILLCLOUDNATIVEEXPERIENCE.getPosition());
+			String vcProfileSkillLowCodeExperience =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILESKILLLOWCODEEXPERIENCE.getPosition());		
+			String vcProfileRoll4 =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILEROLL4.getPosition());
+			String vcProfileSectorExperience =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILESECTOREXPERIENCE.getPosition());
+			String vcProfileSkillCloudExp =  getStringValue(currentRow, Constants.RolsDatabasePos.COL_VCPROFILESKILLCLOUDEXP.getPosition());
 
 			data.setVcProfileSAGA(vcProfileSAGA);
 			data.setVcProfileEmail(vcProfileEmail);
@@ -224,9 +146,11 @@ public class DataImportServiceImpl implements DataImportService {
 				saveAllFormDataImport(formDataImportList, verCap);
 		} else {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(ERROR_EMPTY_ROL_FILE);
+			errorData.append(Constants.ERROR_INIT)
+			.append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
 			logger.error(errorData.toString());
-			throw new UnprocessableEntityException(ERROR_EMPTY_ROL_FILE);
+			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
 		}
 
 		logger.debug("      processRolsDoc >>>>");
@@ -246,8 +170,8 @@ public class DataImportServiceImpl implements DataImportService {
 
 		Sheet sheet = obtainSheet(dto.getFileData());
 		List<StaffingDataImport> staffingDataImportList = new ArrayList<>();
-		Row currentRow = sheet.getRow(ROW_EVIDENCE_LIST_START);
-		int sizeSheet = sheet.getPhysicalNumberOfRows();
+		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
+		int sizeSheet = sheet.getPhysicalNumberOfRows() -1;
 		VersionStaffing verStaf = null;
 		try {
 			verStaf = createStaffingVersion(sizeSheet,dto.getFileData().getOriginalFilename(), dto.getDescription(), dto.getUser(), 
@@ -258,19 +182,19 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 		
 		StaffingDataImport data = new StaffingDataImport();
-		for (int i = ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
+		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new StaffingDataImport();
-			String vcProfileSAGA = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
-			String vcProfileGGID = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILEGGID.getPosition());
-			String vcProfilePractica = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
-			String vcProfileGrado = getGradeValue(currentRow, StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
-			String vcProfileCategoria = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
-			String vcProfileCentro = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
-			String vcProfileNombre = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILENOMBRE.getPosition());
-			String vcProfileApellidos = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILEAPELLIDOS.getPosition());
-			String vcProfileLocalizacion = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
-			String vcProfilePerfiltecnico = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
-			String vcProfileStatus = getStringValue (currentRow, StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
+			String vcProfileSAGA = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
+			String vcProfileGGID = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGGID.getPosition());
+			String vcProfilePractica = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
+			String vcProfileGrado = getGradeValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
+			String vcProfileCategoria = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
+			String vcProfileCentro = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
+			String vcProfileNombre = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILENOMBRE.getPosition());
+			String vcProfileApellidos = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEAPELLIDOS.getPosition());
+			String vcProfileLocalizacion = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
+			String vcProfilePerfiltecnico = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
+			String vcProfileStatus = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
 			data.setVcProfileSAGA(vcProfileSAGA);
 			data.setVcProfileGGID(vcProfileGGID);
 			data.setVcProfilePractica(vcProfilePractica);
@@ -294,9 +218,11 @@ public class DataImportServiceImpl implements DataImportService {
 			
 		} else {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(ERROR_EMPTY_STAFFING_FILE);
+			errorData.append(Constants.ERROR_INIT)
+			.append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
 			logger.error(errorData.toString());
-			throw new UnprocessableEntityException(ERROR_EMPTY_STAFFING_FILE);
+			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
 
 		logger.debug(" [DataImportServiceImpl]      processStaffingDoc >>>>");
@@ -314,9 +240,10 @@ public class DataImportServiceImpl implements DataImportService {
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 		// TODO: Recover Certificates Data
 		StringBuilder errorData = new StringBuilder();
-		errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(" Funcion isnt developed");
+		errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+		.append(Constants.ERROR_INIT2).append(" Funcion isnt developed");
 		logger.error(errorData.toString());
-		importResponseDto.setMessage(EMPTY);
+		importResponseDto.setMessage(Constants.EMPTY);
 		importResponseDto.setError(errorData.toString());
 		importResponseDto.setStatus(HttpStatus.I_AM_A_TEAPOT);
 		logger.debug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
@@ -331,7 +258,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 */
 	private Sheet obtainSheet(MultipartFile file) throws BadRequestException {
 		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
-			return workbook.getSheetAt(FIRST_SHEET);
+			return workbook.getSheetAt(Constants.FIRST_SHEET);
 		} catch (Exception e) {
 			throw new BadRequestException("An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
@@ -344,15 +271,17 @@ public class DataImportServiceImpl implements DataImportService {
 	 */
 	private void checkInputObject(ImportRequestDto dto) {
 		logger.debug(" >>>> checkInputObject ");
-		if (dto.getFileData().getOriginalFilename() == EMPTY) {
+		if (dto.getFileData().getOriginalFilename() == Constants.EMPTY) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append(" FileData is empty");
+			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2).append(" FileData is empty");
 			logger.error(errorData.toString() );
 			throw new UnsupportedMediaTypeException("FileData is empty");
 		}
-		if (!ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
+		if (!Constants.ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2).append("FileData dont has valid format");
+			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2).append("FileData dont has valid format");
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException("FileData dont has valid format");
 		}
@@ -366,11 +295,11 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return 			column value in string format
 	 */
 	private String getStringValue(Row row, int column) {
-		String result = EMPTY;
+		String result = Constants.EMPTY;
 		Cell col = row.getCell(column);
 		if(col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {
-				result = String.valueOf(col.getNumericCellValue());
+				result = String.valueOf((int) col.getNumericCellValue());
 			} else if (col.getCellType() == CellType.STRING){
 				result = col.getStringCellValue();
 			} else if(col.getCellType() == CellType.BOOLEAN) {
@@ -449,7 +378,8 @@ public class DataImportServiceImpl implements DataImportService {
         	return (List<FormDataImport>) formDataImportRepository.saveAll(formDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2);
+			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(e.getMessage());
 		}
@@ -466,7 +396,8 @@ public class DataImportServiceImpl implements DataImportService {
 			return (List<StaffingDataImport>) staffingDataImportRepository.saveAll(staffingDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() ).append(ERROR_INIT2);
+			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(errorData.toString());
 		}
@@ -474,13 +405,14 @@ public class DataImportServiceImpl implements DataImportService {
 	
 	private  void setErrorToReturn( String function, ImportResponseDto importResponseDto, Exception e, HttpStatus status) {
 		StringBuilder errorData = new StringBuilder();
-		errorData.append(ERROR_INIT).append( function ).append(ERROR_INIT2);
+		errorData.append(Constants.ERROR_INIT).append( function ).append(Constants.ERROR_INIT2);
 		
 		setErrorToReturn(function, importResponseDto, e.getMessage(), e.getLocalizedMessage(), e.getStackTrace().toString(), status);
     }
+	
 	private  void setErrorToReturn( String function, ImportResponseDto importResponseDto, String errorMessage , String message, String trace, HttpStatus status) {
 		StringBuilder errorData = new StringBuilder();
-		errorData.append(ERROR_INIT).append( function ).append(ERROR_INIT2);
+		errorData.append(Constants.ERROR_INIT).append( function ).append(Constants.ERROR_INIT2);
 		
 		importResponseDto.setTimestamp(LocalDateTime.now());
 		logger.error(errorData.toString() + " Status: " + status);
@@ -495,17 +427,17 @@ public class DataImportServiceImpl implements DataImportService {
 	
 	private void setVcProfileRolL1(FormDataImport formDataImport) {
 		switch (formDataImport.getVcProfileRolL1extendido()) {
-			case VCPROFILEROLL1EX_OP1:
-				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP1);
+			case Constants.VCPROFILEROLL1EX_OP1:
+				formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP1);
 				break;
-			case VCPROFILEROLL1EX_OP2:
-				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP2);
+			case Constants.VCPROFILEROLL1EX_OP2:
+				formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP2);
 				break;
-			case VCPROFILEROLL1EX_OP3:
-				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP3);
+			case Constants.VCPROFILEROLL1EX_OP3:
+				formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP3);
 				break;
-			case VCPROFILEROLL1EX_OP4:
-				formDataImport.setVcProfileRolL1(VCPROFILEROLL1_OP4);
+			case Constants.VCPROFILEROLL1EX_OP4:
+				formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP4);
 				
 		}
 		
