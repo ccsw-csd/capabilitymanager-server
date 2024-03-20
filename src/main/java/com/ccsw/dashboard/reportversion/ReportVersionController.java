@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import com.ccsw.dashboard.reportversion.model.GenerateReportVersionDto;
 import com.ccsw.dashboard.reportversion.model.ReportVersion;
 import com.ccsw.dashboard.reportversion.model.ReportVersionDto;
 import com.ccsw.dashboard.roleversion.RoleVersionService;
@@ -38,12 +41,12 @@ public class ReportVersionController {
 				ReportVersionDto rvdto = new ReportVersionDto();	    			
 	            RoleVersion roleVersion = roleVersionService.findById(Long.valueOf(rv.getIdVersionCapacidades()));
 				rvdto.setRoleVersion(roleVersion == null ? null : new RoleVersionDto(roleVersion.getId(), 
-																  											   roleVersion.getIdTipoInterfaz(),
-																  											   roleVersion.getFechaImportacion(),
-																  											   roleVersion.getNumRegistros(),
-																  											   roleVersion.getNombreFichero(),
-																  											   roleVersion.getDescripcion(),
-																  											   roleVersion.getUsuario()));
+																  						roleVersion.getIdTipoInterfaz(),
+																  						roleVersion.getFechaImportacion(),
+																  						roleVersion.getNumRegistros(),
+																  						roleVersion.getNombreFichero(),
+																  						roleVersion.getDescripcion(),
+																  						roleVersion.getUsuario()));
 				StaffingVersion staffingVersion = staffingVersionService.findById(Long.valueOf(rv.getIdVersionStaffing()));
 				rvdto.setStaffingVersion(staffingVersion == null ? null : new StaffingVersionDto(staffingVersion.getId(),
 																  									staffingVersion.getIdTipoInterfaz(),
@@ -116,5 +119,10 @@ public class ReportVersionController {
     @PutMapping({ "/{id}" })
     public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody ReportVersionDto dto) {
         this.reportVersionService.save(id, dto);
+    }
+    
+    @PostMapping(value = "/generate-report", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ReportVersion generateReport(@RequestBody GenerateReportVersionDto dto) {
+        return this.reportVersionService.generateReport(dto);
     }
 }
