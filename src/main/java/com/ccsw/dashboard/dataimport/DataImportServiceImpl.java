@@ -438,7 +438,9 @@ public class DataImportServiceImpl implements DataImportService {
 				break;
 			case Constants.VCPROFILEROLL1EX_OP4:
 				formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP4);
-				
+				break;
+			default:
+				formDataImport.setVcProfileRolL1(Constants.EMPTY);
 		}
 		
 	}
