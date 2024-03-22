@@ -65,8 +65,8 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 	private Profile mapRowToInformeRoles(ResultSet row,int rowNum) throws SQLException{
 		Profile profile = new Profile();	
 		profile.setPerfil(StringUtils.isNotBlank(row.getString("role_level_2_ar")) ? row.getString("role_level_2_ar"): 
-																					StringUtils.isNotBlank(row.getString("role_level_2_em")) ? row.getString("role_level_2_em") : 
-																																				row.getString("role_level_2_se"));
+													StringUtils.isNotBlank(row.getString("role_level_2_em")) ? row.getString("role_level_2_em") : 
+																			row.getString("role_level_2_se"));
 		profile.setActual(row.getString("role_level_1"));
 		profile.setExperiencia(StringUtils.isNotBlank(row.getString("experience_ar"))? row.getString("experience_ar") : row.getString("experience_em"));
 		profile.setSectorExperiencia(row.getString("sector_experience"));
