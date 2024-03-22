@@ -442,6 +442,5 @@ public class DataImportServiceImpl implements DataImportService {
 			default:
 				formDataImport.setVcProfileRolL1(Constants.EMPTY);
 		}
-		
 	}
 }
