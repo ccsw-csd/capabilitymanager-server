@@ -24,6 +24,7 @@ public class Constants {
 	public static final String VCPROFILEROLL1EX_OP2  = "Business Analyst (Functional Analyst, Product Owner)";
 	public static final String VCPROFILEROLL1_OP3  = "Engagement Manager";
 	public static final String VCPROFILEROLL1EX_OP3  = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
+	public static final String VCPROFILEROLL1EX_OP3_2  = "Engagement Managers (EM, Responsable de proyecto)";
 	public static final String VCPROFILEROLL1_OP4  = "Architects";
 	public static final String VCPROFILEROLL1EX_OP4  = "Architects";
 
