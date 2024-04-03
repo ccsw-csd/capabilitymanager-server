@@ -1,6 +1,6 @@
 package com.ccsw.dashboard.certificatesdataimport.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import com.ccsw.dashboard.versioncertificados.model.VersionCertificaciones;
 

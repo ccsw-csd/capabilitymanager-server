@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.common;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Constants {
@@ -35,6 +36,8 @@ public class Constants {
 	public static final String ERROR_DOCUMENT_TYPE = "ERROR: 'documentType' param is not valid (select value 1, 2 or 3)";
 	public static final String ERROR_FILE_NOT_FOUND  = ">>> [ERROR] Not Found(";
 
+	public static final Date FUNDATIONDAYLESSONE = new Date(1967, 9, 30);
+	
 	public static enum RolsDatabasePos { 
 		COL_VCPROFILEEMAIL(3), 
 		COL_VCPROFILENAME(4),
@@ -97,8 +100,8 @@ public class Constants {
 		COL_VCSECTOR(11), 
 		COL_VCMODULO(12),
 		COL_VCIDCANDIDATO(19), 
-		COL_VCFECHACERTIFICADO(14),
-        COL_VCFECHAEXPIRACION(15),
+		COL_VCFECHACERTIFICADO(13),
+        COL_VCFECHAEXPIRACION(14),
         COL_VCACTIVO(17),
 		COL_VCANEXO(19), 
 		COL_VCCOMENTARIOANEXO(20);
