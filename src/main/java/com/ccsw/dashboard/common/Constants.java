@@ -86,6 +86,31 @@ public class Constants {
 			return excelPosition;
 		}
 	}
-//TODO: Add Enum CertificatesDatabasePos 
+
+	public static enum CertificatesDatabasePos { 
+		COL_VCSAGA(14), 
+		COL_VCPARTNER(6),
+		COL_VCCERTIFICADO(7), 
+		COL_VCNAMEGTD(8), 
+		COL_VCCERTIFICATIONGTD(9),
+		COL_VCCODE(10),
+		COL_VCSECTOR(11), 
+		COL_VCMODULO(12),
+		COL_VCIDCANDIDATO(19), 
+		COL_VCFECHACERTIFICADO(14),
+        COL_VCFECHAEXPIRACION(15),
+        COL_VCACTIVO(17),
+		COL_VCANEXO(19), 
+		COL_VCCOMENTARIOANEXO(20);
+
+		private final int excelPosition;
+		CertificatesDatabasePos(int position) {
+			this.excelPosition = position;
+		}
+
+		public int getPosition() {
+			return excelPosition;
+		}
+	}
 	
 }

@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.versionstaffing;
+package com.ccsw.dashboard.versioncertificados;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,38 +14,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.common.Constants;
-import com.ccsw.dashboard.versionstaffing.model.VersionStaffing;
+import com.ccsw.dashboard.versioncertificados.model.VersionCertificaciones;
 
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class VersionStaffingServiceImpl implements VersionStaffingService {
-	private static final Logger logger = LoggerFactory.getLogger(VersionStaffingServiceImpl.class);
-	private static final String ERROR_INIT  = ">>> [ERROR][VersionStaffingServiceImpl] (";
+public class VersionCertificacionesServiceImpl implements VersionCertificacionesService {
+	private static final Logger logger = LoggerFactory.getLogger(VersionCertificacionesServiceImpl.class);
+	private static final String ERROR_INIT  = ">>> [ERROR][VersionCertificacionesServiceImpl] (";
 	@Autowired
-	private VersionStaffingRepository versionStaffingRepository;
+	private VersionCertificacionesRepository versionCertificacionesRepository;
 
 	@Override
 	public Resource recoverFileById(Long id) {
 		Resource resource = null;
-		Optional<VersionStaffing> opStaffingDataImportFile = versionStaffingRepository.findById(id);
-		VersionStaffing versionStaffing = null;
+		Optional<VersionCertificaciones> opStaffingDataImportFile = versionCertificacionesRepository.findById(id);
+		VersionCertificaciones versionCertificaciones = null;
 		if (opStaffingDataImportFile.isPresent()) {
-			versionStaffing = opStaffingDataImportFile.get();
+			versionCertificaciones = opStaffingDataImportFile.get();
 			try {
-				String fileName =  versionStaffing.getNombreFichero();
+				String fileName =  versionCertificaciones.getNombreFichero();
 				String[] fileNameArr = fileName.split("\\.");
-				String extension = versionStaffing.getNombreFichero().contains(".xlsx") ? Constants.XLSX_FILE_EXTENSION : Constants.XLS_FILE_EXTENSION;
+				String extension = versionCertificaciones.getNombreFichero().contains(Constants.XLSX_FILE_EXTENSION) ? Constants.XLSX_FILE_EXTENSION : Constants.XLS_FILE_EXTENSION;
 
 			    File archivoTemporal = File.createTempFile(fileNameArr[0]+"-", extension);
 			    
 			    try (FileOutputStream fos = new FileOutputStream(archivoTemporal)) {
-			        fos.write(versionStaffing.getFichero());
+			        fos.write(versionCertificaciones.getFichero());
 			    }
 			    resource = (Resource) new FileSystemResource(archivoTemporal);
 			} catch (IOException e) {
-			    setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), HttpStatus.NOT_FOUND,
+				setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), HttpStatus.NOT_FOUND,
 			    		e.getMessage(), e.getLocalizedMessage(), null);
 			    
 			}
@@ -55,7 +55,7 @@ public class VersionStaffingServiceImpl implements VersionStaffingService {
 		}
 		return resource;
 	}
-	
+
 	private  void setErrorToReturn( String function, HttpStatus status, String errorMessage , String message, String trace) {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append( function ).append(Constants.ERROR_INIT2);
