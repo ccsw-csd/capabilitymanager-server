@@ -13,7 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Entity
+@Entity(name = "dm_certificaciones_import")
 @Table(name = "dm_certificaciones_import")
 public class CertificatesDataImport {
 	@Id
@@ -63,7 +63,7 @@ public class CertificatesDataImport {
 	private String vcComentarioAnexo;
 	
 	@ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "num_import_code_id")
     private VersionCertificaciones num_import_code_id;
 
 	public int getId() {

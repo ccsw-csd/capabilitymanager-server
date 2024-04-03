@@ -45,7 +45,7 @@ public class VersionCertificaciones {
 	@Column(name = "fichero")
 	private byte[] fichero;
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="id")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="num_import_code_id")
 	private Set<CertificatesDataImport> certificates;
 
 	public int getId() {
