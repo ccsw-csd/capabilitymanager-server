@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.views;
+package com.ccsw.dashboard.views.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ccsw.dashboard.profile.model.Profile;
+import com.ccsw.dashboard.views.repository.ViewCounterSummaryRepository;
 
 import io.micrometer.common.util.StringUtils;
 

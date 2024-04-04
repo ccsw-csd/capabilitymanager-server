@@ -1,10 +1,12 @@
-package com.ccsw.dashboard.views;
+package com.ccsw.dashboard.views.service.impl;
 
 import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.profile.model.Profile;
+import com.ccsw.dashboard.views.repository.ViewCounterSummaryRepository;
+import com.ccsw.dashboard.views.service.CounterSummaryService;
 
 @Service
 public class CounterSummaryServiceImpl implements CounterSummaryService{

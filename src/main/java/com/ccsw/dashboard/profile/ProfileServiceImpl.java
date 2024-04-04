@@ -21,8 +21,8 @@ import com.ccsw.dashboard.profile.model.ProfileTotal;
 import com.ccsw.dashboard.profile.model.InformeRoles;
 import com.ccsw.dashboard.reportversion.ReportVersionService;
 import com.ccsw.dashboard.reportversion.model.ReportVersion;
-import com.ccsw.dashboard.views.CounterSummaryService;
-import com.ccsw.dashboard.views.ViewGradosRolesService;
+import com.ccsw.dashboard.views.service.CounterSummaryService;
+import com.ccsw.dashboard.views.service.ViewGradosRolesService;
 
 import jakarta.transaction.Transactional;
 
