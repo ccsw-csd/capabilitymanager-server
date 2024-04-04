@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.formdataimport.model;
+package com.ccsw.dashboard.certificacionesdataimport.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "dm_formdata_import")
+@Entity
 @Table(name = "dm_formdata_import")
 public class FormDataImport implements Comparable<FormDataImport> {
 

@@ -1,6 +1,7 @@
 package com.ccsw.dashboard.common;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Constants {
@@ -35,6 +36,8 @@ public class Constants {
 	public static final String ERROR_DOCUMENT_TYPE = "ERROR: 'documentType' param is not valid (select value 1, 2 or 3)";
 	public static final String ERROR_FILE_NOT_FOUND  = ">>> [ERROR] Not Found(";
 
+	public static final Date FUNDATIONDAYLESSONE = new Date(1967, 9, 30);
+	
 	public static enum RolsDatabasePos { 
 		COL_VCPROFILEEMAIL(3), 
 		COL_VCPROFILENAME(4),
@@ -96,6 +99,31 @@ public class Constants {
 			return excelPosition;
 		}
 	}
-//TODO: Add Enum CertificatesDatabasePos 
+
+	public static enum CertificatesDatabasePos { 
+		COL_VCSAGA(14), 
+		COL_VCPARTNER(6),
+		COL_VCCERTIFICADO(7), 
+		COL_VCNAMEGTD(8), 
+		COL_VCCERTIFICATIONGTD(9),
+		COL_VCCODE(10),
+		COL_VCSECTOR(11), 
+		COL_VCMODULO(12),
+		COL_VCIDCANDIDATO(19), 
+		COL_VCFECHACERTIFICADO(13),
+        COL_VCFECHAEXPIRACION(14),
+        COL_VCACTIVO(17),
+		COL_VCANEXO(19), 
+		COL_VCCOMENTARIOANEXO(20);
+
+		private final int excelPosition;
+		CertificatesDatabasePos(int position) {
+			this.excelPosition = position;
+		}
+
+		public int getPosition() {
+			return excelPosition;
+		}
+	}
 	
 }

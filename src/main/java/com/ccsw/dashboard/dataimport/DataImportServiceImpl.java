@@ -1,15 +1,22 @@
 package com.ccsw.dashboard.dataimport;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
+//import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.jxls.common.RowData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.common.exception.BadRequestException;
 import com.ccsw.dashboard.common.exception.UnprocessableEntityException;
@@ -29,6 +37,8 @@ import com.ccsw.dashboard.staffingdataimport.StaffingDataImportRepository;
 import com.ccsw.dashboard.staffingdataimport.model.StaffingDataImport;
 import com.ccsw.dashboard.versioncapacidades.VersionCapatidadesRepository;
 import com.ccsw.dashboard.versioncapacidades.model.VersionCapacidades;
+import com.ccsw.dashboard.versioncertificados.VersionCertificacionesRepository;
+import com.ccsw.dashboard.versioncertificados.model.VersionCertificaciones;
 import com.ccsw.dashboard.versionstaffing.VersionStaffingRepository;
 import com.ccsw.dashboard.versionstaffing.model.VersionStaffing;
 
@@ -50,6 +60,9 @@ public class DataImportServiceImpl implements DataImportService {
 	
 	@Autowired
 	private VersionStaffingRepository versionStaffingRepository;
+	
+	@Autowired
+	private VersionCertificacionesRepository versionCertificacionesSRepository;
 	
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
@@ -258,14 +271,18 @@ public class DataImportServiceImpl implements DataImportService {
 	private ImportResponseDto processCertificatesDoc(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
-		// TODO: Recover Certificates Data
-		StringBuilder errorData = new StringBuilder();
-		errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
-		.append(Constants.ERROR_INIT2).append(" Funcion isnt developed");
-		logger.error(errorData.toString());
-		importResponseDto.setMessage(Constants.EMPTY);
-		importResponseDto.setError(errorData.toString());
-		importResponseDto.setStatus(HttpStatus.I_AM_A_TEAPOT);
+
+		VersionCertificaciones verCerytificaciones = null;
+		try {
+			verCerytificaciones = createCertificationsVersion(dto);
+		} catch (Exception e) {
+			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e, HttpStatus.UNPROCESSABLE_ENTITY );
+			return importResponseDto;
+		}
+		
+
+		
+		
 		logger.debug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
 		return importResponseDto;
 	}
@@ -330,6 +347,23 @@ public class DataImportServiceImpl implements DataImportService {
 	}
 
 	/**
+	 * Get Date value from Row
+	 * @param row		to recover date value
+	 * @param column	value to recover
+	 * @return 			column value in Date format
+	 */
+	private Date getDateValue(Row row, int column) {
+		Date result = Constants.FUNDATIONDAYLESSONE;
+		Cell col = row.getCell(column);
+		if(col != null) {
+			if (col.getCellType() == CellType.NUMERIC) {
+				result = col.getDateCellValue(); 
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Create an save on database CapacityVersion Object
 	 * @param numReg			num registers on Excel
 	 * @param fileName			Excell File name 
@@ -377,6 +411,94 @@ public class DataImportServiceImpl implements DataImportService {
 		return versionStaffingRepository.save(versionStaf);
 	}
 
+	/**
+	 * Create an save on database CertificationsVersion Object (with CertificatesDataImport relations)
+	 * @param numReg			num registers on Excel
+	 * @param fileName			Excell File name 
+	 * @param description		Description
+	 * @param user				User who uploads data
+	 * @param idTipointerfaz	idTipointerfaz value	
+	 * @param bs				File in byte array
+	 * @return	CapacityVersion Object inserted on database
+	 * @throws IOException 
+	 */
+	private VersionCertificaciones createCertificationsVersion( ImportRequestDto dto) throws IOException {
+		Sheet sheet = obtainSheet(dto.getFileData());
+		int numReg = sheet.getPhysicalNumberOfRows() -1;
+		
+		VersionCertificaciones versionCer = new VersionCertificaciones();
+		versionCer.setNumRegistros(numReg);
+		versionCer.setFechaImportacion(LocalDateTime.now());
+		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());
+		versionCer.setDescription(dto.getDescription());
+		versionCer.setUsuario(dto.getUser());
+		versionCer.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
+		versionCer.setFichero(dto.getFileData().getBytes());
+		versionCer.setCertificates(setCertificacionesDataImport(sheet));
+		
+		return versionCertificacionesSRepository.save(versionCer);
+	}
+	/**
+	 * construct Set<CertificatesDataImport> related with VersionCertificaciones
+	 * @param sheet document to 
+	 * @return
+	 */
+	private Set<CertificatesDataImport> setCertificacionesDataImport (Sheet sheet){
+		Set<CertificatesDataImport> setCertificatesDataImportObject = new HashSet<CertificatesDataImport>();
+		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
+		CertificatesDataImport data = null;
+		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
+			data = new CertificatesDataImport();
+			String vcActivo = getStringValue (currentRow, Constants.CertificatesDatabasePos.COL_VCACTIVO.getPosition());
+			String vcAnexo = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCANEXO.getPosition());
+			String vcCertificado = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICADO.getPosition());
+			String vcCertificationGDT = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICATIONGTD.getPosition());
+			String vcCode =  getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCODE.getPosition());
+			String vcComentarioAnexo = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCOMENTARIOANEXO.getPosition());
+			Date vcFechaCertificado = getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHACERTIFICADO.getPosition());
+			Date vcFechaExpiracion = getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHAEXPIRACION.getPosition());
+			String vcIdCandidato = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCIDCANDIDATO.getPosition());
+			String vcModulo = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCMODULO.getPosition());
+			String vcNameGTD = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCNAMEGTD.getPosition());
+			String vcPartner = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCPARTNER.getPosition());
+			String vcSAGA = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSAGA.getPosition());
+			String vcSector = getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSECTOR.getPosition());
+			
+			data.setVcActivo(vcActivo);
+			data.setVcAnexo(vcAnexo);
+			data.setVcCertificado(vcCertificado);
+			data.setVcCertificationGTD(vcCertificationGDT);
+			data.setVcCode(vcCode);
+			data.setVcComentarioAnexo(vcComentarioAnexo);
+			data.setVcFechaCertificado(vcFechaCertificado == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado);
+			data.setVcFechaExpiracion(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaExpiracion);
+			data.setVcIdCandidato(vcIdCandidato);
+			data.setVcModulo(vcModulo);
+			data.setVcNameGTD(vcNameGTD);
+			data.setVcPartner(vcPartner);
+			data.setVcSAGA(vcSAGA);
+			data.setVcSector(vcSector);
+			
+			if(!data.getVcSAGA().equals(Constants.EMPTY)) {
+				setCertificatesDataImportObject.add(data);
+			}
+			currentRow = sheet.getRow(i);
+		}
+		return setCertificatesDataImportObject;
+	}
+//	/**
+//	 * Conver String date with format DD/MM/YYYY in Date Object 
+//	 * @param date String date with format DD/MM/YYYY
+//	 * @return Date Object with date input param
+//	 */
+//	private Date getDate(String date) {
+//		if (date== null) {
+//			return null;
+//		}
+//		String[] sDate = date.split("/");
+//		return new Date (Integer.parseInt(sDate[2]), Integer.parseInt(sDate[1]), Integer.parseInt(sDate[0]));
+//		
+//	}
 	/**
 	 * Get Grade Value from row
 	 * @param row		Excel row
@@ -427,7 +549,7 @@ public class DataImportServiceImpl implements DataImportService {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(Constants.ERROR_INIT).append( function ).append(Constants.ERROR_INIT2);
 		
-		setErrorToReturn(function, importResponseDto, e.getMessage(), e.getLocalizedMessage(), e.getStackTrace().toString(), status);
+		setErrorToReturn(function, importResponseDto, e.getMessage(), e.getLocalizedMessage(), Arrays.toString(e.getStackTrace()), status);
     }
 	
 	private  void setErrorToReturn( String function, ImportResponseDto importResponseDto, String errorMessage , String message, String trace, HttpStatus status) {
