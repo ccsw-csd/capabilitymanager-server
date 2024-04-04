@@ -24,15 +24,6 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "vc_Profile_GGID", nullable = false)
 	private String vcProfileGGID;
 
-	@Column(name = "vc_Profile_Practica", nullable = false)
-	private String vcProfilePractica;
-
-	@Column(name = "vc_Profile_Grado", nullable = false)
-	private String vcProfileGrado;
-
-	@Column(name = "vc_Profile_Categoria")
-	private String vcProfileCategoria;
-
 	@Column(name = "vc_Profile_Centro", nullable = false)
 	private String vcProfileCentro;
 
@@ -45,11 +36,50 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "vc_Profile_Localizacion")
 	private String vcProfileLocalizacion;
 
+	@Column(name = "vc_Profile_Practica", nullable = false)
+	private String vcProfilePractica;
+
+	@Column(name = "vc_Profile_Grado", nullable = false)
+	private String vcProfileGrado;
+
+	@Column(name = "vc_Profile_Categoria")
+	private String vcProfileCategoria;
+
 	@Column(name = "vc_Profile_Perfil_Tecnico")
 	private String vcProfilePerfilTecnico;
 
+	@Column(name = "vc_Profile_Fecha_Incorporacion")
+	private String vcProfileFechaIncorporacion;
+	
+	@Column(name = "vc_Profile_Asignacion")
+	private String vcProfileAsigancion;
+
 	@Column(name = "vc_Profile_Status")
 	private String vcProfileStatus;
+
+	@Column(name = "vc_Profile_Cliente_Actual")
+	private String vcProfileClienteActual;
+	
+	@Column(name = "vc_Profile_Fecha_Inicio_Asignacion")
+	private String vcProfileFechaInicioAsignacion;
+	
+	@Column(name = "vc_Profile_Fecha_Fin_Asignacion")
+	private String vcProfileFechaFinAsignacion;
+
+	@Column(name = "vc_Profile_Disponibilidad")
+	private String vcProfileDisponibilidad;
+
+	@Column(name = "vc_Profile_Proyecto_Futuro")
+	private String vcProfileProyectoFuturo;
+	
+	@Column(name = "vc_Profile_Colaboraciones")
+	private String vcProfileColaboraciones;
+	
+	@Column(name = "vc_Profile_Proyecto_Anterior")
+	private String vcProfileProyectoAnterior;
+	
+	@Column(name = "vc_Profile_Meses_Bench")
+	private String vcProfileMesesBench;
 
 	public int getId() {
 		return id;
