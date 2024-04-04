@@ -193,25 +193,40 @@ public class DataImportServiceImpl implements DataImportService {
 			String vcProfileCategoria = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
 			String vcProfileCentro = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
 			String vcProfileLocalizacion = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
-			String vcProfilePerfiltecnico = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
+			String vcProfilePerfilTecnico = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
 			String vcProfileFechaIncorporacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
 			String vcProfilePorcentajeAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPORCENTAJEASIGNACION.getPosition());
 			String vcProfileStatus = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
 			String vcProfileClienteActual = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECLIENTEACTUAL.getPosition());
-			String vcFechaInicioAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
-			String vsFechaFinAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
+			String vcProfileFechaInicioAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
+			String vcProfileFechaFinAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
+			String vcProfileFechaDisponibilidad = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
+			String vcProfilePosicionProyectoFuturo = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPOSICIONPROYECTOFUTURO.getPosition());
+			String vcProfileColaboraciones = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECOLABORACIONES.getPosition());
+			String vcProfileProyectoAnterior = getStringValue(currentRow, Constants.StaffingDatabasePos.COLVCPROFILEPROYECTOANTERIOR.getPosition());
+			String vcProfileMesesBench = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEMESESBENCH.getPosition());
+
 			data.setVcProfileSAGA(vcProfileSAGA);
 			data.setVcProfileGGID(vcProfileGGID);
-			data.setVcProfilePractica(vcProfilePractica);
-			data.setVcProfileGrado(vcProfileGrado);
-			data.setVcProfileCategoria(vcProfileCategoria);
 			data.setVcProfileCentro(vcProfileCentro);
 			data.setVcProfileNombre(vcProfileNombre);
 			data.setVcProfileApellidos(vcProfileApellidos);
 			data.setVcProfileLocalizacion(vcProfileLocalizacion);
-			data.setVcProfilePerfilTecnico(vcProfilePerfiltecnico);
+			data.setVcProfilePractica(vcProfilePractica);
+			data.setVcProfileGrado(vcProfileGrado);
+			data.setVcProfileCategoria(vcProfileCategoria);
+			data.setVcProfilePerfilTecnico(vcProfilePerfilTecnico);
+			data.setVcProfileFechaIncorporacion(vcProfileFechaIncorporacion);
+			data.setVcProfileAsignacion(vcProfilePorcentajeAsignacion);
 			data.setVcProfileStatus(vcProfileStatus);
-
+			data.setVcProfileClienteActual(vcProfileClienteActual);
+			data.setVcProfileFechaInicioAsignacion(vcProfileFechaInicioAsignacion);
+			data.setVcProfileFechaFinAsignacion(vcProfileFechaFinAsignacion);
+			data.setVcProfileDisponibilidad(vcProfileFechaDisponibilidad);
+			data.setVcProfileProyectoFuturo(vcProfilePosicionProyectoFuturo);
+			data.setVcProfileColaboraciones(vcProfileColaboraciones);
+			data.setVcProfileProyectoAnterior(vcProfileProyectoAnterior);
+			data.setVcProfileMesesBench(vcProfileMesesBench);
 			data.setNumImportCodeID(verStaf.getId());
 			
 			staffingDataImportList.add(data);

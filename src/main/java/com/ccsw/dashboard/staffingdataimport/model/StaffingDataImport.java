@@ -52,8 +52,8 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	private String vcProfileFechaIncorporacion;
 	
 	@Column(name = "vc_Profile_Asignacion")
-	private String vcProfileAsigancion;
-
+	private String vcProfileAsignacion;
+	
 	@Column(name = "vc_Profile_Status")
 	private String vcProfileStatus;
 
@@ -69,8 +69,8 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "vc_Profile_Disponibilidad")
 	private String vcProfileDisponibilidad;
 
-	@Column(name = "vc_Profile_Proyecto_Futuro")
-	private String vcProfileProyectoFuturo;
+	@Column(name = "vc_Profile_Posicion_Proyecto_Futuro")
+	private String vcProfilePosionProyectoFuturo;
 	
 	@Column(name = "vc_Profile_Colaboraciones")
 	private String vcProfileColaboraciones;
@@ -80,6 +80,97 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	
 	@Column(name = "vc_Profile_Meses_Bench")
 	private String vcProfileMesesBench;
+
+	
+	
+	public int getNumImportCode() {
+		return numImportCode;
+	}
+
+	public void setNumImportCode(int numImportCode) {
+		this.numImportCode = numImportCode;
+	}
+
+	public String getVcProfileFechaIncorporacion() {
+		return vcProfileFechaIncorporacion;
+	}
+
+	public void setVcProfileFechaIncorporacion(String vcProfileFechaIncorporacion) {
+		this.vcProfileFechaIncorporacion = vcProfileFechaIncorporacion;
+	}
+
+
+	public String getVcProfileAsignacion() {
+		return vcProfileAsignacion;
+	}
+
+	public void setVcProfileAsignacion(String vcProfileAsignacion) {
+		this.vcProfileAsignacion = vcProfileAsignacion;
+	}
+
+	public String getVcProfileClienteActual() {
+		return vcProfileClienteActual;
+	}
+
+	public void setVcProfileClienteActual(String vcProfileClienteActual) {
+		this.vcProfileClienteActual = vcProfileClienteActual;
+	}
+
+	public String getVcProfileFechaInicioAsignacion() {
+		return vcProfileFechaInicioAsignacion;
+	}
+
+	public void setVcProfileFechaInicioAsignacion(String vcProfileFechaInicioAsignacion) {
+		this.vcProfileFechaInicioAsignacion = vcProfileFechaInicioAsignacion;
+	}
+
+	public String getVcProfileFechaFinAsignacion() {
+		return vcProfileFechaFinAsignacion;
+	}
+
+	public void setVcProfileFechaFinAsignacion(String vcProfileFechaFinAsignacion) {
+		this.vcProfileFechaFinAsignacion = vcProfileFechaFinAsignacion;
+	}
+
+	public String getVcProfileDisponibilidad() {
+		return vcProfileDisponibilidad;
+	}
+
+	public void setVcProfileDisponibilidad(String vcProfileDisponibilidad) {
+		this.vcProfileDisponibilidad = vcProfileDisponibilidad;
+	}
+
+	public String getVcProfileProyectoFuturo() {
+		return vcProfilePosionProyectoFuturo;
+	}
+
+	public void setVcProfileProyectoFuturo(String vcProfileProyectoFuturo) {
+		this.vcProfilePosionProyectoFuturo = vcProfileProyectoFuturo;
+	}
+
+	public String getVcProfileColaboraciones() {
+		return vcProfileColaboraciones;
+	}
+
+	public void setVcProfileColaboraciones(String vcProfileColaboraciones) {
+		this.vcProfileColaboraciones = vcProfileColaboraciones;
+	}
+
+	public String getVcProfileProyectoAnterior() {
+		return vcProfileProyectoAnterior;
+	}
+
+	public void setVcProfileProyectoAnterior(String vcProfileProyectoAnterior) {
+		this.vcProfileProyectoAnterior = vcProfileProyectoAnterior;
+	}
+
+	public String getVcProfileMesesBench() {
+		return vcProfileMesesBench;
+	}
+
+	public void setVcProfileMesesBench(String vcProfileMesesBench) {
+		this.vcProfileMesesBench = vcProfileMesesBench;
+	}
 
 	public int getId() {
 		return id;
