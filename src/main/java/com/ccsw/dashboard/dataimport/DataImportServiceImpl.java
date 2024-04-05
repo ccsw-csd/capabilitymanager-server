@@ -195,6 +195,7 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 		
 		StaffingDataImport data = new StaffingDataImport();
+try {
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new StaffingDataImport();
 			String vcProfileSAGA = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
@@ -207,13 +208,13 @@ public class DataImportServiceImpl implements DataImportService {
 			String vcProfileCentro = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
 			String vcProfileLocalizacion = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
 			String vcProfilePerfilTecnico = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
-			String vcProfileFechaIncorporacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
+			Date vcProfileFechaIncorporacion = getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
 			String vcProfilePorcentajeAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPORCENTAJEASIGNACION.getPosition());
 			String vcProfileStatus = getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
 			String vcProfileClienteActual = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECLIENTEACTUAL.getPosition());
-			String vcProfileFechaInicioAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
-			String vcProfileFechaFinAsignacion = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
-			String vcProfileFechaDisponibilidad = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
+			Date vcProfileFechaInicioAsignacion = getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
+			Date vcProfileFechaFinAsignacion = getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
+			Date vcProfileFechaDisponibilidad = getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
 			String vcProfilePosicionProyectoFuturo = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPOSICIONPROYECTOFUTURO.getPosition());
 			String vcProfileColaboraciones = getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECOLABORACIONES.getPosition());
 			String vcProfileProyectoAnterior = getStringValue(currentRow, Constants.StaffingDatabasePos.COLVCPROFILEPROYECTOANTERIOR.getPosition());
@@ -235,7 +236,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setVcProfileClienteActual(vcProfileClienteActual);
 			data.setVcProfileFechaInicioAsignacion(vcProfileFechaInicioAsignacion);
 			data.setVcProfileFechaFinAsignacion(vcProfileFechaFinAsignacion);
-			data.setVcProfileDisponibilidad(vcProfileFechaDisponibilidad);
+			data.setVcProfileFechaDisponibilidad(vcProfileFechaDisponibilidad);
 			data.setVcProfileProyectoFuturo(vcProfilePosicionProyectoFuturo);
 			data.setVcProfileColaboraciones(vcProfileColaboraciones);
 			data.setVcProfileProyectoAnterior(vcProfileProyectoAnterior);
@@ -245,7 +246,7 @@ public class DataImportServiceImpl implements DataImportService {
 			staffingDataImportList.add(data);
 			currentRow = sheet.getRow(i);
 		}
-
+}catch(Exception ex) {ex.printStackTrace();}
 		if (staffingDataImportList != null && !staffingDataImportList.isEmpty()) {
 			saveAllStaffingDataImport(staffingDataImportList,verStaf);
 			

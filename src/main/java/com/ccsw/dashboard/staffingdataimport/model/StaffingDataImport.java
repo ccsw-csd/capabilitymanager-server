@@ -1,5 +1,7 @@
 package com.ccsw.dashboard.staffingdataimport.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +51,7 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	private String vcProfilePerfilTecnico;
 
 	@Column(name = "vc_Profile_Fecha_Incorporacion")
-	private String vcProfileFechaIncorporacion;
+	private Date vcProfileFechaIncorporacion;
 	
 	@Column(name = "vc_Profile_Asignacion")
 	private String vcProfileAsignacion;
@@ -61,13 +63,13 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	private String vcProfileClienteActual;
 	
 	@Column(name = "vc_Profile_Fecha_Inicio_Asignacion")
-	private String vcProfileFechaInicioAsignacion;
+	private Date vcProfileFechaInicioAsignacion;
 	
 	@Column(name = "vc_Profile_Fecha_Fin_Asignacion")
-	private String vcProfileFechaFinAsignacion;
+	private Date vcProfileFechaFinAsignacion;
 
-	@Column(name = "vc_Profile_Disponibilidad")
-	private String vcProfileDisponibilidad;
+	@Column(name = "vc_Profile_Fecha_Disponibilidad")
+	private Date vcProfileFechaDisponibilidad;
 
 	@Column(name = "vc_Profile_Posicion_Proyecto_Futuro")
 	private String vcProfilePosionProyectoFuturo;
@@ -91,11 +93,11 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 		this.numImportCode = numImportCode;
 	}
 
-	public String getVcProfileFechaIncorporacion() {
+	public Date getVcProfileFechaIncorporacion() {
 		return vcProfileFechaIncorporacion;
 	}
 
-	public void setVcProfileFechaIncorporacion(String vcProfileFechaIncorporacion) {
+	public void setVcProfileFechaIncorporacion(Date vcProfileFechaIncorporacion) {
 		this.vcProfileFechaIncorporacion = vcProfileFechaIncorporacion;
 	}
 
@@ -116,28 +118,28 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 		this.vcProfileClienteActual = vcProfileClienteActual;
 	}
 
-	public String getVcProfileFechaInicioAsignacion() {
+	public Date getVcProfileFechaInicioAsignacion() {
 		return vcProfileFechaInicioAsignacion;
 	}
 
-	public void setVcProfileFechaInicioAsignacion(String vcProfileFechaInicioAsignacion) {
+	public void setVcProfileFechaInicioAsignacion(Date vcProfileFechaInicioAsignacion) {
 		this.vcProfileFechaInicioAsignacion = vcProfileFechaInicioAsignacion;
 	}
 
-	public String getVcProfileFechaFinAsignacion() {
+	public Date getVcProfileFechaFinAsignacion() {
 		return vcProfileFechaFinAsignacion;
 	}
 
-	public void setVcProfileFechaFinAsignacion(String vcProfileFechaFinAsignacion) {
+	public void setVcProfileFechaFinAsignacion(Date vcProfileFechaFinAsignacion) {
 		this.vcProfileFechaFinAsignacion = vcProfileFechaFinAsignacion;
 	}
 
-	public String getVcProfileDisponibilidad() {
-		return vcProfileDisponibilidad;
+	public Date getVcProfileFechaDisponibilidad() {
+		return vcProfileFechaDisponibilidad;
 	}
 
-	public void setVcProfileDisponibilidad(String vcProfileDisponibilidad) {
-		this.vcProfileDisponibilidad = vcProfileDisponibilidad;
+	public void setVcProfileFechaDisponibilidad(Date vcProfileDisponibilidad) {
+		this.vcProfileFechaDisponibilidad = vcProfileDisponibilidad;
 	}
 
 	public String getVcProfileProyectoFuturo() {
