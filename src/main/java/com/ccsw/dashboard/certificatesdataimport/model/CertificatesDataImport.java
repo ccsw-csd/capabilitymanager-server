@@ -2,17 +2,11 @@ package com.ccsw.dashboard.certificatesdataimport.model;
 
 import java.util.Date;
 
-import com.ccsw.dashboard.versioncertificados.model.VersionCertificaciones;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity(name = "dm_certificaciones_import")
@@ -64,9 +58,12 @@ public class CertificatesDataImport {
 	@Column(name = "vc_comentario_anexo")
 	private String vcComentarioAnexo;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "num_import_code_id", referencedColumnName = "id", unique=true, nullable=false)
-    private VersionCertificaciones num_import_code_id;
+	@Column(name = "num_import_code_id")
+	private int numImportCode;
+	
+//	@ManyToOne
+//    @JoinColumn(name = "num_import_code_id")
+//    private VersionCertificaciones num_import_code_id;
 
 	public int getId() {
 		return id;
@@ -188,6 +185,16 @@ public class CertificatesDataImport {
 		this.vcComentarioAnexo = vcComentarioAnexo;
 	}
 
+	public int getNumImportCode() {
+		return numImportCode;
+	}
+
+	public void setNumImportCode(int num_import_code_id) {
+		this.numImportCode = num_import_code_id;
+	}
+	
+	
+/*
 	public VersionCertificaciones getNum_import_code_id() {
 		return num_import_code_id;
 	}
@@ -195,5 +202,6 @@ public class CertificatesDataImport {
 	public void setNum_import_code_id(VersionCertificaciones num_import_code_id) {
 		this.num_import_code_id = num_import_code_id;
 	}
-		
+*/
+	
 }

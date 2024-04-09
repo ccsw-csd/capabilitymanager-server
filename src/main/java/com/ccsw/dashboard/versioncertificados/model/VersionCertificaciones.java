@@ -1,19 +1,13 @@
 package com.ccsw.dashboard.versioncertificados.model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -46,8 +40,8 @@ public class VersionCertificaciones {
 	@Column(name = "fichero")
 	private byte[] fichero;
 
-	@OneToMany(mappedBy="num_import_code_id", cascade=CascadeType.ALL, orphanRemoval = true)
-	private Set<CertificatesDataImport> certificates;
+//	@OneToMany(cascade=CascadeType.ALL, mappedBy="num_import_code_id")
+//	private Set<CertificatesDataImport> certificates;
 
 	public int getId() {
 		return id;
@@ -112,7 +106,7 @@ public class VersionCertificaciones {
 	public void setFichero(byte[] fichero) {
 		this.fichero = fichero;
 	}
-
+/*
 	public Set<CertificatesDataImport> getCertificates() {
 		return certificates;
 	}
@@ -120,10 +114,11 @@ public class VersionCertificaciones {
 	public void setCertificates(Set<CertificatesDataImport> certificates) {
 		this.certificates = certificates;
 	}
+
 	public void addCertificate(CertificatesDataImport certificate) {
-		if(this.certificates==null) this.certificates= new HashSet<CertificatesDataImport>();
+		if(this.certificates==null) this.certificates = new HashSet<CertificatesDataImport>();
 		this.certificates.add(certificate);
 		certificate.setNum_import_code_id(this);
 	}
-	
+*/
 }
