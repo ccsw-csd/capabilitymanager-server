@@ -10,6 +10,7 @@ public class DashboardServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DashboardServerApplication.class, args);
+		System.out.println("arrancamos dashboard...");
 	}
 
 }

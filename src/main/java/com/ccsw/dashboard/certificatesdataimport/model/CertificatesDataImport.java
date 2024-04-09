@@ -44,10 +44,10 @@ public class CertificatesDataImport {
 	@Column(name = "vc_modulo")
 	private String vcModulo;
 	
-	@Column(name = "vc_candidato")
+	@Column(name = "vc_id_candidato")
 	private String vcIdCandidato;
 
-	@Column(name = "vc_fecha_certificado", nullable = false)
+	@Column(name = "vc_fecha_certificado")
 	private Date vcFechaCertificado;
 	
 	@Column(name = "vc_fecha_expiracion")

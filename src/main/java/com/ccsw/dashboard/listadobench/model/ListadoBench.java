@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.dataformation.model;
+package com.ccsw.dashboard.listadobench.model;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="vista_listado_bench")
-public class DataFormation {
+public class ListadoBench {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
