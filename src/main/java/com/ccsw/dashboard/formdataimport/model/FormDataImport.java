@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
+@Entity(name = "dm_formdata_import")
 @Table(name = "dm_formdata_import")
 public class FormDataImport implements Comparable<FormDataImport> {
 

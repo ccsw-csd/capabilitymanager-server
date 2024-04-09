@@ -36,7 +36,7 @@ public class VersionCapacidadesServiceImpl implements VersionCapacidadesService 
 			try {
 				String fileName =  versionCapacidades.getNombreFichero();
 				String[] fileNameArr = fileName.split("\\.");
-				String extension = versionCapacidades.getNombreFichero().contains(".xlsx") ? Constants.XLSX_FILE_EXTENSION : Constants.XLS_FILE_EXTENSION;
+				String extension = versionCapacidades.getNombreFichero().contains(Constants.XLSX_FILE_EXTENSION ) ? Constants.XLSX_FILE_EXTENSION : Constants.XLS_FILE_EXTENSION;
 
 			    File archivoTemporal = File.createTempFile(fileNameArr[0]+"-", extension);
 			    
@@ -60,11 +60,11 @@ public class VersionCapacidadesServiceImpl implements VersionCapacidadesService 
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append( function ).append(Constants.ERROR_INIT2);
 		logger.error(errorData.toString() + " Status: " + status);
-		if(errorMessage != null && !errorMessage.isBlank() & !errorMessage.isEmpty())
+		if(errorMessage != null && !errorMessage.isBlank() && !errorMessage.isEmpty())
 			logger.error(errorData.toString() + " ERROR: " + errorMessage);
-		if(message != null && !message.isBlank() & !message.isEmpty())
+		if(message != null && !message.isBlank() && !message.isEmpty())
 			logger.error(errorData.toString() + " MESSAGE: " + message);
-		if(trace != null && !trace.isBlank() & !trace.isEmpty())
+		if(trace != null && !trace.isBlank() && !trace.isEmpty())
 			logger.error(errorData.toString() + " TRACE: " + trace);
     }
 }
