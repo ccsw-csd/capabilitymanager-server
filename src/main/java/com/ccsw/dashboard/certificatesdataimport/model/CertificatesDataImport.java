@@ -44,7 +44,7 @@ public class CertificatesDataImport {
 	@Column(name = "vc_modulo")
 	private String vcModulo;
 	
-	@Column(name = "vc_candidato")
+	@Column(name = "vc_id_candidato")
 	private String vcIdCandidato;
 
 	@Column(name = "vc_fecha_certificado", nullable = false)
@@ -62,9 +62,12 @@ public class CertificatesDataImport {
 	@Column(name = "vc_comentario_anexo")
 	private String vcComentarioAnexo;
 	
-	@ManyToOne
-    @JoinColumn(name = "num_import_code_id")
-    private VersionCertificaciones num_import_code_id;
+	@Column(name = "num_import_code_id")
+	private int numImportCode;
+	
+//	@ManyToOne
+//    @JoinColumn(name = "num_import_code_id")
+//    private VersionCertificaciones num_import_code_id;
 
 	public int getId() {
 		return id;
@@ -186,6 +189,16 @@ public class CertificatesDataImport {
 		this.vcComentarioAnexo = vcComentarioAnexo;
 	}
 
+	public int getNumImportCode() {
+		return numImportCode;
+	}
+
+	public void setNumImportCode(int num_import_code_id) {
+		this.numImportCode = num_import_code_id;
+	}
+	
+	
+/*
 	public VersionCertificaciones getNum_import_code_id() {
 		return num_import_code_id;
 	}
@@ -193,6 +206,6 @@ public class CertificatesDataImport {
 	public void setNum_import_code_id(VersionCertificaciones num_import_code_id) {
 		this.num_import_code_id = num_import_code_id;
 	}
-
+*/
 	
 }
