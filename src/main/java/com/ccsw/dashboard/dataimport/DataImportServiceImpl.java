@@ -292,7 +292,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setVcPartner(vcPartner);
 			data.setVcSAGA(vcSAGA);
 			data.setVcSector(vcSector);
-			data.setNumImportCode(verCerytificaciones.getId());
+			data.setNum_import_code_id(verCerytificaciones.getId());
 			
 			if(!data.getVcSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
@@ -498,7 +498,7 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private List<CertificatesDataImport> saveAllCertificatesDataImport(List<CertificatesDataImport> certificatesDataImportList) {
 		try {
-			return (List<CertificatesDataImport>) certificatesDataImportRepository.saveAll(certificatesDataImportList);
+			return (List<CertificatesDataImport>) certificatesDataImportRepository.save(certificatesDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
