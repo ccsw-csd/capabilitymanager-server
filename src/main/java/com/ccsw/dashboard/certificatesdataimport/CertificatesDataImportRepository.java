@@ -9,4 +9,6 @@ import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
 @Repository
 @Transactional
 public interface CertificatesDataImportRepository extends JpaRepository<CertificatesDataImport, Long> {
+
+
 }

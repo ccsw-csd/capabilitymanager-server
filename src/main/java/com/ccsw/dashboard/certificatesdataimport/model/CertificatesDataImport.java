@@ -9,9 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "dm_certificaciones_import")
+@Entity
 @Table(name = "dm_certificaciones_import")
-public class CertificatesDataImport {
+public class CertificatesDataImport  implements Comparable<CertificatesDataImport>{
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -59,11 +60,7 @@ public class CertificatesDataImport {
 	private String vcComentarioAnexo;
 	
 	@Column(name = "num_import_code_id")
-	private int numImportCode;
-	
-//	@ManyToOne
-//    @JoinColumn(name = "num_import_code_id")
-//    private VersionCertificaciones num_import_code_id;
+    private int numImportCodeId;
 
 	public int getId() {
 		return id;
@@ -185,23 +182,19 @@ public class CertificatesDataImport {
 		this.vcComentarioAnexo = vcComentarioAnexo;
 	}
 
-	public int getNumImportCode() {
-		return numImportCode;
+	public int getNumImportCodeId() {
+		return numImportCodeId;
 	}
 
-	public void setNumImportCode(int num_import_code_id) {
-		this.numImportCode = num_import_code_id;
-	}
-	
-	
-/*
-	public VersionCertificaciones getNum_import_code_id() {
-		return num_import_code_id;
+	public void setNumImportCodeId(int num_import_code_id) {
+		this.numImportCodeId = num_import_code_id;
 	}
 
-	public void setNum_import_code_id(VersionCertificaciones num_import_code_id) {
-		this.num_import_code_id = num_import_code_id;
+	@Override
+	public int compareTo(CertificatesDataImport o) {
+		
+		return 0;
 	}
-*/
+
 	
 }

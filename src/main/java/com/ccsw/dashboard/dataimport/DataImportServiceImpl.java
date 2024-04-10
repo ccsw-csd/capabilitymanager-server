@@ -313,8 +313,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setVcAnexo(vcAnexo);
 			data.setVcComentarioAnexo(vcComentarioAnexo);
 
-			data.setNumImportCode(verCerytificaciones.getId());
-			
+			data.setNumImportCodeId(verCerytificaciones.getId());
 			if(!data.getVcSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
 			}
