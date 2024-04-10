@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.certificatesdataimport.model;
+package com.ccsw.dashboard.certificatesversion.model;
 
 import java.time.LocalDateTime;
 

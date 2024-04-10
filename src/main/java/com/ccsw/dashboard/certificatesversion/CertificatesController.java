@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.certificatesdataimport;
+package com.ccsw.dashboard.certificatesversion;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersion;
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersionDto;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersion;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersionDto;
 
 @RestController
 @RequestMapping(value = "/certificates")
