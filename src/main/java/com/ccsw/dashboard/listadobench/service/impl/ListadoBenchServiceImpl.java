@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.listadobench.service;
+package com.ccsw.dashboard.listadobench.service.impl;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.listadobench.model.ListadoBench;
 import com.ccsw.dashboard.listadobench.repository.ViewListadoBenchRepository;
+import com.ccsw.dashboard.listadobench.service.ListadoBenchService;
 
 @Service
 public class ListadoBenchServiceImpl implements ListadoBenchService {
@@ -20,8 +21,5 @@ public class ListadoBenchServiceImpl implements ListadoBenchService {
 		return (List<ListadoBench>) listadoBenchRepository.getListadoPersonasBench();
 	}
 	
-
-
-
 
 }

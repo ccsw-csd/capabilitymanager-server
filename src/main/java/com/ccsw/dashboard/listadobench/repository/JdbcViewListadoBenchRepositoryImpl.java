@@ -19,34 +19,35 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 
 	public Collection<ListadoBench> getListadoPersonasBench() {
 		return jdbcTemplate.query("SELECT DISTINCT " +
-				        "stf.vc_Profile_SAGA AS saga, " +
-				        "stf.vc_Profile_GGID AS ggid, " +
-				        "stf.vc_Profile_Nombre AS nombre, " +
-				        "stf.vc_Profile_Apellidos AS apellidos, " +
-				        "stf.vc_Profile_Practica AS practica, " +
-				        "stf.vc_Profile_Grado AS grado, " +
-				        "stf.vc_Profile_Categoria AS categoria, " +
-				        "stf.vc_Profile_Perfil_Tecnico AS perfil, " +
-				        "stf.vc_Profile_Fecha_Incorporacion AS fIncorporacion, " +
-				        "COALESCE(stf.vc_Profile_Asignacion, 0) AS porcentajeAsignacion, " +
-				        "stf.vc_Profile_Cliente_Actual AS clienteActual, " +
-				        "stf.vc_Profile_Fecha_Inicio_Asignacion AS inicioAsignacion, " +
-				        "stf.vc_Profile_Fecha_Fin_Asignacion AS finAsignacion, " +
-				        "stf.vc_Profile_Fecha_Disponibilidad AS fDisponibilidad, " +
-				        "stf.vc_Profile_Posicion_Proyecto_Futuro AS posicionFuturo, " +
-				        "stf.vc_Profile_Colaboraciones AS colaboraciones, " +
-				        "stf.vc_Profile_Proyecto_Anterior AS proyectoAnterior, " +
-				        "COALESCE(stf.vc_Profile_Meses_Bench, 0) AS mesesBench, " +
-				        "stf.vc_Profile_Status AS status " +
-				        "FROM dashboard.dm_staffing_import stf " +
-				        "WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = (select max(id) from dashboard.version_staffing) " +
-				        "AND stf.vc_Profile_Status = 'Disponible' " +
-				        "ORDER BY saga ASC",this::mapRowToDataFormation);
+		        "stf.Id AS id, " +
+		        "stf.vc_Profile_SAGA AS saga, " +
+		        "stf.vc_Profile_GGID AS ggid, " +
+		        "stf.vc_Profile_Nombre AS nombre, " +
+		        "stf.vc_Profile_Apellidos AS apellidos, " +
+		        "stf.vc_Profile_Practica AS practica, " +
+		        "stf.vc_Profile_Grado AS grado, " +
+		        "stf.vc_Profile_Categoria AS categoria, " +
+		        "stf.vc_Profile_Perfil_Tecnico AS perfil, " +
+		        "stf.vc_Profile_Fecha_Incorporacion AS fIncorporacion, " +
+		        "COALESCE(stf.vc_Profile_Asignacion, 0) AS porcentajeAsignacion, " +
+		        "stf.vc_Profile_Cliente_Actual AS clienteActual, " +
+		        "stf.vc_Profile_Fecha_Inicio_Asignacion AS inicioAsignacion, " +
+		        "stf.vc_Profile_Fecha_Fin_Asignacion AS finAsignacion, " +
+		        "stf.vc_Profile_Fecha_Disponibilidad AS fDisponibilidad, " +
+		        "stf.vc_Profile_Posicion_Proyecto_Futuro AS posicionFuturo, " +
+		        "stf.vc_Profile_Colaboraciones AS colaboraciones, " +
+		        "stf.vc_Profile_Proyecto_Anterior AS proyectoAnterior, " +
+		        "COALESCE(stf.vc_Profile_Meses_Bench, 0) AS mesesBench, " +
+		        "stf.vc_Profile_Status AS status " +
+		        "FROM dashboard.dm_staffing_import stf " +
+		        "WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = (select max(id) from dashboard.version_staffing) " +
+		        "AND stf.vc_Profile_Status = 'Disponible' " +
+		        "ORDER BY saga ASC", this::mapRowToDataFormation);
 	}
-	 
 
 	private ListadoBench mapRowToDataFormation(ResultSet row, int rowNum) throws SQLException {
 		ListadoBench dataFormation = new ListadoBench();
+		dataFormation.setId(row.getLong("id"));
 		dataFormation.setSaga(row.getString("saga"));
 		dataFormation.setGgid(row.getString("ggid"));
 		dataFormation.setNombre(row.getString("nombre"));
@@ -66,19 +67,6 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 		dataFormation.setColaboraciones(row.getString("colaboraciones"));
 		dataFormation.setProyecto_anterior(row.getString("proyectoAnterior"));
 		dataFormation.setMeses_Bench(row.getString("mesesBench"));
-		dataFormation.setPartner(row.getString("partner"));
-		dataFormation.setCertificado(row.getString("certificado"));
-		dataFormation.setName_gtd(row.getString("nameGtd"));
-		dataFormation.setCertification_gtd(row.getString("certificacionGtd"));
-		dataFormation.setCode(row.getString("code"));
-		dataFormation.setSector(row.getString("sector"));
-		dataFormation.setModulo(row.getString("modulo"));
-		dataFormation.setId_candidato(row.getString("candidato"));
-		dataFormation.setFecha_certificado(row.getDate("fCertificado"));
-		dataFormation.setFecha_expiracion(row.getDate("expiracion"));
-		dataFormation.setActivo(row.getString("activo"));
-		dataFormation.setAnexo(row.getString("anexo"));
-		dataFormation.setComentario_anexo(row.getString("comentario"));
 
 		return dataFormation;
 	}
