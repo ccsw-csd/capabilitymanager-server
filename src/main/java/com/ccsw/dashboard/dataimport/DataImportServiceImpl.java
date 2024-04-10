@@ -196,27 +196,47 @@ public class DataImportServiceImpl implements DataImportService {
 			data = new StaffingDataImport();
 			String vcProfileSAGA = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
 			String vcProfileGGID = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGGID.getPosition());
-			String vcProfilePractica = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
-			String vcProfileGrado = utilsServiceImpl.getGradeValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
-			String vcProfileCategoria = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
 			String vcProfileCentro = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
 			String vcProfileNombre = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILENOMBRE.getPosition());
 			String vcProfileApellidos = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEAPELLIDOS.getPosition());
 			String vcProfileLocalizacion = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
-			String vcProfilePerfiltecnico = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
+			String vcProfilePractica = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
+			String vcProfileGrado = utilsServiceImpl.getGradeValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
+			String vcProfileCategoria = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
+			String vcProfilePerfilTecnico = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
+			Date vcProfileFechaIncorporacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
+			String vcProfilePorcentajeAsignacion = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPORCENTAJEASIGNACION.getPosition());
 			String vcProfileStatus = utilsServiceImpl.getStringValue (currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
+			String vcProfileClienteActual = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECLIENTEACTUAL.getPosition());
+			Date vcProfileFechaInicioAsignacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
+			Date vcProfileFechaFinAsignacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
+			Date vcProfileFechaDisponibilidad = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
+			String vcProfilePosicionProyectoFuturo = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPOSICIONPROYECTOFUTURO.getPosition());
+			String vcProfileColaboraciones = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECOLABORACIONES.getPosition());
+			String vcProfileProyectoAnterior = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COLVCPROFILEPROYECTOANTERIOR.getPosition());
+			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEMESESBENCH.getPosition());
+
 			data.setVcProfileSAGA(vcProfileSAGA);
 			data.setVcProfileGGID(vcProfileGGID);
-			data.setVcProfilePractica(vcProfilePractica);
-			data.setVcProfileGrado(vcProfileGrado);
-			data.setVcProfileCategoria(vcProfileCategoria);
 			data.setVcProfileCentro(vcProfileCentro);
 			data.setVcProfileNombre(vcProfileNombre);
 			data.setVcProfileApellidos(vcProfileApellidos);
 			data.setVcProfileLocalizacion(vcProfileLocalizacion);
-			data.setVcProfilePerfilTecnico(vcProfilePerfiltecnico);
+			data.setVcProfilePractica(vcProfilePractica);
+			data.setVcProfileGrado(vcProfileGrado);
+			data.setVcProfileCategoria(vcProfileCategoria);
+			data.setVcProfilePerfilTecnico(vcProfilePerfilTecnico);
+			data.setVcProfileFechaIncorporacion(vcProfileFechaIncorporacion);
+			data.setVcProfileAsignacion(vcProfilePorcentajeAsignacion);
 			data.setVcProfileStatus(vcProfileStatus);
-
+			data.setVcProfileClienteActual(vcProfileClienteActual);
+			data.setVcProfileFechaInicioAsignacion(vcProfileFechaInicioAsignacion);
+			data.setVcProfileFechaFinAsignacion(vcProfileFechaFinAsignacion);
+			data.setVcProfileFechaDisponibilidad(vcProfileFechaDisponibilidad);
+			data.setVcProfileProyectoFuturo(vcProfilePosicionProyectoFuturo);
+			data.setVcProfileColaboraciones(vcProfileColaboraciones);
+			data.setVcProfileProyectoAnterior(vcProfileProyectoAnterior);
+			data.setVcProfileMesesBench(vcProfileMesesBench);
 			data.setNumImportCodeID(verStaf.getId());
 			
 			staffingDataImportList.add(data);
@@ -263,37 +283,37 @@ public class DataImportServiceImpl implements DataImportService {
 		CertificatesDataImport data = null;
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new CertificatesDataImport();
-			String vcActivo = utilsServiceImpl.getStringValue (currentRow, Constants.CertificatesDatabasePos.COL_VCACTIVO.getPosition());
-			String vcAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCANEXO.getPosition());
+			String vcSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSAGA.getPosition());
+			String vcPartner = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCPARTNER.getPosition());
 			String vcCertificado = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICADO.getPosition());
+			String vcNameGTD = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCNAMEGTD.getPosition());
 			String vcCertificationGDT = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICATIONGTD.getPosition());
 			String vcCode =  utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCODE.getPosition());
-			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCOMENTARIOANEXO.getPosition());
+			String vcSector = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSECTOR.getPosition());
+			String vcModulo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCMODULO.getPosition());
+			String vcIdCandidato = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCIDCANDIDATO.getPosition());
 			Date vcFechaCertificado = utilsServiceImpl.getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHACERTIFICADO.getPosition());
 			Date vcFechaExpiracion = utilsServiceImpl.getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHAEXPIRACION.getPosition());
-			String vcIdCandidato = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCIDCANDIDATO.getPosition());
-			String vcModulo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCMODULO.getPosition());
-			String vcNameGTD = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCNAMEGTD.getPosition());
-			String vcPartner = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCPARTNER.getPosition());
-			String vcSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSAGA.getPosition());
-			String vcSector = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSECTOR.getPosition());
+			String vcActivo = utilsServiceImpl.getStringValue (currentRow, Constants.CertificatesDatabasePos.COL_VCACTIVO.getPosition());
+			String vcAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCANEXO.getPosition());
+			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCOMENTARIOANEXO.getPosition());
 			
-			data.setVcActivo(vcActivo);
-			data.setVcAnexo(vcAnexo);
+			data.setVcSAGA(vcSAGA);
+			data.setVcPartner(vcPartner);
 			data.setVcCertificado(vcCertificado);
+			data.setVcNameGTD(vcNameGTD);
 			data.setVcCertificationGTD(vcCertificationGDT);
 			data.setVcCode(vcCode);
-			data.setVcComentarioAnexo(vcComentarioAnexo);
+			data.setVcSector(vcSector);
+			data.setVcModulo(vcModulo);
+			data.setVcIdCandidato(vcIdCandidato);
 			data.setVcFechaCertificado(vcFechaCertificado == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado);
 			data.setVcFechaExpiracion(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaExpiracion);
-			data.setVcIdCandidato(vcIdCandidato);
-			data.setVcModulo(vcModulo);
-			data.setVcNameGTD(vcNameGTD);
-			data.setVcPartner(vcPartner);
-			data.setVcSAGA(vcSAGA);
-			data.setVcSector(vcSector);
-			data.setNum_import_code_id(verCerytificaciones.getId());
-			
+			data.setVcActivo(vcActivo);
+			data.setVcAnexo(vcAnexo);
+			data.setVcComentarioAnexo(vcComentarioAnexo);
+
+			data.setNumImportCodeId(verCerytificaciones.getId());
 			if(!data.getVcSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
 			}
@@ -382,13 +402,15 @@ public class DataImportServiceImpl implements DataImportService {
 		int numReg = sheet.getPhysicalNumberOfRows() -1;
 		
 		VersionCertificaciones versionCer = new VersionCertificaciones();
-		versionCer.setNumRegistros(numReg);
+		versionCer.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
 		versionCer.setFechaImportacion(LocalDateTime.now());
+		versionCer.setNumRegistros(numReg);
 		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
-		versionCer.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
 		versionCer.setFichero(dto.getFileData().getBytes());
+//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
+		
 		return versionCertificacionesRepository.save(versionCer);
 	}
 	/**
@@ -396,42 +418,42 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @param sheet document to 
 	 * @return
 	 * /
-	private Set<CertificatesDataImport> setCertificacionesDataImport (VersionCertificaciones versionCer , Sheet sheet){
+	private Set<CertificatesDataImport> setCertificacionesDataImport (VersionCertificaciones versionCer, Sheet sheet){
 		Set<CertificatesDataImport> setCertificatesDataImportObject = new HashSet<CertificatesDataImport>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
 		CertificatesDataImport data = null;
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new CertificatesDataImport();
-			String vcActivo = utilsServiceImpl.getStringValue (currentRow, Constants.CertificatesDatabasePos.COL_VCACTIVO.getPosition());
-			String vcAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCANEXO.getPosition());
+			String vcSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSAGA.getPosition());
+			String vcPartner = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCPARTNER.getPosition());
 			String vcCertificado = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICADO.getPosition());
+			String vcNameGTD = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCNAMEGTD.getPosition());
 			String vcCertificationGDT = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCERTIFICATIONGTD.getPosition());
 			String vcCode =  utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCODE.getPosition());
-			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCOMENTARIOANEXO.getPosition());
-			Date vcFechaCertificado = getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHACERTIFICADO.getPosition());
-			Date vcFechaExpiracion = getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHAEXPIRACION.getPosition());
-			String vcIdCandidato = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCIDCANDIDATO.getPosition());
-			String vcModulo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCMODULO.getPosition());
-			String vcNameGTD = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCNAMEGTD.getPosition());
-			String vcPartner = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCPARTNER.getPosition());
-			String vcSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSAGA.getPosition());
 			String vcSector = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCSECTOR.getPosition());
-			
-			data.setVcActivo(vcActivo);
-			data.setVcAnexo(vcAnexo);
+			String vcModulo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCMODULO.getPosition());
+			String vcIdCandidato = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCIDCANDIDATO.getPosition());
+			Date vcFechaCertificado = utilsServiceImpl.getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHACERTIFICADO.getPosition());
+			Date vcFechaExpiracion = utilsServiceImpl.getDateValue(currentRow, Constants.CertificatesDatabasePos.COL_VCFECHAEXPIRACION.getPosition());
+			String vcActivo = utilsServiceImpl.getStringValue (currentRow, Constants.CertificatesDatabasePos.COL_VCACTIVO.getPosition());
+			String vcAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCANEXO.getPosition());
+			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow, Constants.CertificatesDatabasePos.COL_VCCOMENTARIOANEXO.getPosition());
+
+//			data.setNum_import_code_id(versionCer.getId());
+			data.setVcSAGA(vcSAGA);
+			data.setVcPartner(vcPartner);
 			data.setVcCertificado(vcCertificado);
+			data.setVcNameGTD(vcNameGTD);
 			data.setVcCertificationGTD(vcCertificationGDT);
 			data.setVcCode(vcCode);
-			data.setVcComentarioAnexo(vcComentarioAnexo);
+			data.setVcSector(vcSector);
+			data.setVcModulo(vcModulo);
+			data.setVcIdCandidato(vcIdCandidato);
 			data.setVcFechaCertificado(vcFechaCertificado == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado);
 			data.setVcFechaExpiracion(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaExpiracion);
-			data.setVcIdCandidato(vcIdCandidato);
-			data.setVcModulo(vcModulo);
-			data.setVcNameGTD(vcNameGTD);
-			data.setVcPartner(vcPartner);
-			data.setVcSAGA(vcSAGA);
-			data.setVcSector(vcSector);
-			data.setNum_import_code_id(versionCer.getId());
+			data.setVcActivo(vcActivo);
+			data.setVcAnexo(vcAnexo);
+			data.setVcComentarioAnexo(vcComentarioAnexo);
 			
 			if(!data.getVcSAGA().equals(Constants.EMPTY)) {
 				setCertificatesDataImportObject.add(data);

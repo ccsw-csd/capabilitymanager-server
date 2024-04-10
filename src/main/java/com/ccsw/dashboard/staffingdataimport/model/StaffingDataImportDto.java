@@ -1,5 +1,7 @@
 package com.ccsw.dashboard.staffingdataimport.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 
 @SuppressWarnings("unused")
@@ -9,15 +11,25 @@ public class StaffingDataImportDto {
 	private int numImportCodeId;
 	private String vcProfileSAGA;
 	private String vcProfileGGID;
+	private String vcProfileNombre;
+	private String vcProfileApellidos;
 	private String vcProfilePractica;
 	private String vcProfileGrado;
 	private String vcProfileCategoria;
+	private String vcProfilePerfilTecnico;	
 	private String vcProfileCentro;
-	private String vcProfileNombre;
-	private String vcProfileApellidos;
 	private String vcProfileLocalizacion;
-	private String vcProfilePerfilTecnico;
+	private Date vcFechaIncorporacion;
+	private String vcAsignacion;
 	private String vcProfileStatus;
+	private String vcClienteActual;
+	private Date vcFechaInicioAsignacion;
+	private Date vcFechaFinAsignacion;
+	private Date vcFechaDisponibilidad;
+	private String vcPosicionProyectoFuturo;
+	private String vcColaboraciones;
+	private String vcProyectoAnterior;
+	private String vcMesesBench;
 
 	public int getId() {
 		return id;
@@ -121,6 +133,86 @@ public class StaffingDataImportDto {
 
 	public void setVcProfileStatus(String vcProfileStatus) {
 		this.vcProfileStatus = vcProfileStatus;
+	}
+
+	public Date getVcFechaIncorporacion() {
+		return vcFechaIncorporacion;
+	}
+
+	public void setVcFechaIncorporacion(Date vcFechaIncorporacion) {
+		this.vcFechaIncorporacion = vcFechaIncorporacion;
+	}
+
+	public String getVcAsignacion() {
+		return vcAsignacion;
+	}
+
+	public void setVcAsignacion(String vcAsignacion) {
+		this.vcAsignacion = vcAsignacion;
+	}
+
+	public String getVcClienteActual() {
+		return vcClienteActual;
+	}
+
+	public void setVcClienteActual(String vcClienteActual) {
+		this.vcClienteActual = vcClienteActual;
+	}
+
+	public Date getVcFechaInicioAsignacion() {
+		return vcFechaInicioAsignacion;
+	}
+
+	public void setVcFechaInicioAsignacion(Date vcFechaInicioAsignacion) {
+		this.vcFechaInicioAsignacion = vcFechaInicioAsignacion;
+	}
+
+	public Date getVcFechaFinAsignacion() {
+		return vcFechaFinAsignacion;
+	}
+
+	public void setVcFechaFinAsignacion(Date vcFechaFinAsignacion) {
+		this.vcFechaFinAsignacion = vcFechaFinAsignacion;
+	}
+
+	public Date getVcFechaDisponibilidad() {
+		return vcFechaDisponibilidad;
+	}
+
+	public void setVcFechaDisponibilidad(Date vcFechaDisponibilidad) {
+		this.vcFechaDisponibilidad = vcFechaDisponibilidad;
+	}
+
+	public String getVcPosicionProyectoFuturo() {
+		return vcPosicionProyectoFuturo;
+	}
+
+	public void setVcPosicionProyectoFuturo(String vcPosicionProyectoFuturo) {
+		this.vcPosicionProyectoFuturo = vcPosicionProyectoFuturo;
+	}
+
+	public String getVcColaboraciones() {
+		return vcColaboraciones;
+	}
+
+	public void setVcColaboraciones(String vcColaboraciones) {
+		this.vcColaboraciones = vcColaboraciones;
+	}
+
+	public String getVcProyectoAnterior() {
+		return vcProyectoAnterior;
+	}
+
+	public void setVcProyectoAnterior(String vcProyectoAnterior) {
+		this.vcProyectoAnterior = vcProyectoAnterior;
+	}
+
+	public String getVcMesesBench() {
+		return vcMesesBench;
+	}
+
+	public void setVcMesesBench(String vcMesesBench) {
+		this.vcMesesBench = vcMesesBench;
 	}
 
 }

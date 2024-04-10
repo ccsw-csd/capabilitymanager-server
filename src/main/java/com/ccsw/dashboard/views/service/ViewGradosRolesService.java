@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.views;
+package com.ccsw.dashboard.views.service;
 
 import java.util.Collection;
 

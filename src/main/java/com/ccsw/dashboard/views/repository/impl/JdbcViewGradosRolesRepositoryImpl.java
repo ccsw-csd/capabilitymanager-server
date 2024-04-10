@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.views;
+package com.ccsw.dashboard.views.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ccsw.dashboard.graderole.model.GradeRole;
+import com.ccsw.dashboard.views.repository.ViewGradosRolesRepository;
 
 @Repository
 public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesRepository {

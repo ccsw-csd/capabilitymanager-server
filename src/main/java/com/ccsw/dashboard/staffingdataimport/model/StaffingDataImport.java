@@ -1,5 +1,7 @@
 package com.ccsw.dashboard.staffingdataimport.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,15 +26,6 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "vc_Profile_GGID", nullable = false)
 	private String vcProfileGGID;
 
-	@Column(name = "vc_Profile_Practica", nullable = false)
-	private String vcProfilePractica;
-
-	@Column(name = "vc_Profile_Grado", nullable = false)
-	private String vcProfileGrado;
-
-	@Column(name = "vc_Profile_Categoria")
-	private String vcProfileCategoria;
-
 	@Column(name = "vc_Profile_Centro", nullable = false)
 	private String vcProfileCentro;
 
@@ -45,11 +38,141 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "vc_Profile_Localizacion")
 	private String vcProfileLocalizacion;
 
+	@Column(name = "vc_Profile_Practica", nullable = false)
+	private String vcProfilePractica;
+
+	@Column(name = "vc_Profile_Grado", nullable = false)
+	private String vcProfileGrado;
+
+	@Column(name = "vc_Profile_Categoria")
+	private String vcProfileCategoria;
+
 	@Column(name = "vc_Profile_Perfil_Tecnico")
 	private String vcProfilePerfilTecnico;
 
+	@Column(name = "vc_Profile_Fecha_Incorporacion")
+	private Date vcProfileFechaIncorporacion;
+	
+	@Column(name = "vc_Profile_Asignacion")
+	private String vcProfileAsignacion;
+	
 	@Column(name = "vc_Profile_Status")
 	private String vcProfileStatus;
+
+	@Column(name = "vc_Profile_Cliente_Actual")
+	private String vcProfileClienteActual;
+	
+	@Column(name = "vc_Profile_Fecha_Inicio_Asignacion")
+	private Date vcProfileFechaInicioAsignacion;
+	
+	@Column(name = "vc_Profile_Fecha_Fin_Asignacion")
+	private Date vcProfileFechaFinAsignacion;
+
+	@Column(name = "vc_Profile_Fecha_Disponibilidad")
+	private Date vcProfileFechaDisponibilidad;
+
+	@Column(name = "vc_Profile_Posicion_Proyecto_Futuro")
+	private String vcProfilePosionProyectoFuturo;
+	
+	@Column(name = "vc_Profile_Colaboraciones")
+	private String vcProfileColaboraciones;
+	
+	@Column(name = "vc_Profile_Proyecto_Anterior")
+	private String vcProfileProyectoAnterior;
+	
+	@Column(name = "vc_Profile_Meses_Bench")
+	private String vcProfileMesesBench;
+
+	
+	
+	public int getNumImportCode() {
+		return numImportCode;
+	}
+
+	public void setNumImportCode(int numImportCode) {
+		this.numImportCode = numImportCode;
+	}
+
+	public Date getVcProfileFechaIncorporacion() {
+		return vcProfileFechaIncorporacion;
+	}
+
+	public void setVcProfileFechaIncorporacion(Date vcProfileFechaIncorporacion) {
+		this.vcProfileFechaIncorporacion = vcProfileFechaIncorporacion;
+	}
+
+
+	public String getVcProfileAsignacion() {
+		return vcProfileAsignacion;
+	}
+
+	public void setVcProfileAsignacion(String vcProfileAsignacion) {
+		this.vcProfileAsignacion = vcProfileAsignacion;
+	}
+
+	public String getVcProfileClienteActual() {
+		return vcProfileClienteActual;
+	}
+
+	public void setVcProfileClienteActual(String vcProfileClienteActual) {
+		this.vcProfileClienteActual = vcProfileClienteActual;
+	}
+
+	public Date getVcProfileFechaInicioAsignacion() {
+		return vcProfileFechaInicioAsignacion;
+	}
+
+	public void setVcProfileFechaInicioAsignacion(Date vcProfileFechaInicioAsignacion) {
+		this.vcProfileFechaInicioAsignacion = vcProfileFechaInicioAsignacion;
+	}
+
+	public Date getVcProfileFechaFinAsignacion() {
+		return vcProfileFechaFinAsignacion;
+	}
+
+	public void setVcProfileFechaFinAsignacion(Date vcProfileFechaFinAsignacion) {
+		this.vcProfileFechaFinAsignacion = vcProfileFechaFinAsignacion;
+	}
+
+	public Date getVcProfileFechaDisponibilidad() {
+		return vcProfileFechaDisponibilidad;
+	}
+
+	public void setVcProfileFechaDisponibilidad(Date vcProfileDisponibilidad) {
+		this.vcProfileFechaDisponibilidad = vcProfileDisponibilidad;
+	}
+
+	public String getVcProfileProyectoFuturo() {
+		return vcProfilePosionProyectoFuturo;
+	}
+
+	public void setVcProfileProyectoFuturo(String vcProfileProyectoFuturo) {
+		this.vcProfilePosionProyectoFuturo = vcProfileProyectoFuturo;
+	}
+
+	public String getVcProfileColaboraciones() {
+		return vcProfileColaboraciones;
+	}
+
+	public void setVcProfileColaboraciones(String vcProfileColaboraciones) {
+		this.vcProfileColaboraciones = vcProfileColaboraciones;
+	}
+
+	public String getVcProfileProyectoAnterior() {
+		return vcProfileProyectoAnterior;
+	}
+
+	public void setVcProfileProyectoAnterior(String vcProfileProyectoAnterior) {
+		this.vcProfileProyectoAnterior = vcProfileProyectoAnterior;
+	}
+
+	public String getVcProfileMesesBench() {
+		return vcProfileMesesBench;
+	}
+
+	public void setVcProfileMesesBench(String vcProfileMesesBench) {
+		this.vcProfileMesesBench = vcProfileMesesBench;
+	}
 
 	public int getId() {
 		return id;

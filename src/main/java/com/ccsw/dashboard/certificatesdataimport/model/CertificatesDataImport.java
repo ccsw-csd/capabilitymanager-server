@@ -60,7 +60,7 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 	private String vcComentarioAnexo;
 	
 	@Column(name = "num_import_code_id")
-    private int num_import_code_id;
+    private int numImportCodeId;
 
 	public int getId() {
 		return id;
@@ -182,12 +182,12 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 		this.vcComentarioAnexo = vcComentarioAnexo;
 	}
 
-	public int getNum_import_code_id() {
-		return num_import_code_id;
+	public int getNumImportCodeId() {
+		return numImportCodeId;
 	}
 
-	public void setNum_import_code_id(int num_import_code_id) {
-		this.num_import_code_id = num_import_code_id;
+	public void setNumImportCodeId(int num_import_code_id) {
+		this.numImportCodeId = num_import_code_id;
 	}
 
 	@Override
