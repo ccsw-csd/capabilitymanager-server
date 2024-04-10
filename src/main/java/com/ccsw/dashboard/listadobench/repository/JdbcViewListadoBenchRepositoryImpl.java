@@ -37,23 +37,9 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 				        "stf.vc_Profile_Colaboraciones AS colaboraciones, " +
 				        "stf.vc_Profile_Proyecto_Anterior AS proyectoAnterior, " +
 				        "COALESCE(stf.vc_Profile_Meses_Bench, 0) AS mesesBench, " +
-				        "COALESCE(cert.vc_partner, '') AS partner, " +
-				        "COALESCE(cert.vc_certificado, '') AS certificado, " +
-				        "COALESCE(cert.vc_name_gtd, '') AS nameGtd, " +
-				        "COALESCE(cert.vc_certification_gtd, '') AS certificacionGtd, " +
-				        "COALESCE(cert.vc_code, '') AS code, " +
-				        "COALESCE(cert.vc_sector, '') AS sector, " +
-				        "COALESCE(cert.vc_modulo, '') AS modulo, " +
-				        "COALESCE(cert.vc_id_candidato, '') AS candidato, " +
-				        "COALESCE(cert.vc_fecha_certificado, '') AS fCertificado, " +
-				        "COALESCE(cert.vc_fecha_expiracion, '') AS expiracion, " +
-				        "COALESCE(cert.vc_activo, '') AS activo, " +
-				        "COALESCE(cert.vc_anexo, '') AS anexo, " +
-				        "COALESCE(cert.vc_comentario_anexo, '') AS comentario, " +
 				        "stf.vc_Profile_Status AS status " +
 				        "FROM dashboard.dm_staffing_import stf " +
-				        "LEFT JOIN dashboard.dm_certificaciones_import cert ON stf.vc_Profile_SAGA COLLATE utf8mb4_general_ci = cert.vc_saga " +
-				        "WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = 45 " +
+				        "WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = (select max(id) from dashboard.version_staffing) " +
 				        "AND stf.vc_Profile_Status = 'Disponible' " +
 				        "ORDER BY saga ASC",this::mapRowToDataFormation);
 	}
