@@ -41,7 +41,7 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 	@Column(name = "vc_modulo")
 	private String vcModulo;
 	
-	@Column(name = "vc_candidato")
+	@Column(name = "vc_id_candidato")
 	private String vcIdCandidato;
 
 	@Column(name = "vc_fecha_certificado", nullable = false)

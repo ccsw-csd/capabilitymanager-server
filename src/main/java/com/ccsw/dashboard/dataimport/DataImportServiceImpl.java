@@ -498,7 +498,7 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private List<CertificatesDataImport> saveAllCertificatesDataImport(List<CertificatesDataImport> certificatesDataImportList) {
 		try {
-			return (List<CertificatesDataImport>) certificatesDataImportRepository.save(certificatesDataImportList);
+			return (List<CertificatesDataImport>) certificatesDataImportRepository.saveAll(certificatesDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )

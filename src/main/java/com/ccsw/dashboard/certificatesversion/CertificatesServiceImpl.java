@@ -1,4 +1,4 @@
-package com.ccsw.dashboard.certificatesdataimport;
+package com.ccsw.dashboard.certificatesversion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersion;
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersionDto;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersion;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersionDto;
 import com.ccsw.dashboard.exception.MyBadAdviceException;
 
 import jakarta.transaction.Transactional;
@@ -21,16 +21,16 @@ import jakarta.transaction.Transactional;
 public class CertificatesServiceImpl implements CertificatesService {
 
 	@Autowired
-	private CertificatesDataImportRepository certificatesDataImportRepository;
+	private CertificatesVersionRepository certificatesVersionRepository;
 
 	@Override
 	public List<CertificatesVersion> findAll() {
-		return (List<CertificatesVersion>) this.certificatesDataImportRepository.findAll().stream().sorted().toList();
+		return (List<CertificatesVersion>) this.certificatesVersionRepository.findAll().stream().sorted().toList();
 	}
 
 	@Override
 	public CertificatesVersion findById(Long id) {
-		return this.certificatesDataImportRepository.findById(id).orElse(null);
+		return this.certificatesVersionRepository.findById(id).orElse(null);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class CertificatesServiceImpl implements CertificatesService {
 			throw new MyBadAdviceException("certiVersion id doesn't exist");
 
 		BeanUtils.copyProperties(dto, certiVersion, "id");
-		this.certificatesDataImportRepository.save(certiVersion);
+		this.certificatesVersionRepository.save(certiVersion);
 
 	}
 

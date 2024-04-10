@@ -1,9 +1,9 @@
-package com.ccsw.dashboard.certificatesdataimport;
+package com.ccsw.dashboard.certificatesversion;
 
 import java.util.List;
 
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersion;
-import com.ccsw.dashboard.certificatesdataimport.model.CertificatesVersionDto;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersion;
+import com.ccsw.dashboard.certificatesversion.model.CertificatesVersionDto;
 
 public interface CertificatesService {
 
