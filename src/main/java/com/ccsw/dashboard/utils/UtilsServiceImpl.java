@@ -129,6 +129,9 @@ public class UtilsServiceImpl implements UtilsService {
 				result = col.getDateCellValue(); 
 			}
 		}
+		else {
+			return null;
+		}
 		return result;
 	}
 }
