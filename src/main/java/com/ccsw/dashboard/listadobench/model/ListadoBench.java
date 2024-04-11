@@ -16,7 +16,7 @@ public class ListadoBench {
     private String saga;    
     
     @Column(name="vc_Profile_GGID ggid")
-    private String Ggid; 
+    private String ggid; 
     
     @Column(name="vc_Profile_Nombre")
     private String nombre; 
@@ -34,10 +34,10 @@ public class ListadoBench {
     private String categoria;  
     
     @Column(name="vc_Profile_Perfil_Tecnico")
-    private String perfil_Tecnico;
+    private String perfilTecnico;
     
     @Column(name="vc_Profile_Fecha_Incorporacion")
-    private Date fecha_Incorporacion;  
+    private Date fechaIncorporacion;  
     
     @Column(name="vc_Profile_Asignacion")
     private Integer asignacion;     
@@ -46,28 +46,28 @@ public class ListadoBench {
     private String status;     
     
     @Column(name="vc_Profile_Cliente_Actual")
-    private String cliente_ctual; 
+    private String clienteActual; 
     
     @Column(name="vc_Profile_Fecha_Inicio_Asignacion")
-    private Date fecha_Inicio_asignacion;  
+    private Date fechaInicioAsignacion;  
     
     @Column(name="vc_Profile_Fecha_Fin_Asignacion")
-    private Date fecha_Fin_signacion;
+    private Date fechaFinAsignacion;
     
     @Column(name="vc_Profile_Fecha_Disponibilidad")
-    private Date fecha_Disponibilidad;
+    private Date fechaDisponibilidad;
     
     @Column(name="vc_Profile_Posicion_Proyecto_Futuro")
-    private String posicion_Proyecto_Futuro;  
+    private String posicionProyectoFuturo;  
     
     @Column(name="vc_Profile_Colaboraciones")
     private String colaboraciones;
     
     @Column(name="vc_Profile_Proyecto_Anterior")
-    private String proyecto_anterior;
+    private String proyectoAnterior;
     
     @Column(name="vc_Profile_Meses_Bench")
-    private String Meses_Bench;  
+    private String mesesBench;
     
 
 	public Long getId() {
@@ -87,11 +87,11 @@ public class ListadoBench {
 	}
 
 	public String getGgid() {
-		return Ggid;
+		return ggid;
 	}
 
 	public void setGgid(String ggid) {
-		Ggid = ggid;
+		ggid = ggid;
 	}
 
 	public String getNombre() {
@@ -134,20 +134,20 @@ public class ListadoBench {
 		this.categoria = categoria;
 	}
 
-	public String getPerfil_Tecnico() {
-		return perfil_Tecnico;
+	public String getPerfilTecnico() {
+		return perfilTecnico;
 	}
 
-	public void setPerfil_Tecnico(String perfil_Tecnico) {
-		this.perfil_Tecnico = perfil_Tecnico;
+	public void setPerfilTecnico(String perfilTecnico) {
+		this.perfilTecnico = perfilTecnico;
 	}
 
-	public Date getFecha_Incorporacion() {
-		return fecha_Incorporacion;
+	public Date getFechaIncorporacion() {
+		return fechaIncorporacion;
 	}
 
-	public void setFecha_Incorporacion(Date fecha_Incorporacion) {
-		this.fecha_Incorporacion = fecha_Incorporacion;
+	public void setFechaIncorporacion(Date fechaIncorporacion) {
+		this.fechaIncorporacion = fechaIncorporacion;
 	}
 
 	public Integer getAsignacion() {
@@ -166,44 +166,44 @@ public class ListadoBench {
 		this.status = status;
 	}
 
-	public String getCliente_ctual() {
-		return cliente_ctual;
+	public String getClienteActual() {
+		return clienteActual;
 	}
 
-	public void setCliente_ctual(String cliente_ctual) {
-		this.cliente_ctual = cliente_ctual;
+	public void setClienteActual(String clienteActual) {
+		this.clienteActual = clienteActual;
 	}
 
-	public Date getFecha_Inicio_asignacion() {
-		return fecha_Inicio_asignacion;
+	public Date getFechaInicioAsignacion() {
+		return fechaInicioAsignacion;
 	}
 
-	public void setFecha_Inicio_asignacion(Date fecha_Inicio_asignacion) {
-		this.fecha_Inicio_asignacion = fecha_Inicio_asignacion;
+	public void setFechaInicioAsignacion(Date fechaInicioAsignacion) {
+		this.fechaInicioAsignacion = fechaInicioAsignacion;
 	}
 
-	public Date getFecha_Fin_signacion() {
-		return fecha_Fin_signacion;
+	public Date getFechaFinAsignacion() {
+		return fechaFinAsignacion;
 	}
 
-	public void setFecha_Fin_signacion(Date fecha_Fin_signacion) {
-		this.fecha_Fin_signacion = fecha_Fin_signacion;
+	public void setFechaFinAsignacion(Date fechaFinAsignacion) {
+		this.fechaFinAsignacion = fechaFinAsignacion;
 	}
 
-	public Date getFecha_Disponibilidad() {
-		return fecha_Disponibilidad;
+	public Date getFechaDisponibilidad() {
+		return fechaDisponibilidad;
 	}
 
-	public void setFecha_Disponibilidad(Date fecha_Disponibilidad) {
-		this.fecha_Disponibilidad = fecha_Disponibilidad;
+	public void setFechaDisponibilidad(Date fechaDisponibilidad) {
+		this.fechaDisponibilidad = fechaDisponibilidad;
 	}
 
-	public String getPosicion_Proyecto_Futuro() {
-		return posicion_Proyecto_Futuro;
+	public String getPosicionProyectoFuturo() {
+		return posicionProyectoFuturo;
 	}
 
-	public void setPosicion_Proyecto_Futuro(String posicion_Proyecto_Futuro) {
-		this.posicion_Proyecto_Futuro = posicion_Proyecto_Futuro;
+	public void setPosicionProyectoFuturo(String posicionProyectoFuturo) {
+		this.posicionProyectoFuturo = posicionProyectoFuturo;
 	}
 
 	public String getColaboraciones() {
@@ -214,20 +214,20 @@ public class ListadoBench {
 		this.colaboraciones = colaboraciones;
 	}
 
-	public String getProyecto_anterior() {
-		return proyecto_anterior;
+	public String getProyectoAnterior() {
+		return proyectoAnterior;
 	}
 
-	public void setProyecto_anterior(String proyecto_anterior) {
-		this.proyecto_anterior = proyecto_anterior;
+	public void setProyectoAnterior(String proyectoAnterior) {
+		this.proyectoAnterior = proyectoAnterior;
 	}
 
-	public String getMeses_Bench() {
-		return Meses_Bench;
+	public String getMesesBench() {
+		return mesesBench;
 	}
 
-	public void setMeses_Bench(String meses_Bench) {
-		Meses_Bench = meses_Bench;
+	public void setMesesBench(String mesesBench) {
+		this.mesesBench = mesesBench;
 	}
     
 }
