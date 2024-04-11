@@ -37,7 +37,7 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 		        "stf.vc_Profile_Posicion_Proyecto_Futuro AS posicionFuturo, " +
 		        "stf.vc_Profile_Colaboraciones AS colaboraciones, " +
 		        "stf.vc_Profile_Proyecto_Anterior AS proyectoAnterior, " +
-		        "COALESCE(stf.vc_Profile_Meses_Bench, 0) AS mesesBench, " +
+		        "stf.vc_Profile_Meses_Bench AS mesesBench, " +
 		        "stf.vc_Profile_Status AS status " +
 		        "FROM dashboard.dm_staffing_import stf " +
 		        "WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = (select max(id) from dashboard.version_staffing) " +
@@ -55,18 +55,18 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 		dataFormation.setPractica(row.getString("practica"));
 		dataFormation.setGrado(row.getString("grado"));
 		dataFormation.setCategoria(row.getString("categoria"));
-		dataFormation.setPerfil_Tecnico(row.getString("perfil"));
-		dataFormation.setFecha_Incorporacion(row.getDate("fIncorporacion"));
+		dataFormation.setPerfilTecnico(row.getString("perfil"));
+		dataFormation.setFechaIncorporacion(row.getDate("fIncorporacion"));
 		dataFormation.setAsignacion(row.getInt("porcentajeAsignacion"));
 		dataFormation.setStatus(row.getString("status"));
-		dataFormation.setCliente_ctual(row.getString("clienteActual"));
-		dataFormation.setFecha_Inicio_asignacion(row.getDate("inicioAsignacion"));
-		dataFormation.setFecha_Fin_signacion(row.getDate("finAsignacion"));
-		dataFormation.setFecha_Disponibilidad(row.getDate("fDisponibilidad"));
-		dataFormation.setPosicion_Proyecto_Futuro(row.getString("posicionFuturo"));
+		dataFormation.setClienteActual(row.getString("clienteActual"));
+		dataFormation.setFechaInicioAsignacion(row.getDate("inicioAsignacion"));
+		dataFormation.setFechaFinAsignacion(row.getDate("finAsignacion"));
+		dataFormation.setFechaDisponibilidad(row.getDate("fDisponibilidad"));
+		dataFormation.setPosicionProyectoFuturo(row.getString("posicionFuturo"));
 		dataFormation.setColaboraciones(row.getString("colaboraciones"));
-		dataFormation.setProyecto_anterior(row.getString("proyectoAnterior"));
-		dataFormation.setMeses_Bench(row.getString("mesesBench"));
+		dataFormation.setProyectoAnterior(row.getString("proyectoAnterior"));
+		dataFormation.setMesesBench(row.getString("mesesBench"));
 
 		return dataFormation;
 	}
