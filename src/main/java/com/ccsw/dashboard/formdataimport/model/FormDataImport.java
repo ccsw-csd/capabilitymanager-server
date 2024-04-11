@@ -15,7 +15,7 @@ public class FormDataImport implements Comparable<FormDataImport> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "num_import_code_id", nullable = false)
+	@Column(name = "num_Import_CodeId", nullable = false)
 	private int numImportCodeId;
 
 	@Column(name = "vc_Profile_SAGA")

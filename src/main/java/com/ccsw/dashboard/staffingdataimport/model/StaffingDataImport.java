@@ -17,7 +17,7 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "num_import_codeid", nullable = false)
+	@Column(name = "num_Import_CodeId", nullable = false)
 	private int numImportCode;
 
 	@Column(name = "vc_Profile_SAGA", nullable = false)
