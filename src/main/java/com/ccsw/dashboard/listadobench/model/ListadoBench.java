@@ -91,7 +91,7 @@ public class ListadoBench {
 	}
 
 	public void setGgid(String ggid) {
-		ggid = ggid;
+		this.ggid = ggid;
 	}
 
 	public String getNombre() {
