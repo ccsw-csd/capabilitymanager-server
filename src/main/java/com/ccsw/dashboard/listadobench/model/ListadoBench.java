@@ -2,71 +2,27 @@ package com.ccsw.dashboard.listadobench.model;
 
 import java.util.Date;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name="vista_listado_bench")
 public class ListadoBench {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name="vc_Profile_SAGA")
     private String saga;    
-    
-    @Column(name="vc_Profile_GGID ggid")
     private String ggid; 
-    
-    @Column(name="vc_Profile_Nombre")
     private String nombre; 
-    
-    @Column(name="vc_Profile_Apellidos")
     private String apellidos;  
-    
-    @Column(name="vc_Profile_Practica")
     private String practica;     
-    
-    @Column(name="vc_Profile_Grado")
     private String grado;      
-    
-    @Column(name="vc_Profile_Categoria")
     private String categoria;  
-    
-    @Column(name="vc_Profile_Perfil_Tecnico")
     private String perfilTecnico;
-    
-    @Column(name="vc_Profile_Fecha_Incorporacion")
     private Date fechaIncorporacion;  
-    
-    @Column(name="vc_Profile_Asignacion")
     private Integer asignacion;     
-    
-    @Column(name="vc_Profile_Status")
     private String status;     
-    
-    @Column(name="vc_Profile_Cliente_Actual")
     private String clienteActual; 
-    
-    @Column(name="vc_Profile_Fecha_Inicio_Asignacion")
     private Date fechaInicioAsignacion;  
-    
-    @Column(name="vc_Profile_Fecha_Fin_Asignacion")
     private Date fechaFinAsignacion;
-    
-    @Column(name="vc_Profile_Fecha_Disponibilidad")
     private Date fechaDisponibilidad;
-    
-    @Column(name="vc_Profile_Posicion_Proyecto_Futuro")
     private String posicionProyectoFuturo;  
-    
-    @Column(name="vc_Profile_Colaboraciones")
     private String colaboraciones;
-    
-    @Column(name="vc_Profile_Proyecto_Anterior")
     private String proyectoAnterior;
-    
-    @Column(name="vc_Profile_Meses_Bench")
     private String mesesBench;
     
 
