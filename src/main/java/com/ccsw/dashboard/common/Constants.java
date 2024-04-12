@@ -38,6 +38,12 @@ public class Constants {
 
 	public static final Date FUNDATIONDAYLESSONE = new Date(1967, 9, 30);
 	
+	
+	//LISTADO PERSONAS BENCH
+	public static final String  BDCS_STATUS = "BDCS";
+	public static final String  EN_FORMACION_STATUS = "Formacion";
+	public static final String  DISPONIBLE_STATUS = "Disponible";
+	
 	public static enum RolsDatabasePos { 
 		COL_VCPROFILEEMAIL(3), 
 		COL_VCPROFILENAME(4),
