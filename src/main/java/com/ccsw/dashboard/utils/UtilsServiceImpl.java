@@ -1,5 +1,7 @@
 package com.ccsw.dashboard.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -133,5 +135,10 @@ public class UtilsServiceImpl implements UtilsService {
 			return null;
 		}
 		return result;
+	}
+	
+	public static String getDateToView(Date fecha) {
+		DateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
+		return df.format(fecha);
 	}
 }
