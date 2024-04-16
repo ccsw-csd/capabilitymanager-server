@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ccsw.dashboard.formdataimport.model.FormDataImport;
+import com.ccsw.dashboard.versionstaffing.model.VersionStaffing;
 
 
 
 @Repository
 public interface FormDataImportRepository extends JpaRepository<FormDataImport, Long> {
+
+	void save(VersionStaffing versionStaffing);
 }

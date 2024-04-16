@@ -22,7 +22,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class VersionStaffingServiceImpl implements VersionStaffingService {
 	private static final Logger logger = LoggerFactory.getLogger(VersionStaffingServiceImpl.class);
-	private static final String ERROR_INIT  = ">>> [ERROR][VersionStaffingServiceImpl] (";
+	private static final String ERROR_INIT = ">>> [ERROR][VersionStaffingServiceImpl] (";
 	@Autowired
 	private VersionStaffingRepository versionStaffingRepository;
 
