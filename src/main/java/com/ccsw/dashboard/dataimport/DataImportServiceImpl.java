@@ -1,8 +1,6 @@
 package com.ccsw.dashboard.dataimport;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +21,7 @@ import com.ccsw.dashboard.certificatesdataimport.CertificatesDataImportRepositor
 import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.common.exception.UnprocessableEntityException;
+import com.ccsw.dashboard.dataimport.model.Asset;
 import com.ccsw.dashboard.dataimport.model.ImportRequestDto;
 import com.ccsw.dashboard.dataimport.model.ImportResponseDto;
 import com.ccsw.dashboard.formdataimport.FormDataImportRepository;
@@ -37,14 +36,10 @@ import com.ccsw.dashboard.versioncertificados.model.VersionCertificaciones;
 import com.ccsw.dashboard.versionstaffing.VersionStaffingRepository;
 import com.ccsw.dashboard.versionstaffing.model.VersionStaffing;
 
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import io.minio.errors.ErrorResponseException;
-import io.minio.errors.InsufficientDataException;
-import io.minio.errors.InternalException;
-import io.minio.errors.InvalidResponseException;
-import io.minio.errors.ServerException;
-import io.minio.errors.XmlParserException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -72,6 +67,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	DataImportService service;
+	
 	@Autowired
 	private UtilsServiceImpl utilsServiceImpl;
 
@@ -84,95 +80,107 @@ public class DataImportServiceImpl implements DataImportService {
 	@Value("${s3.password}")
 	private String password;
 
-	@Value("${s3.bucketName}")
+	@Value("${s3.bucket}")
 	private String bucketName;
 
-	private MinioClient minioClient = null;
 
-	private MinioClient getMinioClient() {
-
-		if (minioClient != null)
-			return minioClient;
-
-		minioClient = MinioClient.builder().endpoint(s3Endpoint).credentials(username, password).build();
-
-		return minioClient;
-	}
-
+    private MinioClient minioClient;
 
 	@Override
-	public ImportResponseDto processObject(ImportRequestDto dto, MultipartFile file) {
+	public ImportResponseDto processObject(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processObject ");
 
 		utilsServiceImpl.checkInputObject(dto);
 		ImportResponseDto importResponseDto = new ImportResponseDto();
-		try {
-			String fileName = file.getOriginalFilename();
-
-			// Almacena el archivo en MinIO
-
-			try {
-				MinioClient minioClient = getMinioClient();
-				minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(fileName)
-						.stream(file.getInputStream(), file.getSize(), -1).build());
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			} catch (ErrorResponseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InsufficientDataException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InternalException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidResponseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ServerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (XmlParserException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-			
-				e.printStackTrace();
-			}
-
-			// Guarda los datos del archivo en la base de datos
-			FormDataImport formDataImport = new FormDataImport();
-			formDataImport.setVcProfileName(fileName);
-			// Completa otros campos de FormDataImport según sea necesario
-
-			formDataImportRepository.save(formDataImport);
-
-			switch (dto.getDocumentType()) {
-			case "1":
-				importResponseDto = processStaffingDoc(dto);
-				break;
-			case "2":
-				importResponseDto = processRolsDoc(dto);
-				break;
-			case "3":
-				importResponseDto = processCertificatesDoc(dto);
-				break;
-			default:
-				setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto,
-						Constants.ERROR_DOCUMENT_TYPE, Constants.ERROR_DOCUMENT_TYPE, Constants.EMPTY,
-						HttpStatus.BAD_REQUEST);
-			}
-		} catch (IOException e) {
-			importResponseDto.setError("Error processing file: " + e.getMessage());
+				
+		switch (dto.getDocumentType()) {
+		case "1":
+			importResponseDto = processStaffingDoc(dto);
+			break;
+		case "2":
+			importResponseDto = processRolsDoc(dto);
+			break;
+		case "3":
+			importResponseDto = processCertificatesDoc(dto);
+			break;
+		default:
+			setErrorToReturn(Thread
+					.currentThread().getStackTrace()[1].getMethodName(), importResponseDto,
+					Constants.ERROR_DOCUMENT_TYPE, Constants.ERROR_DOCUMENT_TYPE, Constants.EMPTY,
+					HttpStatus.BAD_REQUEST);
 		}
 
 		logger.debug("[DataImportServiceImpl] processObject >>>>");
 		return importResponseDto;
 
 	}
+	
+	  private MinioClient getMinioClient() {
+
+	        if (minioClient != null)
+	            return minioClient;
+
+	        minioClient = MinioClient.builder().endpoint(s3Endpoint).credentials(username, password).build();
+
+	        return minioClient;
+	    }
+	
+	
+	public void uploadFile(ImportRequestDto dto,MultipartFile file) {
+        
+		ImportResponseDto importResponseDto = new ImportResponseDto();
+	
+		minioClient= getMinioClient();
+        try {
+    		           
+            // Verificar si el bucket existe, si no, crearlo
+            boolean found = minioClient
+            				.bucketExists(BucketExistsArgs
+            				.builder()
+            				.bucket(bucketName)
+            				.build());
+            
+            System.out.println("Bucket exists: " + found);
+            
+            if (!found) {
+            	System.out.println("my-bucketname does not exist");
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+                
+            } else {
+           	   System.out.println("my-bucketname exists");
+         	 }
+
+            // Subir el archivo al bucket de S3
+            String fileName = file.getOriginalFilename();
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .stream(file.getInputStream(), file.getSize(), -1)
+                    .build());
+          
+            importResponseDto.setMessage("File uploaded to S3 successfully");
+        } catch (Exception e) {
+            // Manejar cualquier excepción que ocurra durante la carga del archivo a S3
+            importResponseDto.setError("Error uploading file to S3: " + e.getMessage());
+           logger.debug(e.getMessage());
+           
+        }
+
+    }
+
+		
+	
+	
+	
+//		@Override
+//	    public InputStream getObject(String bucketName, String objectName) throws Exception {
+//	        
+//
+//	        return minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(objectName).build());
+//
+//	    }
+	
+	
 
 	/**
 	 * Process Rol Document received
@@ -283,8 +291,12 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private ImportResponseDto processStaffingDoc(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processStaffingDoc ");
+		
 		ImportResponseDto importResponseDto = new ImportResponseDto();
-
+		importResponseDto.setBucketName(bucketName);
+		importResponseDto.setPath(s3Endpoint);
+		
+		
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
 		VersionStaffing verStaf = null;
@@ -493,13 +505,14 @@ public class DataImportServiceImpl implements DataImportService {
 	private VersionCapacidades createCapacityVersion(int numReg, String fileName, String description, String user,
 			String idTipointerfaz, byte[] bs) {
 		VersionCapacidades versionCap = new VersionCapacidades();
+		
 		versionCap.setNumRegistros(numReg);
 		versionCap.setFechaImportacion(LocalDateTime.now());
 		versionCap.setNombreFichero(fileName);
 		versionCap.setDescripcion(description);
 		versionCap.setUsuario(user);
 		versionCap.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
-		// versionCap.setFichero(bs);
+		versionCap.setFichero(bs);
 
 		return versionCapatidadesRepository.save(versionCap);
 	}
@@ -524,7 +537,7 @@ public class DataImportServiceImpl implements DataImportService {
 		versionStaf.setDescripcion(description);
 		versionStaf.setUsuario(user);
 		versionStaf.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
-		versionStaf.setFichero(bs);
+		//versionStaf.setFichero(bs);
 
 		return versionStaffingRepository.save(versionStaf);
 	}
@@ -660,5 +673,12 @@ public class DataImportServiceImpl implements DataImportService {
 		default:
 			formDataImport.setVcProfileRolL1(Constants.EMPTY);
 		}
+	}
+
+
+	@Override
+	public Asset getObject(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
