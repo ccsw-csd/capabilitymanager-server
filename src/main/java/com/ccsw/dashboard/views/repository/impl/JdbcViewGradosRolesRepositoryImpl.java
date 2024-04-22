@@ -7,13 +7,14 @@ import java.util.Collection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.graderole.model.GradeRole;
 import com.ccsw.dashboard.views.repository.ViewGradosRolesRepository;
 
 @Repository
 public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesRepository {
-	
-	private final JdbcTemplate jdbcTemplate;		
+
+	private final JdbcTemplate jdbcTemplate;
 
 	public JdbcViewGradosRolesRepositoryImpl(JdbcTemplate jdbcTemplate) {
 		super();
@@ -36,12 +37,13 @@ public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesReposit
 				+ "    dashboard.dm_formdata_import fr\r\n"
 				+ "where\r\n"
 				+ "    fr.num_Import_CodeId = ? and \r\n"
-				+ "	sg.num_Import_CodeId = ? and\r\n"
+				+ "	   sg.num_Import_CodeId = ? and\r\n"
+				+ "    (fr.vc_Profile_Rol_L2_EM like '%" + Constants.VCPROFILEROLL1_OP3 + "%' or fr.vc_Profile_Rol_L2_EM = '') and\r\n"
 				+ "    sg.vc_Profile_SAGA = fr.vc_Profile_SAGA",
 				this::mapRowToGradeRoles,
 				idVersionCapacidades,idVersionStaffing);
 	}
-	
+
 	private GradeRole mapRowToGradeRoles(ResultSet row,int rowNum) throws SQLException{
 		GradeRole gradeRole = new GradeRole();
 		gradeRole.setId(row.getLong("id"));
