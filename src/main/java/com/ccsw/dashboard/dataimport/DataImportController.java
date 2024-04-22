@@ -4,10 +4,8 @@ import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ccsw.dashboard.dataimport.model.Asset;
+import com.ccsw.dashboard.S3Service.s3Service;
 import com.ccsw.dashboard.dataimport.model.ImportRequestDto;
 import com.ccsw.dashboard.dataimport.model.ImportResponseDto;
 
@@ -27,13 +25,13 @@ public class DataImportController {
 
 	@Autowired
 	private DataImportService formDataImportService;
+	
+	@Autowired
+	private s3Service s3service;
 
 	@Autowired
 	DozerBeanMapper mapper;
 	
-	
-	Asset asset;
-
 
 	@PostMapping(path = "/data", consumes = { "multipart/form-data" })
 	public ResponseEntity<ImportResponseDto> importData(@RequestPart("importRequestDto") @ModelAttribute ImportRequestDto dto,@RequestParam("file") MultipartFile file) {
@@ -43,7 +41,7 @@ public class DataImportController {
 
 		  try {
 		        // Subir el archivo al bucket de S3
-		        formDataImportService.uploadFile(dto, file);
+			  s3service.uploadFile(dto, file);
 
 		        // Procesar el objeto en la base de datos
 		        if (importResponseDto.getError() == null) {
@@ -66,14 +64,4 @@ public class DataImportController {
 		}
 	}
 
-	@GetMapping(value = "/get-object", params = "key")
-	ResponseEntity<ByteArrayResource> getObject(@RequestParam String key) {
-
-		Asset asset = formDataImportService.getObject(key);
-		ByteArrayResource resource = new ByteArrayResource(asset.getContent());
-
-		return ResponseEntity.ok().header("Content-type", asset.getContentType())
-				.contentLength(asset.getContent().length).body(resource);
-
-	}
 }
