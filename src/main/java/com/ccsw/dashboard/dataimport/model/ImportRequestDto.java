@@ -10,29 +10,38 @@ public class ImportRequestDto {
 	// 3- Certificates
 	private String user;
 	private String description;
-	private MultipartFile fileData;
+	private MultipartFile file;
+
+
 	public String getDocumentType() {
 		return documentType;
 	}
+
 	public void setDocumentType(String documentType) {
 		this.documentType = documentType;
 	}
+
 	public String getUser() {
 		return user;
 	}
+
 	public void setUser(String user) {
 		this.user = user;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public MultipartFile getFileData() {
-		return fileData;
+
+	public MultipartFile getFile() {
+		return file;
 	}
-	public void setFileData(MultipartFile fileData) {
-		this.fileData = fileData;
-	}	
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
 }
