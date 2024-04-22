@@ -327,6 +327,8 @@ public class DataImportServiceImpl implements DataImportService {
 	private ImportResponseDto processCertificatesDoc(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
+		importResponseDto.setBucketName(bucketName);
+		importResponseDto.setPath(s3Endpoint);
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
 		VersionCertificaciones verCerytificaciones = null;

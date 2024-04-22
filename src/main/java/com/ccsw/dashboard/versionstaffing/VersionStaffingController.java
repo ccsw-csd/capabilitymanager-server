@@ -13,9 +13,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.security.InvalidKeyException;
@@ -30,7 +30,7 @@ public class VersionStaffingController {
     @Autowired
     private VersionStaffingService versionStaffingService;
 
-    @RequestMapping(path = "/download-file/{id}", method = RequestMethod.GET)
+    @GetMapping(path = "/download-file/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id,String fileName) throws InvalidKeyException, java.security.InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
     	logger.debug(" >>>> getFile " + id);
     	
@@ -38,12 +38,9 @@ public class VersionStaffingController {
     	InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
     	
     	logger.debug("      getFile >>>>");
-    	if (inputStreamResource != null ) {
-    		return ResponseEntity.status(HttpStatus.OK)
-    				.contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + inputStreamResource.getFilename() + "\"")
-    				.body(inputStreamResource);
-    	}
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    	return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + inputStreamResource.getFilename() + "\"")
+				.body(inputStreamResource);
     }    
 }
