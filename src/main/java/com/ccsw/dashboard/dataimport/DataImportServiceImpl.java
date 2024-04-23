@@ -112,13 +112,13 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setBucketName(bucketName);
 		importResponseDto.setPath(s3Endpoint);
 
-		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
 		VersionCapacidades verCap = null;
 
 		try {
-			verCap = createCapacityVersion(sizeSheet, dto.getFile().getOriginalFilename(), dto.getDescription(),
-					dto.getUser(), dto.getDocumentType(), dto.getFile().getBytes());
+			verCap = createCapacityVersion(sizeSheet, dto.getFileData().getOriginalFilename(), dto.getDescription(),
+					dto.getUser(), dto.getDocumentType(), dto.getFileData().getBytes());
 		} catch (Exception e) {
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e,
 					HttpStatus.UNPROCESSABLE_ENTITY);
@@ -215,12 +215,12 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setBucketName(bucketName);
 		importResponseDto.setPath(s3Endpoint);
 
-		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
 		VersionStaffing verStaf = null;
 		try {
-			verStaf = createStaffingVersion(sizeSheet, dto.getFile().getOriginalFilename(), dto.getDescription(),
-					dto.getUser(), dto.getDocumentType(), dto.getFile().getBytes());
+			verStaf = createStaffingVersion(sizeSheet, dto.getFileData().getOriginalFilename(), dto.getDescription(),
+					dto.getUser(), dto.getDocumentType(), dto.getFileData().getBytes());
 		} catch (Exception e) {
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e,
 					HttpStatus.UNPROCESSABLE_ENTITY);
@@ -330,7 +330,7 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setBucketName(bucketName);
 		importResponseDto.setPath(s3Endpoint);
 
-		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		VersionCertificaciones verCerytificaciones = null;
 		try {
 			verCerytificaciones = createCertificationesVersion(dto);
@@ -476,17 +476,17 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @throws IOException
 	 */
 	private VersionCertificaciones createCertificationesVersion(ImportRequestDto dto) throws IOException {
-		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFile());
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int numReg = sheet.getPhysicalNumberOfRows() - 1;
 
 		VersionCertificaciones versionCer = new VersionCertificaciones();
 		versionCer.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
 		versionCer.setFechaImportacion(LocalDateTime.now());
 		versionCer.setNumRegistros(numReg);
-		versionCer.setNombreFichero(dto.getFile().getOriginalFilename());
+		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
-		// versionCer.setFichero(dto.getFile().getBytes());
+		// versionCer.setFichero(dto.getFileData().getBytes());
 //		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
 
 		return versionCertificacionesRepository.save(versionCer);
