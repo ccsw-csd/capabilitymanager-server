@@ -10,7 +10,7 @@ public class ImportRequestDto {
 	// 3- Certificates
 	private String user;
 	private String description;
-	private MultipartFile file;
+	private MultipartFile fileData;
 
 
 	public String getDocumentType() {
@@ -37,11 +37,11 @@ public class ImportRequestDto {
 		this.description = description;
 	}
 
-	public MultipartFile getFile() {
-		return file;
+	public MultipartFile getFileData() {
+		return fileData;
 	}
 
-	public void setFile(MultipartFile file) {
-		this.file = file;
+	public void setFileData(MultipartFile fileData) {
+		this.fileData = fileData;
 	}
 }
