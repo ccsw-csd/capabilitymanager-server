@@ -66,14 +66,14 @@ public class UtilsServiceImpl implements UtilsService {
 	 */
 	public void checkInputObject(ImportRequestDto dto) {
 		LOG.debug(" >>>> checkInputObject ");
-		if (dto.getFile().getOriginalFilename() == Constants.EMPTY) {
+		if (dto.getFileData().getOriginalFilename() == Constants.EMPTY) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
 			.append(Constants.ERROR_INIT2).append(" FileData is empty");
 			LOG.error(errorData.toString() );
 			throw new UnsupportedMediaTypeException("FileData is empty");
 		}
-		if (!Constants.ALLOWED_FORMATS.contains(dto.getFile().getContentType())) {
+		if (!Constants.ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
 			.append(Constants.ERROR_INIT2).append("FileData dont has valid format");

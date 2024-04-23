@@ -34,14 +34,14 @@ public class DataImportController {
 	
 
 	@PostMapping(path = "/data", consumes = { "multipart/form-data" })
-	public ResponseEntity<ImportResponseDto> importData(@RequestPart("importRequestDto") @ModelAttribute ImportRequestDto dto,@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<ImportResponseDto> importData(@RequestPart("importRequestDto") @ModelAttribute ImportRequestDto dto,@RequestParam("fileData") MultipartFile fileData) {
 		logger.debug(" >>>> importData ");
 
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 
 		  try {
 		        // Subir el archivo al bucket de S3
-			  s3service.uploadFile(dto, file);
+			  s3service.uploadFile(dto, fileData);
 
 		        // Procesar el objeto en la base de datos
 		        if (importResponseDto.getError() == null) {
