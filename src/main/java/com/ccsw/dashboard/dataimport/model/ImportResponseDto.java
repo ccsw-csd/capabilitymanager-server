@@ -1,7 +1,7 @@
 package com.ccsw.dashboard.dataimport.model;
 
-import java.io.InputStream;
 import java.time.LocalDateTime;
+
 import org.springframework.http.HttpStatus;
 
 public class ImportResponseDto {
@@ -13,31 +13,20 @@ public class ImportResponseDto {
 	private String trace;
 	private String path;
 	private String bucketName;
-    private InputStream stream;
 
-
-	public ImportResponseDto(){
-		this.timestamp= LocalDateTime.now();
+	public ImportResponseDto() {
+		this.timestamp = LocalDateTime.now();
 		this.status = HttpStatus.ACCEPTED;
-		this.message="";
+		this.message = "";
 	}
 
-    public String getBucketName() {
-        return bucketName;
-    }
+	public String getBucketName() {
+		return bucketName;
+	}
 
-    public void setBucketName(String bucketName) {
-        this.bucketName = bucketName;
-    }
-
-  
-    public InputStream getStream() {
-        return stream;
-    }
-
-    public void setStream(InputStream stream) {
-        this.stream = stream;
-    }
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
 
 	public LocalDateTime getTimestamp() {
 		return timestamp;
