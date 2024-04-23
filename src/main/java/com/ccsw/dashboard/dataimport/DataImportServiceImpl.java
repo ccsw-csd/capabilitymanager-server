@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.dashboard.S3Service.s3Service;
 import com.ccsw.dashboard.certificatesdataimport.CertificatesDataImportRepository;
 import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.dashboard.common.Constants;
@@ -70,13 +71,18 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Value("${s3.bucket}")
 	private String bucketName;
+	
+	@Autowired
+	private s3Service s3service;
 
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processObject ");
+		s3service.getMinioClient();
+		s3service.uploadFile(dto);
 
 		utilsServiceImpl.checkInputObject(dto);
-		ImportResponseDto importResponseDto = new ImportResponseDto();
+		var importResponseDto = new ImportResponseDto();
 
 		switch (dto.getDocumentType()) {
 		case "1":
@@ -108,7 +114,7 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private ImportResponseDto processRolsDoc(ImportRequestDto dto) {
 		logger.debug(" >>>> processRolsDoc ");
-		ImportResponseDto importResponseDto = new ImportResponseDto();
+		var importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(bucketName);
 		importResponseDto.setPath(s3Endpoint);
 
@@ -183,7 +189,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 			formDataImportList.add(data);
 			currentRow = sheet.getRow(i);
-			// data = new FormDataImport();
+			 data = new FormDataImport();
 		}
 
 		if (formDataImportList != null && !formDataImportList.isEmpty()) {
