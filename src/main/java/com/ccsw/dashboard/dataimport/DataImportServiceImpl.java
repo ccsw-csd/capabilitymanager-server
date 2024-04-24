@@ -12,11 +12,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.dashboard.S3Service.s3Service;
+import com.ccsw.dashboard.S3Service.model.DataserviceS3;
 import com.ccsw.dashboard.certificatesdataimport.CertificatesDataImportRepository;
 import com.ccsw.dashboard.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.dashboard.common.Constants;
@@ -66,11 +66,8 @@ public class DataImportServiceImpl implements DataImportService {
 	@Autowired
 	private UtilsServiceImpl utilsServiceImpl;
 
-	@Value("${s3.endpoint}")
-	private String s3Endpoint;
-
-	@Value("${s3.bucket}")
-	private String bucketName;
+	@Autowired
+	private DataserviceS3 dataservice;
 	
 	@Autowired
 	private s3Service s3service;
@@ -78,7 +75,7 @@ public class DataImportServiceImpl implements DataImportService {
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processObject ");
-		s3service.getMinioClient();
+		dataservice.getMinioClient();
 		s3service.uploadFile(dto);
 
 		utilsServiceImpl.checkInputObject(dto);
@@ -115,8 +112,8 @@ public class DataImportServiceImpl implements DataImportService {
 	private ImportResponseDto processRolsDoc(ImportRequestDto dto) {
 		logger.debug(" >>>> processRolsDoc ");
 		var importResponseDto = new ImportResponseDto();
-		importResponseDto.setBucketName(bucketName);
-		importResponseDto.setPath(s3Endpoint);
+		importResponseDto.setBucketName(dataservice.getBucketName());
+		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
@@ -218,8 +215,8 @@ public class DataImportServiceImpl implements DataImportService {
 		logger.debug("[DataImportServiceImpl]  >>>> processStaffingDoc ");
 
 		ImportResponseDto importResponseDto = new ImportResponseDto();
-		importResponseDto.setBucketName(bucketName);
-		importResponseDto.setPath(s3Endpoint);
+		importResponseDto.setBucketName(dataservice.getBucketName());
+		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
@@ -333,8 +330,8 @@ public class DataImportServiceImpl implements DataImportService {
 	private ImportResponseDto processCertificatesDoc(ImportRequestDto dto) {
 		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
-		importResponseDto.setBucketName(bucketName);
-		importResponseDto.setPath(s3Endpoint);
+		importResponseDto.setBucketName(dataservice.getBucketName());
+		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		VersionCertificaciones verCerytificaciones = null;
