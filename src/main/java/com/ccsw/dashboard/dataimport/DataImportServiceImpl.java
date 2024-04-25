@@ -101,7 +101,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Rol Document received
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -191,7 +191,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
 		}
@@ -203,7 +203,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Staffing Document received
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -232,48 +232,27 @@ public class DataImportServiceImpl implements DataImportService {
 		StaffingDataImport data = new StaffingDataImport();
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new StaffingDataImport();
-			String vcProfileSAGA = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
-			String vcProfileGGID = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEGGID.getPosition());
-			String vcProfileCentro = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
-			String vcProfileNombre = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILENOMBRE.getPosition());
-			String vcProfileApellidos = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEAPELLIDOS.getPosition());
-			String vcProfileLocalizacion = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
-			String vcProfilePractica = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
-			String vcProfileGrado = utilsServiceImpl.getGradeValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
-			String vcProfileCategoria = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
-			String vcProfilePerfilTecnico = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
-			Date vcProfileFechaIncorporacion = utilsServiceImpl.getDateValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
-			String vcProfilePorcentajeAsignacion = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEPORCENTAJEASIGNACION.getPosition());
-			String vcProfileStatus = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
-			String vcProfileClienteActual = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILECLIENTEACTUAL.getPosition());
-			Date vcProfileFechaInicioAsignacion = utilsServiceImpl.getDateValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
-			Date vcProfileFechaFinAsignacion = utilsServiceImpl.getDateValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
-			Date vcProfileFechaDisponibilidad = utilsServiceImpl.getDateValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
-			String vcProfilePosicionProyectoFuturo = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEPOSICIONPROYECTOFUTURO.getPosition());
-			String vcProfileColaboraciones = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILECOLABORACIONES.getPosition());
-			String vcProfileProyectoAnterior = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COLVCPROFILEPROYECTOANTERIOR.getPosition());
-			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow,
-					Constants.StaffingDatabasePos.COL_VCPROFILEMESESBENCH.getPosition());
+			String vcProfileSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESAGA.getPosition());
+			String vcProfileGGID = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGGID.getPosition());
+			String vcProfileCentro = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECENTRO.getPosition());
+			String vcProfileNombre = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILENOMBRE.getPosition());
+			String vcProfileApellidos = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEAPELLIDOS.getPosition());
+			String vcProfileLocalizacion = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILELOCALIZACION.getPosition());
+			String vcProfilePractica = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPRACTICA.getPosition());
+			String vcProfileGrado = utilsServiceImpl.getGradeValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEGRADO.getPosition());
+			String vcProfileCategoria = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECATEGORIA.getPosition());
+			String vcProfilePerfilTecnico = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPERFILTECNICO.getPosition());
+			Date vcProfileFechaIncorporacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINCORPORACION.getPosition());
+			String vcProfilePorcentajeAsignacion = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPORCENTAJEASIGNACION.getPosition());
+			String vcProfileStatus = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILESTATUS.getPosition());
+			String vcProfileClienteActual = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECLIENTEACTUAL.getPosition());
+			Date vcProfileFechaInicioAsignacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAINICIOASIGNACION.getPosition());
+			Date vcProfileFechaFinAsignacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHAFINASIGNACION.getPosition());
+			Date vcProfileFechaDisponibilidad = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEFECHADISPONIBILIDAD.getPosition());
+			String vcProfilePosicionProyectoFuturo = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEPOSICIONPROYECTOFUTURO.getPosition());
+			String vcProfileColaboraciones = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILECOLABORACIONES.getPosition());
+			String vcProfileProyectoAnterior = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COLVCPROFILEPROYECTOANTERIOR.getPosition());
+			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_VCPROFILEMESESBENCH.getPosition());
 
 			data.setVcProfileSAGA(vcProfileSAGA);
 			data.setVcProfileGGID(vcProfileGGID);
@@ -308,7 +287,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
@@ -320,7 +299,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Certification Document received (waitting specificatios)
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -402,7 +381,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
@@ -413,7 +392,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Create an save on database CapacityVersion Object
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -439,7 +418,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Create an save on database VersionStaffing Object
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -465,7 +444,7 @@ public class DataImportServiceImpl implements DataImportService {
 	/**
 	 * Create an save on database CertificationsVersion Object (with
 	 * CertificatesDataImport relations)
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -487,14 +466,14 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
 		// versionCer.setFichero(dto.getFileData().getBytes());
-//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
+		//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
 
 		return versionCertificacionesRepository.save(versionCer);
 	}
 
 	/**
 	 * Save list FormDataImport on database
-	 * 
+	 *
 	 * @param formDataImportList List Object FormDataImport
 	 * @return List<FormDataImport>
 	 */
@@ -506,7 +485,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(e.getMessage());
 		}
@@ -514,7 +493,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Save list StaffingDataImport on database
-	 * 
+	 *
 	 * @param staffingDataImportList List Object StaffingDataImport
 	 * @return List<StaffingDataImport>
 	 */
@@ -525,7 +504,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(errorData.toString());
 		}
@@ -533,7 +512,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Save list CertificatesDataImport on database
-	 * 
+	 *
 	 * @param certificatesDataImportList List of objects to save
 	 * @return List<CertificatesDataImport>
 	 */
@@ -545,7 +524,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(errorData.toString());
 		}
@@ -586,7 +565,7 @@ public class DataImportServiceImpl implements DataImportService {
 			break;
 		case Constants.VCPROFILEROLL1EX_OP3, Constants.VCPROFILEROLL1EX_OP3_2:
 			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP3);
-			break;
+		break;
 		case Constants.VCPROFILEROLL1EX_OP4:
 			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP4);
 			break;
