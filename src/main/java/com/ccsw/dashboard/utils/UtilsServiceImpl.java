@@ -28,23 +28,23 @@ import com.ccsw.dashboard.dataimport.model.ImportRequestDto;
 @Service
 public class UtilsServiceImpl implements UtilsService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UtilsServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UtilsServiceImpl.class);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getVersion() {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getVersion() {
 
-        try {
-            return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
-        } catch (Exception e) {
-            LOG.error("Error al extraer la version");
-        }
+		try {
+			return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
+		} catch (Exception e) {
+			LOG.error("Error al extraer la version");
+		}
 
-        return "?";
-    }
-    
+		return "?";
+	}
+
 	/**
 	 * Get the main Excel tab given a file
 	 * @param file 	Excel File
@@ -58,7 +58,21 @@ public class UtilsServiceImpl implements UtilsService {
 			throw new BadRequestException("An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
 	}
-	
+
+	/**
+	 * Gets the tab of an Excel with name <code>nameSheet</code>
+	 * @param file 	Excel File
+	 * @return 		selected Excel tab
+	 * @throws BadRequestException It is not possible to read the provided file
+	 */
+	public Sheet obtainSheet(MultipartFile file, String nameSheet) throws BadRequestException {
+		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+			return workbook.getSheet(nameSheet);
+		} catch (Exception e) {
+			throw new BadRequestException("An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
+		}
+	}
+
 	/**
 	 * Check Input Object if ContentType is not valid or fileData is empty or null get throw
 	 * @param 	dto ImportRequestDto Object
@@ -82,7 +96,7 @@ public class UtilsServiceImpl implements UtilsService {
 		}
 		LOG.debug("      checkInputObject >>>>");
 	}
-	
+
 	/**
 	 * Get String value from Row
 	 * @param row		to recover value
@@ -113,7 +127,7 @@ public class UtilsServiceImpl implements UtilsService {
 	public String getGradeValue(Row row, int colum) {
 		return getStringValue(row, colum).substring(0,1);
 	}
-	
+
 
 	/**
 	 * Get Date value from Row
@@ -122,15 +136,12 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @return 			column value in Date format
 	 */
 	public Date getDateValue(Row row, int column) {
-		Date result = Constants.FUNDATIONDAYLESSONE;
+		Date result = null; // Constants.FUNDATIONDAYLESSONE;
 		Cell col = row.getCell(column);
 		if(col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {
-				result = col.getDateCellValue(); 
+				result = col.getDateCellValue();
 			}
-		}
-		else {
-			return null;
 		}
 		return result;
 	}
