@@ -59,19 +59,6 @@ public class UtilsServiceImpl implements UtilsService {
 		}
 	}
 
-	/**
-	 * Gets the tab of an Excel with name <code>nameSheet</code>
-	 * @param file 	Excel File
-	 * @return 		selected Excel tab
-	 * @throws BadRequestException It is not possible to read the provided file
-	 */
-	public Sheet obtainSheet(MultipartFile file, String nameSheet) throws BadRequestException {
-		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
-			return workbook.getSheet(nameSheet);
-		} catch (Exception e) {
-			throw new BadRequestException("An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
-		}
-	}
 
 	/**
 	 * Check Input Object if ContentType is not valid or fileData is empty or null get throw
