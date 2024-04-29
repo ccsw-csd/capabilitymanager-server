@@ -8,11 +8,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.dashboard.S3Service.s3Service;
+import com.ccsw.dashboard.S3Service.model.DataserviceS3;
 import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.versionstaffing.model.VersionStaffing;
 
@@ -30,28 +29,15 @@ public class VersionStaffingServiceImpl implements VersionStaffingService {
 	@Autowired
 	private VersionStaffingRepository versionStaffingRepository;
 
-	@Value("${s3.endpoint}")
-	private String s3Endpoint;
-
-	@Value("${s3.username}")
-	private String username;
-
-	@Value("${s3.password}")
-	private String password;
-
-	@Value("${s3.bucket}")
-	private String bucketName;
-
 	@Autowired
-	s3Service s3service;
+	private DataserviceS3 dataservice;
 
-	MinioClient minioClient;
 
 	@Override
 	public InputStream recoverFileById(Long id, String fileName) throws IOException, MinioException,
 			InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, java.security.InvalidKeyException {
 
-		minioClient = s3service.getMinioClient();
+		MinioClient minioClient = dataservice.getMinioClient();
 		Optional<VersionStaffing> opStaffingDataImportFile = versionStaffingRepository.findById(id);
 		VersionStaffing versionStaffing = null;
 		if (opStaffingDataImportFile.isPresent()) {
@@ -62,7 +48,7 @@ public class VersionStaffingServiceImpl implements VersionStaffingService {
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), HttpStatus.NOT_FOUND,
 					Constants.ERROR_FILE_NOT_FOUND, Constants.ERROR_FILE_NOT_FOUND, null);
 		}
-		return minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileName).build());
+		return minioClient.getObject(GetObjectArgs.builder().bucket(dataservice.getBucketName()).object(fileName).build());
 	}
 
 	private void setErrorToReturn(String function, HttpStatus status, String errorMessage, String message,
