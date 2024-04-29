@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,9 +36,9 @@ public class VersionStaffing {
 	@Column(name = "usuario")
 	private String usuario;
 	
-	@Lob
+	
 	@Column(name = "fichero")
-	private byte[] fichero;
+	private String fichero;
 
 	public int getId() {
 		return id;
@@ -97,11 +96,11 @@ public class VersionStaffing {
 		this.usuario = usuario;
 	}
 
-	public byte[] getFichero() {
+	public String getFichero() {
 		return fichero;
 	}
 
-	public void setFichero(byte[] fichero) {
+	public void setFichero(String fichero) {
 		this.fichero = fichero;
 	}
 	
