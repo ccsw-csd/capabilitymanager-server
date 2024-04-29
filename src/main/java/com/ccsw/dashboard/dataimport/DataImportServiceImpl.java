@@ -121,7 +121,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 		try {
 			verCap = createCapacityVersion(sizeSheet, dto.getFileData().getOriginalFilename(), dto.getDescription(),
-					dto.getUser(), dto.getDocumentType(), dto.getFileData().getBytes());
+					dto.getUser(), dto.getDocumentType());
 		} catch (Exception e) {
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e,
 					HttpStatus.UNPROCESSABLE_ENTITY);
@@ -223,7 +223,7 @@ public class DataImportServiceImpl implements DataImportService {
 		VersionStaffing verStaf = null;
 		try {
 			verStaf = createStaffingVersion(sizeSheet, dto.getFileData().getOriginalFilename(), dto.getDescription(),
-					dto.getUser(), dto.getDocumentType(), dto.getFileData().getBytes());
+					dto.getUser(), dto.getDocumentType());
 		} catch (Exception e) {
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e,
 					HttpStatus.UNPROCESSABLE_ENTITY);
@@ -405,7 +405,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return CapacityVersion Object inserted on database
 	 */
 	private VersionCapacidades createCapacityVersion(int numReg, String fileName, String description, String user,
-			String idTipointerfaz, byte[] bs) {
+			String idTipointerfaz) {
 		VersionCapacidades versionCap = new VersionCapacidades();
 
 		versionCap.setNumRegistros(numReg);
@@ -414,7 +414,7 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCap.setDescripcion(description);
 		versionCap.setUsuario(user);
 		versionCap.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
-		// versionCap.setFichero(bs);
+		versionCap.setFichero(dataservice.getS3Endpoint());
 
 		return versionCapatidadesRepository.save(versionCap);
 	}
@@ -431,7 +431,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return VersionStaffing Object inserted on database
 	 */
 	private VersionStaffing createStaffingVersion(int numReg, String fileName, String description, String user,
-			String idTipointerfaz, byte[] bs) {
+			String idTipointerfaz) {
 		VersionStaffing versionStaf = new VersionStaffing();
 		versionStaf.setNumRegistros(numReg);
 		versionStaf.setFechaImportacion(LocalDateTime.now());
@@ -439,7 +439,7 @@ public class DataImportServiceImpl implements DataImportService {
 		versionStaf.setDescripcion(description);
 		versionStaf.setUsuario(user);
 		versionStaf.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
-		// versionStaf.setFichero(bs);
+		versionStaf.setFichero(dataservice.getS3Endpoint());
 
 		return versionStaffingRepository.save(versionStaf);
 	}
@@ -468,8 +468,7 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
-		// versionCer.setFichero(dto.getFileData().getBytes());
-		//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
+		versionCer.setFichero(dataservice.getS3Endpoint());
 
 		return versionCertificacionesRepository.save(versionCer);
 	}

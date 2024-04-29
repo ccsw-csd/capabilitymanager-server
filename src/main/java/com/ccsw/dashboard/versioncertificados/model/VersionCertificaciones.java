@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,12 +35,9 @@ public class VersionCertificaciones {
 	@Column(name = "usuario")
 	private String usuario;
 	
-	@Lob
+	
 	@Column(name = "fichero")
-	private byte[] fichero;
-
-//	@OneToMany(cascade=CascadeType.ALL, mappedBy="num_import_code_id")
-//	private Set<CertificatesDataImport> certificates;
+	private String fichero;
 
 	public int getId() {
 		return id;
@@ -99,26 +95,12 @@ public class VersionCertificaciones {
 		this.usuario = usuario;
 	}
 
-	public byte[] getFichero() {
+	public String getFichero() {
 		return fichero;
 	}
 
-	public void setFichero(byte[] fichero) {
+	public void setFichero(String fichero) {
 		this.fichero = fichero;
 	}
-/*
-	public Set<CertificatesDataImport> getCertificates() {
-		return certificates;
-	}
 
-	public void setCertificates(Set<CertificatesDataImport> certificates) {
-		this.certificates = certificates;
-	}
-
-	public void addCertificate(CertificatesDataImport certificate) {
-		if(this.certificates==null) this.certificates = new HashSet<CertificatesDataImport>();
-		this.certificates.add(certificate);
-		certificate.setNum_import_code_id(this);
-	}
-*/
 }
