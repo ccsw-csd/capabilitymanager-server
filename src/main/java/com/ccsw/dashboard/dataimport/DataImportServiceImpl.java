@@ -68,7 +68,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private DataserviceS3 dataservice;
-	
+
 	@Autowired
 	private s3Service s3service;
 
@@ -104,7 +104,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Rol Document received
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -186,7 +186,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 			formDataImportList.add(data);
 			currentRow = sheet.getRow(i);
-			 data = new FormDataImport();
+			data = new FormDataImport();
 		}
 
 		if (formDataImportList != null && !formDataImportList.isEmpty()) {
@@ -194,7 +194,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
 		}
@@ -206,7 +206,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Staffing Document received
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -311,7 +311,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
@@ -323,7 +323,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Process Certification Document received (waitting specificatios)
-	 * 
+	 *
 	 * @param dto ImportRequestDto Object
 	 * @return ImportResponseDto Object
 	 */
@@ -405,7 +405,7 @@ public class DataImportServiceImpl implements DataImportService {
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
 			logger.error(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
@@ -416,7 +416,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Create an save on database CapacityVersion Object
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -442,7 +442,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Create an save on database VersionStaffing Object
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -468,7 +468,7 @@ public class DataImportServiceImpl implements DataImportService {
 	/**
 	 * Create an save on database CertificationsVersion Object (with
 	 * CertificatesDataImport relations)
-	 * 
+	 *
 	 * @param numReg         num registers on Excel
 	 * @param fileName       Excell File name
 	 * @param description    Description
@@ -490,14 +490,14 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
 		// versionCer.setFichero(dto.getFileData().getBytes());
-//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
+		//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
 
 		return versionCertificacionesRepository.save(versionCer);
 	}
 
 	/**
 	 * Save list FormDataImport on database
-	 * 
+	 *
 	 * @param formDataImportList List Object FormDataImport
 	 * @return List<FormDataImport>
 	 */
@@ -505,11 +505,11 @@ public class DataImportServiceImpl implements DataImportService {
 	private List<FormDataImport> saveAllFormDataImport(List<FormDataImport> formDataImportList,
 			VersionCapacidades verCap) {
 		try {
-			return (List<FormDataImport>) formDataImportRepository.saveAll(formDataImportList);
+			return formDataImportRepository.saveAll(formDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(e.getMessage());
 		}
@@ -517,18 +517,18 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Save list StaffingDataImport on database
-	 * 
+	 *
 	 * @param staffingDataImportList List Object StaffingDataImport
 	 * @return List<StaffingDataImport>
 	 */
 	@Transactional
 	private List<StaffingDataImport> saveAllStaffingDataImport(List<StaffingDataImport> staffingDataImportList) {
 		try {
-			return (List<StaffingDataImport>) staffingDataImportRepository.saveAll(staffingDataImportList);
+			return staffingDataImportRepository.saveAll(staffingDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(errorData.toString());
 		}
@@ -536,7 +536,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	/**
 	 * Save list CertificatesDataImport on database
-	 * 
+	 *
 	 * @param certificatesDataImportList List of objects to save
 	 * @return List<CertificatesDataImport>
 	 */
@@ -544,11 +544,11 @@ public class DataImportServiceImpl implements DataImportService {
 	private List<CertificatesDataImport> saveAllCertificatesDataImport(
 			List<CertificatesDataImport> certificatesDataImportList) {
 		try {
-			return (List<CertificatesDataImport>) certificatesDataImportRepository.saveAll(certificatesDataImportList);
+			return certificatesDataImportRepository.saveAll(certificatesDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
+			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			throw new UnprocessableEntityException(errorData.toString());
 		}
@@ -581,17 +581,17 @@ public class DataImportServiceImpl implements DataImportService {
 
 	private void setVcProfileRolL1(FormDataImport formDataImport) {
 		switch (formDataImport.getVcProfileRolL1extendido()) {
-		case Constants.VCPROFILEROLL1EX_OP1:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP1);
+		case Constants.VCPROFILEROLL1EX_SE:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_SE);
 			break;
-		case Constants.VCPROFILEROLL1EX_OP2:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP2);
+		case Constants.VCPROFILEROLL1EX_BA:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_BA);
 			break;
-		case Constants.VCPROFILEROLL1EX_OP3, Constants.VCPROFILEROLL1EX_OP3_2:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP3);
-			break;
-		case Constants.VCPROFILEROLL1EX_OP4:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP4);
+		case Constants.VCPROFILEROLL1EX_EM, Constants.VCPROFILEROLL1EX_EM_PMO:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_EM);
+		break;
+		case Constants.VCPROFILEROLL1EX_AR:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_AR);
 			break;
 		default:
 			formDataImport.setVcProfileRolL1(Constants.EMPTY);
