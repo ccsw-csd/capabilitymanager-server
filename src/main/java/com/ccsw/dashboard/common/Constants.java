@@ -19,15 +19,15 @@ public class Constants {
 	public static final int ROW_EVIDENCE_LIST_START = 1;
 	public static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
 
-	public static final String VCPROFILEROLL1_OP1  = "Software Engineer";
-	public static final String VCPROFILEROLL1EX_OP1  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
-	public static final String VCPROFILEROLL1_OP2  = "Business Analyst";
-	public static final String VCPROFILEROLL1EX_OP2  = "Business Analyst (Functional Analyst, Product Owner)";
-	public static final String VCPROFILEROLL1_OP3  = "Engagement Managers";
-	public static final String VCPROFILEROLL1EX_OP3  = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
-	public static final String VCPROFILEROLL1EX_OP3_2  = "Engagement Managers (EM, Responsable de proyecto)";
-	public static final String VCPROFILEROLL1_OP4  = "Architects";
-	public static final String VCPROFILEROLL1EX_OP4  = "Architects";
+	public static final String VCPROFILEROLL1_SE  = "Software Engineer";
+	public static final String VCPROFILEROLL1EX_SE  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
+	public static final String VCPROFILEROLL1_BA  = "Business Analyst";
+	public static final String VCPROFILEROLL1EX_BA  = "Business Analyst (Functional Analyst, Product Owner)";
+	public static final String VCPROFILEROLL1_EM  = "Engagement Managers";
+	public static final String VCPROFILEROLL1EX_EM_PMO = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
+	public static final String VCPROFILEROLL1EX_EM = "Engagement Managers (EM, Responsable de proyecto)";
+	public static final String VCPROFILEROLL1_AR = "Architects";
+	public static final String VCPROFILEROLL1EX_AR = "Architects";
 
 	public static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
 	public static final String ERROR_INIT2  = ") ERROR: ";
@@ -71,19 +71,19 @@ public class Constants {
 		COL_VCPROFILEGGID(0),
 		COL_VCPROFILENOMBRE(2),
 		COL_VCPROFILEAPELLIDOS(3),
-		COL_VCPROFILECATEGORIA(9),
-		COL_VCPROFILEPRACTICA(4),
-		COL_VCPROFILEGRADO(8),
-		COL_VCPROFILECENTRO(10),
-		COL_VCPROFILELOCALIZACION(65),
-		COL_VCPROFILEPERFILTECNICO(36),
-		COL_VCPROFILEFECHAINCORPORACION(32),
-		COL_VCPROFILEPORCENTAJEASIGNACION(11),
-		COL_VCPROFILESTATUS(12),
-		COL_VCPROFILECLIENTEACTUAL(15),
-		COL_VCPROFILEFECHAINICIOASIGNACION(22),
-		COL_VCPROFILEFECHAFINASIGNACION(23),
-		COL_VCPROFILEFECHADISPONIBILIDAD(17),
+		COL_VCPROFILECATEGORIA(4),
+		COL_VCPROFILEPRACTICA(5),
+		COL_VCPROFILEGRADO(6),
+		COL_VCPROFILECENTRO(7),
+		COL_VCPROFILELOCALIZACION(8),
+		COL_VCPROFILEPERFILTECNICO(9),
+		COL_VCPROFILEFECHAINCORPORACION(13),
+		COL_VCPROFILEPORCENTAJEASIGNACION(14),
+		COL_VCPROFILESTATUS(15),
+		COL_VCPROFILECLIENTEACTUAL(17),
+		COL_VCPROFILEFECHAINICIOASIGNACION(20),
+		COL_VCPROFILEFECHAFINASIGNACION(21),
+		COL_VCPROFILEFECHADISPONIBILIDAD(22),
 		COL_VCPROFILEPOSICIONPROYECTOFUTURO(24),
 		COL_VCPROFILECOLABORACIONES(63),
 		COLVCPROFILEPROYECTOANTERIOR(34),

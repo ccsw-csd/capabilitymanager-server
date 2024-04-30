@@ -68,7 +68,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private DataserviceS3 dataservice;
-	
+
 	@Autowired
 	private s3Service s3service;
 
@@ -186,7 +186,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 			formDataImportList.add(data);
 			currentRow = sheet.getRow(i);
-			 data = new FormDataImport();
+			data = new FormDataImport();
 		}
 
 		if (formDataImportList != null && !formDataImportList.isEmpty()) {
@@ -468,9 +468,10 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());
 		versionCer.setDescription(dto.getDescription());
 		versionCer.setUsuario(dto.getUser());
-		versionCer.setFichero(dataservice.getS3Endpoint());
+		// versionCer.setFichero(dto.getFileData().getBytes());
+		//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
 
-		return versionCertificacionesRepository.save(versionCer);
+    return versionCertificacionesRepository.save(versionCer);
 	}
 
 	/**
@@ -483,7 +484,7 @@ public class DataImportServiceImpl implements DataImportService {
 	private List<FormDataImport> saveAllFormDataImport(List<FormDataImport> formDataImportList,
 			VersionCapacidades verCap) {
 		try {
-			return (List<FormDataImport>) formDataImportRepository.saveAll(formDataImportList);
+			return formDataImportRepository.saveAll(formDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
@@ -502,7 +503,7 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private List<StaffingDataImport> saveAllStaffingDataImport(List<StaffingDataImport> staffingDataImportList) {
 		try {
-			return (List<StaffingDataImport>) staffingDataImportRepository.saveAll(staffingDataImportList);
+			return staffingDataImportRepository.saveAll(staffingDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
@@ -522,7 +523,7 @@ public class DataImportServiceImpl implements DataImportService {
 	private List<CertificatesDataImport> saveAllCertificatesDataImport(
 			List<CertificatesDataImport> certificatesDataImportList) {
 		try {
-			return (List<CertificatesDataImport>) certificatesDataImportRepository.saveAll(certificatesDataImportList);
+			return certificatesDataImportRepository.saveAll(certificatesDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
@@ -559,17 +560,17 @@ public class DataImportServiceImpl implements DataImportService {
 
 	private void setVcProfileRolL1(FormDataImport formDataImport) {
 		switch (formDataImport.getVcProfileRolL1extendido()) {
-		case Constants.VCPROFILEROLL1EX_OP1:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP1);
+		case Constants.VCPROFILEROLL1EX_SE:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_SE);
 			break;
-		case Constants.VCPROFILEROLL1EX_OP2:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP2);
+		case Constants.VCPROFILEROLL1EX_BA:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_BA);
 			break;
-		case Constants.VCPROFILEROLL1EX_OP3, Constants.VCPROFILEROLL1EX_OP3_2:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP3);
+		case Constants.VCPROFILEROLL1EX_EM, Constants.VCPROFILEROLL1EX_EM_PMO:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_EM);
 		break;
-		case Constants.VCPROFILEROLL1EX_OP4:
-			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_OP4);
+		case Constants.VCPROFILEROLL1EX_AR:
+			formDataImport.setVcProfileRolL1(Constants.VCPROFILEROLL1_AR);
 			break;
 		default:
 			formDataImport.setVcProfileRolL1(Constants.EMPTY);

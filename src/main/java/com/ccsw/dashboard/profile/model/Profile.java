@@ -1,79 +1,33 @@
 package com.ccsw.dashboard.profile.model;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "tmp_export_formdata")
 public class Profile {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;    
 
-	@Column(name="vc_Profile_Staffing_GGID")
-    private String ggid;
-    
-    @Column(name="vc_Profile_SAGA")
-    private String saga;
-    
-    @Column(name="vc_Profile_Staffing_Practica")
-    private String practica;
-    
-    @Column(name="vc_Profile_Staffing_Grado")
-    private String grado;
-    
-    @Column(name="vc_Profile_Staffing_Categoria")
-    private String categoria;
-    
-    @Column(name="vc_Profile_Staffing_Centro")
-    private String centro;
-    
-    @Column(name="vc_Profile_Nombre_Completo")
-    private String nombre;
-    
-    @Column(name="vc_Profile_Email")
-    private String email;
-    
-    @Column(name="vc_Profile_Staffing_Localizacion")
-    private String localizacion;
-    
-    @Column(name="vc_Profile_Staffing_Status")
-    private String status;
-    
-    @Column(name="vc_Profile_Staffing_Perfil_Tecnico")
- 	private String perfilStaffing;   
-    
-    @Column(name="vc_Profile_Rol_Actual")
-    private String actual;
-    
-    @Column(name="vc_Profile_Rol_Perfil")
-    private String perfil;
-    
-    @Column(name="vc_Profile_Rol_Perfil_Experiencia")
-    private String experiencia;
-    
-    @Column(name="vc_Profile_Rol_Perfil_Tecnico")
-    private String tecnico;
-       
-    @Column(name="vc_Profile_Skill_Cloud_Native")
-    private String skillCloudNative;
-    
-    @Column(name="vc_Profile_Skill_Cloud_Native_Experiencia")
-    private String skillCloudNativeExperiencia;
-    
-    @Column(name="vc_Profile_Skill_Low_Code")
-    private String skillLowCode;
-    
-    @Column(name="vc_Profile_Sector_Experiencia")
-    private String sectorExperiencia;
-    
-    @Column(name="id_Import_capacidades")
-    private int idImportCapacidades;
-    
-    @Column(name="id_Import_staffing")
-    private int idImportStaffing;        
-    
-    public Long getId() {
+	private Long id;
+
+	private String ggid;
+	private String saga;
+	private String practica;
+	private String grado;
+	private String categoria;
+	private String centro;
+	private String nombre;
+	private String email;
+	private String localizacion;
+	private String status;
+	private String perfilStaffing;
+	private String actual;
+	private String perfil;
+	private String experiencia;
+	private String tecnicoSolution;
+	private String tecnicoIntegration;
+	private String skillCloudNative;
+	private String skillCloudNativeExperiencia;
+	private String skillLowCode;
+	private String sectorExperiencia;
+	private int idImportCapacidades;
+	private int idImportStaffing;
+
+	public Long getId() {
 		return id;
 	}
 
@@ -193,12 +147,20 @@ public class Profile {
 		this.experiencia = experiencia;
 	}
 
-	public String getTecnico() {
-		return tecnico;
+	public String getTecnicoSolution() {
+		return tecnicoSolution;
 	}
 
-	public void setTecnico(String tecnico) {
-		this.tecnico = tecnico;
+	public void setTecnicoSolution(String tecnicoSolution) {
+		this.tecnicoSolution = tecnicoSolution;
+	}
+
+	public String getTecnicoIntegration() {
+		return tecnicoIntegration;
+	}
+
+	public void setTecnicoIntegration(String tecnicoIntegration) {
+		this.tecnicoIntegration = tecnicoIntegration;
 	}
 
 	public String getSkillCloudNative() {
@@ -241,12 +203,12 @@ public class Profile {
 		this.idImportCapacidades = idImportCapacidades;
 	}
 
-	public int getIdImportStaffing() {		
+	public int getIdImportStaffing() {
 		return idImportStaffing;
 	}
 
 	public void setIdImportStaffing(int idImportStaffing) {
 		this.idImportStaffing = idImportStaffing;
-	}	
-	
+	}
+
 }

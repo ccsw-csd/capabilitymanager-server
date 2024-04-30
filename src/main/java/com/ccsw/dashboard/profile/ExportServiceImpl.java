@@ -40,18 +40,18 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ExportServiceImpl implements ExportService {
 
-    @Autowired
-    private LiteralService literalService;   
-	
+	@Autowired
+	private LiteralService literalService;
+
 	List<ProfileTotal> profileTotals;
 	List<ProfileGroup> profileGroup;
-	
-	public ExportServiceImpl(List<ProfileTotal> profileTotals, List<ProfileGroup> profileGroup) {		
+
+	public ExportServiceImpl(List<ProfileTotal> profileTotals, List<ProfileGroup> profileGroup) {
 		this.profileTotals = profileTotals;
 		this.profileGroup = profileGroup;
-	}	
+	}
 
-	
+
 	public List<ProfileTotal> getProfileTotals() {
 		return profileTotals;
 	}
@@ -75,24 +75,24 @@ public class ExportServiceImpl implements ExportService {
 
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-		
+
 		servletResponse.setContentType("text/csv");
-        servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
-		
-        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
-            csvPrinter.printRecord(id, "Total");
-            for (ProfileTotal profileTotal : profileTotals) {
-                csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
-            }
-        } catch (IOException e) {
-//			log.error("Error While writing CSV ", e);
-        }
-		
+		servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
+
+		try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
+			csvPrinter.printRecord(id, "Total");
+			for (ProfileTotal profileTotal : profileTotals) {
+				csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
+			}
+		} catch (IOException e) {
+			//			log.error("Error While writing CSV ", e);
+		}
+
 	}
-	
+
 	@Override
 	public void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException {
-				
+
 		Workbook workbook = new XSSFWorkbook();
 
 		Sheet sheet = workbook.createSheet(id);
@@ -118,7 +118,7 @@ public class ExportServiceImpl implements ExportService {
 		headerCell = header.createCell(1);
 		headerCell.setCellValue("Total");
 		headerCell.setCellStyle(headerStyle);
-		
+
 		CellStyle style = workbook.createCellStyle();
 		style.setWrapText(true);
 
@@ -129,37 +129,37 @@ public class ExportServiceImpl implements ExportService {
 			cell.setCellValue(profileTotal.getProfile());
 			cell.setCellStyle(style);
 			cell = row.createCell(1);
-			cell.setCellValue((Long)profileTotal.getTotals().get(0));
-			cell.setCellStyle(style);			
+			cell.setCellValue(profileTotal.getTotals().get(0));
+			cell.setCellStyle(style);
 		}
-				
+
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-		
-//		File currDir = new File(".");
-//		String path = currDir.getAbsolutePath();
-//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
-//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
 
-		ServletOutputStream outputStream = servletResponse.getOutputStream();		
+		//		File currDir = new File(".");
+		//		String path = currDir.getAbsolutePath();
+		//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
+		//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
+
+		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
 		servletResponse.setHeader(headerKey, headerValue);
-		
+
 		workbook.write(outputStream);
 		workbook.close();
 		outputStream.close();
 	}
-	
+
 	@Override
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
-		
+
 		Workbook workbook = new XSSFWorkbook();
 		Sheet sheet = workbook.createSheet(id);
-//		sheet.setColumnWidth(0, 8000);
-//		sheet.setColumnWidth(1, 20000);
-		
+		//		sheet.setColumnWidth(0, 8000);
+		//		sheet.setColumnWidth(1, 20000);
+
 		int j=0;
 		sheet.setColumnWidth(j++, 2500);
 		sheet.setColumnWidth(j++, 2500);
@@ -190,7 +190,7 @@ public class ExportServiceImpl implements ExportService {
 		font.setFontHeightInPoints((short) 10);
 		font.setBold(true);
 		headerStyle.setFont(font);
-		
+
 		Row header = sheet.createRow(0);
 		List<Literal> findByTypeAndSubtype = literalService.findBySubtype("d");
 		j=0;
@@ -199,7 +199,7 @@ public class ExportServiceImpl implements ExportService {
 			headerCell.setCellValue(literal.getDesc());
 			headerCell.setCellStyle(headerStyle);
 		}
-		
+
 		CellStyle style = workbook.createCellStyle();
 		style.setWrapText(true);
 
@@ -208,13 +208,13 @@ public class ExportServiceImpl implements ExportService {
 			List<Profile> profileList = pgroup.getProfile();
 			for (Profile profile : profileList) {
 				j=0;
-				Row row = sheet.createRow(i++);			
+				Row row = sheet.createRow(i++);
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getSaga());
-				cell.setCellStyle(style);				
+				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getPractica());
 				cell.setCellStyle(style);
@@ -223,7 +223,7 @@ public class ExportServiceImpl implements ExportService {
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getCategoria());
-				cell.setCellStyle(style);				
+				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getCentro());
 				cell.setCellStyle(style);
@@ -252,7 +252,9 @@ public class ExportServiceImpl implements ExportService {
 				cell.setCellValue(profile.getExperiencia());
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
-				cell.setCellValue(profile.getTecnico());
+				String perfilTecnico = (!profile.getTecnicoSolution().isEmpty())?profile.getTecnicoSolution():"";
+				perfilTecnico = (!profile.getTecnicoIntegration().isEmpty()) ? perfilTecnico.concat(";").concat(profile.getTecnicoIntegration()) : perfilTecnico;
+				cell.setCellValue(perfilTecnico);
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getSkillCloudNative());
@@ -266,48 +268,48 @@ public class ExportServiceImpl implements ExportService {
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getSectorExperiencia());
 				cell.setCellStyle(style);
-			}						
+			}
 		}
-				
+
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-		
-//		File currDir = new File(".");
-//		String path = currDir.getAbsolutePath();
-//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xlsx";
-//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
 
-		ServletOutputStream outputStream = servletResponse.getOutputStream();		
+		// File currDir = new File(".");
+		// String path = currDir.getAbsolutePath();
+		// String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xlsx";
+		// FileOutputStream outputStream = new FileOutputStream(fileLocation);
+
+		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xlsx";
 		servletResponse.setHeader(headerKey, headerValue);
-		
+
 		workbook.write(outputStream);
 		workbook.close();
 		outputStream.close();
 	}
-	
+
 	@Override
-	public void writeProfileToTemplateExcel(String id, HttpServletResponse servletResponse) throws IOException {		
-				
+	public void writeProfileToTemplateExcel(String id, HttpServletResponse servletResponse) throws IOException {
+
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-		
-//		File currDir = new File(".");
-//		String path = currDir.getAbsolutePath();
-//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xls";
-//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
 
-		ServletOutputStream outputStream = servletResponse.getOutputStream();		
+		//		File currDir = new File(".");
+		//		String path = currDir.getAbsolutePath();
+		//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xls";
+		//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
+
+		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xls";
-		servletResponse.setHeader(headerKey, headerValue);		
-		
-		Map<String, Object> data = new HashMap<>();		
+		servletResponse.setHeader(headerKey, headerValue);
+
+		Map<String, Object> data = new HashMap<>();
 		List<Profile> profileList = new ArrayList<Profile>();
-		
+
 		for (ProfileGroup pgroup : profileGroup) {
 			profileList.addAll(pgroup.getProfile());
 		}

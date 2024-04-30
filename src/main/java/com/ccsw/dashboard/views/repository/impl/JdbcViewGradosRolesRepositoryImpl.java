@@ -38,7 +38,7 @@ public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesReposit
 				+ "where\r\n"
 				+ "    fr.num_Import_CodeId = ? and \r\n"
 				+ "	   sg.num_Import_CodeId = ? and\r\n"
-				+ "    (fr.vc_Profile_Rol_L2_EM like '%" + Constants.VCPROFILEROLL1_OP3 + "%' or fr.vc_Profile_Rol_L2_EM = '') and\r\n"
+				+ "    (fr.vc_Profile_Rol_L2_EM like '%" + Constants.VCPROFILEROLL1_EM + "%' or fr.vc_Profile_Rol_L2_EM = '') and\r\n"
 				+ "    sg.vc_Profile_SAGA = fr.vc_Profile_SAGA",
 				this::mapRowToGradeRoles,
 				idVersionCapacidades,idVersionStaffing);
