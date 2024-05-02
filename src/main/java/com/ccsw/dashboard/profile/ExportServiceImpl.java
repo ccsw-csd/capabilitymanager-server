@@ -57,8 +57,7 @@ public class ExportServiceImpl implements ExportService {
 	@Autowired
 	private LiteralService literalService;
 
-<<<<<<< HEAD
-=======
+
 	private ReportVersion reportversion;
 
 	@Autowired
@@ -70,7 +69,7 @@ public class ExportServiceImpl implements ExportService {
 	@Autowired
 	private RoleVersionService roleVersionService;
 
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 	List<ProfileTotal> profileTotals;
 	List<ProfileGroup> profileGroup;
 
@@ -78,10 +77,7 @@ public class ExportServiceImpl implements ExportService {
 		this.profileTotals = profileTotals;
 		this.profileGroup = profileGroup;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> sprint-13_Exportaciones_detalles(back)
 
 	public List<ProfileTotal> getProfileTotals() {
 		return profileTotals;
@@ -108,12 +104,12 @@ public class ExportServiceImpl implements ExportService {
 		String currentDateTime = dateFormatter.format(new Date());
 
 		servletResponse.setContentType("text/csv");
-<<<<<<< HEAD
+
 		servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
-=======
+
 		servletResponse.addHeader("Content-Disposition",
 				"attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 
 		try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
 			csvPrinter.printRecord(id, "Total");
@@ -121,11 +117,9 @@ public class ExportServiceImpl implements ExportService {
 				csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
 			}
 		} catch (IOException e) {
-<<<<<<< HEAD
+
 			//			log.error("Error While writing CSV ", e);
-=======
-//			log.error("Error While writing CSV ", e);
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 		}
 
 	}
@@ -169,25 +163,17 @@ public class ExportServiceImpl implements ExportService {
 			cell.setCellValue(profileTotal.getProfile());
 			cell.setCellStyle(style);
 			cell = row.createCell(1);
-<<<<<<< HEAD
+
 			cell.setCellValue(profileTotal.getTotals().get(0));
-=======
+
 			cell.setCellValue((Long) profileTotal.getTotals().get(0));
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 			cell.setCellStyle(style);
 		}
 
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 
-<<<<<<< HEAD
-		//		File currDir = new File(".");
-		//		String path = currDir.getAbsolutePath();
-		//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + ".xlsx";
-		//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
-
-=======
->>>>>>> sprint-13_Exportaciones_detalles(back)
 		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
@@ -199,8 +185,7 @@ public class ExportServiceImpl implements ExportService {
 		outputStream.close();
 	}
 
-<<<<<<< HEAD
-=======
+
 	public List<ReportVersionDto> findAll() {
 		return this.reportversionservice.findAll().stream().map(rv -> {
 			ReportVersionDto rvdto = new ReportVersionDto();
@@ -228,18 +213,12 @@ public class ExportServiceImpl implements ExportService {
 	
 
 
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 	@Override
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
 
 		Workbook workbook = new XSSFWorkbook();
-<<<<<<< HEAD
-		Sheet sheet = workbook.createSheet(id);
-		//		sheet.setColumnWidth(0, 8000);
-		//		sheet.setColumnWidth(1, 20000);
 
-		int j=0;
-=======
 		Sheet parametros = workbook.createSheet("Parametros");
 
 		int param = 0;
@@ -365,10 +344,10 @@ public class ExportServiceImpl implements ExportService {
 
 		}
 
+	
 		Sheet sheet = workbook.createSheet(id);
-
 		int j = 0;
->>>>>>> sprint-13_Exportaciones_detalles(back)
+
 		sheet.setColumnWidth(j++, 2500);
 		sheet.setColumnWidth(j++, 2500);
 		sheet.setColumnWidth(j++, 3500);
@@ -415,11 +394,8 @@ public class ExportServiceImpl implements ExportService {
 		for (ProfileGroup pgroup : profileGroup) {
 			List<Profile> profileList = pgroup.getProfile();
 			for (Profile profile : profileList) {
-<<<<<<< HEAD
-				j=0;
-=======
+
 				j = 0;
->>>>>>> sprint-13_Exportaciones_detalles(back)
 				Row row = sheet.createRow(i++);
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
@@ -486,14 +462,7 @@ public class ExportServiceImpl implements ExportService {
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 
-<<<<<<< HEAD
-		// File currDir = new File(".");
-		// String path = currDir.getAbsolutePath();
-		// String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xlsx";
-		// FileOutputStream outputStream = new FileOutputStream(fileLocation);
 
-=======
->>>>>>> sprint-13_Exportaciones_detalles(back)
 		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
@@ -504,11 +473,6 @@ public class ExportServiceImpl implements ExportService {
 		workbook.close();
 		outputStream.close();
 	}
-<<<<<<< HEAD
-=======
-	
-	
->>>>>>> sprint-13_Exportaciones_detalles(back)
 
 	@Override
 	public void writeProfileToTemplateExcel(String id, HttpServletResponse servletResponse) throws IOException {
@@ -516,14 +480,6 @@ public class ExportServiceImpl implements ExportService {
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 
-<<<<<<< HEAD
-		//		File currDir = new File(".");
-		//		String path = currDir.getAbsolutePath();
-		//		String fileLocation = path.substring(0, path.length() - 1) + id + "_" + currentDateTime.substring(0, 10) + "_Detail.xls";
-		//		FileOutputStream outputStream = new FileOutputStream(fileLocation);
-
-=======
->>>>>>> sprint-13_Exportaciones_detalles(back)
 		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
