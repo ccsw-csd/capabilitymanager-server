@@ -38,6 +38,21 @@ public class Constants {
 
 	public static final Date FUNDATIONDAYLESSONE = new Date(1967, 9, 30);
 
+	//Expor_detalle_Excel__Parametros
+	public static final String PARAMETROS  = "Parametros";
+	public static final String VERSION  = "Versión";
+	public static final String ROLES_FILE  = "Archivo Roles";
+	public static final String STAFFING_FILE  = "Archivo Staffing";
+	public static final String SCREENSHOOT  = "ScreenShot";
+	public static final String DATE  = "Fecha de Generación";
+	public static final String DESCRIPTION  = "Descripción";
+	public static final String USER  = "Usuario";
+	public static final String COMENTS  = "Comentarios";
+	public static final String YES ="SI";
+	public static final String NO ="NO";
+	
+	
+	
 	public static enum RolsDatabasePos {
 		COL_VCPROFILEEMAIL(3),
 		COL_VCPROFILENAME(4),

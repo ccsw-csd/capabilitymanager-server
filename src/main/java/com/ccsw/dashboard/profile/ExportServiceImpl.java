@@ -3,7 +3,6 @@ package com.ccsw.dashboard.profile;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +12,8 @@ import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+//import org.apache.commons.csv.CSVFormat;
+//import org.apache.commons.csv.CSVPrinter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -28,6 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.dashboard.common.Constants;
 import com.ccsw.dashboard.common.Report;
 import com.ccsw.dashboard.config.literal.LiteralService;
 import com.ccsw.dashboard.config.literal.model.Literal;
@@ -55,7 +57,6 @@ public class ExportServiceImpl implements ExportService {
 	@Autowired
 	private LiteralService literalService;
 
-
 	private ReportVersion reportversion;
 
 	@Autowired
@@ -67,7 +68,6 @@ public class ExportServiceImpl implements ExportService {
 	@Autowired
 	private RoleVersionService roleVersionService;
 
-
 	List<ProfileTotal> profileTotals;
 	List<ProfileGroup> profileGroup;
 
@@ -75,7 +75,6 @@ public class ExportServiceImpl implements ExportService {
 		this.profileTotals = profileTotals;
 		this.profileGroup = profileGroup;
 	}
-
 
 	public List<ProfileTotal> getProfileTotals() {
 		return profileTotals;
@@ -103,11 +102,10 @@ public class ExportServiceImpl implements ExportService {
 
 		servletResponse.setContentType("text/csv");
 
-		servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
+		servletResponse.addHeader("Content-Disposition", "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
 
 		servletResponse.addHeader("Content-Disposition",
 				"attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
-
 
 		try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
 			csvPrinter.printRecord(id, "Total");
@@ -116,7 +114,7 @@ public class ExportServiceImpl implements ExportService {
 			}
 		} catch (IOException e) {
 
-			//			log.error("Error While writing CSV ", e);
+			// log.error("Error While writing CSV ", e);
 
 		}
 
@@ -183,7 +181,6 @@ public class ExportServiceImpl implements ExportService {
 		outputStream.close();
 	}
 
-
 	public ReportVersionDto findVersion(Long idReport) {
 		ReportVersion rv = this.reportversionservice.findById(idReport);
 		ReportVersionDto rvdto = new ReportVersionDto();
@@ -205,134 +202,135 @@ public class ExportServiceImpl implements ExportService {
 		return rvdto;
 	}
 
+	/**
+	 * Método que escribe los datos en cada campo
+	 *
+	 * @param sheet
+	 * @param rowNum
+	 * @param key
+	 * @param value
+	 * @param keyStyle
+	 * @param valueStyle
+	 * @return
+	 */
+	private int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle, CellStyle valueStyle) {
+		Row row = sheet.createRow(rowNum++);
+		Cell cellHeader = row.createCell(0);
+		cellHeader.setCellValue(key);
+		cellHeader.setCellStyle(keyStyle);
+		Cell cellValue = row.createCell(1);
+		if (value instanceof Date) {
+			cellValue.setCellValue((Date) value);
+		} else {
+			cellValue.setCellValue(value.toString());
+		}
+		cellValue.setCellStyle(valueStyle);
+		return rowNum;
+	}
 
+	/**
+	 * Método que le da estilo a las celdas
+	 *
+	 * @param workbook
+	 * @param bold
+	 * @param color
+	 * @return
+	 */
+	private CellStyle createCellStyle(Workbook workbook, boolean bold, IndexedColors color) {
+		CellStyle style = workbook.createCellStyle();
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setFillForegroundColor(color.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(bold);
+		style.setFont(font);
+		return style;
+	}
 
+	/**
+	 * Estilo de los datos en cada celda
+	 *
+	 * @param workbook
+	 * @return
+	 */
+	private CellStyle createDateCellStyle(Workbook workbook) {
+		CellStyle style = workbook.createCellStyle();
+		style.setWrapText(true);
+		CreationHelper createHelper = workbook.getCreationHelper();
+		style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		return style;
+	}
 
+	/**
+	 * estilo del titulo
+	 *
+	 * @param workbook
+	 * @param bold
+	 * @param color
+	 * @return
+	 */
+	private CellStyle createTitleStyle(Workbook workbook, boolean bold, IndexedColors color) {
+		CellStyle style = workbook.createCellStyle();
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setFillForegroundColor(color.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(bold);
+		style.setFont(font);
+		return style;
+	}
+
+	/**
+	 *
+	 * Método que escribe en un excel información los perfiles
+	 *
+	 * @param id              The ID used for naming the Excel file.
+	 * @param servletResponse The HttpServletResponse object for sending the response.
+	 * @param idReport        The ID of the report version.
+	 * @throws IOException if an I/O error occurs while writing the Excel file or sending the response.
+	 */
 	@Override
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse, Long idReport) throws IOException {
 
 		Workbook workbook = new XSSFWorkbook();
+		Sheet parametros = workbook.createSheet(Constants.PARAMETROS);
 
-		Sheet parametros = workbook.createSheet("Parametros");
+		// Establecer anchos de columna
+		parametros.setColumnWidth(0, 5000);
+		parametros.setColumnWidth(1, 20000);
 
-		int param = 0;
-		parametros.setColumnWidth(param++, 5000);
-		parametros.setColumnWidth(param++, 20000);
+		// Establecer estilos de celda
+		CellStyle keyParamStyle = createCellStyle(workbook, true, IndexedColors.GREY_25_PERCENT);
+		CellStyle valueStyle = createCellStyle(workbook, false, IndexedColors.WHITE);
+		CellStyle dateStyle = createDateCellStyle(workbook);
+		CellStyle TitleStyle = createTitleStyle(workbook, true, IndexedColors.AQUA);
 
-		// Crear una fila para el título
+		// Crear fila para el título
 		Row titleRow = parametros.createRow(0);
-		parametros.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
-
-		XSSFFont fonts = ((XSSFWorkbook) workbook).createFont();
-		fonts.setFontName("Arial");
-		fonts.setFontHeightInPoints((short) 10);
-		fonts.setBold(true);
-
-		// Crear una celda para el título
-		CellStyle titleParamStyle = workbook.createCellStyle();
-		titleParamStyle.setFont(fonts);
-		titleParamStyle.setAlignment(HorizontalAlignment.CENTER);
-		titleParamStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
-		titleParamStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-		CellStyle valueStyle = workbook.createCellStyle();
-		valueStyle.setAlignment(HorizontalAlignment.LEFT);
-		valueStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-		valueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-		CellStyle keyParam = workbook.createCellStyle();
-		keyParam.setAlignment(HorizontalAlignment.LEFT);
-		keyParam.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-		keyParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		keyParam.setFont(fonts);
-
-		List<Literal> literalesParametros = literalService.findByTypeAndSubtype("Excel Detail", "p");
-		Literal tituloParametro = literalesParametros.get(0);
-
 		Cell titleCell = titleRow.createCell(0);
-		titleCell.setCellValue(tituloParametro.getDesc());
-		titleCell.setCellStyle(titleParamStyle);
-
-		//formato de la fecha
-		CellStyle styleParam = workbook.createCellStyle();
-		styleParam.setWrapText(true);
-		CreationHelper createHelper = workbook.getCreationHelper();
-		styleParam.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
-		styleParam.setAlignment(HorizontalAlignment.LEFT);
-		styleParam.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-		styleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		titleCell.setCellValue(Constants.PARAMETROS.toUpperCase());
+		parametros.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+		titleCell.setCellStyle(TitleStyle);
 
 		ReportVersionDto reportVersion = findVersion(idReport);
 		int rowNum = 1;
 
-		Row row = parametros.createRow(rowNum++);
-		LocalDateTime fechaImportacion = reportVersion.getFechaImportacion();
-
-		Cell cellHeader = row.createCell(0);
-		Cell cellValue = row.createCell(1);
-		cellValue.setCellStyle(valueStyle);
-
-		cellHeader.setCellValue(literalesParametros.get(1).getDesc()); // "Versión");
-		cellValue.setCellValue(reportVersion.getId());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(2).getDesc()); // "Archivo Roles");
-		cellValue.setCellValue(reportVersion.getRoleVersion().getNombreFichero());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(3).getDesc()); // "Archivo Staffing");
-		cellValue.setCellValue(reportVersion.getStaffingVersion().getNombreFichero());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(4).getDesc()); // "ScreenShot");
-		cellValue.setCellValue((reportVersion.getScreenshot()==0)?"NO":"SI");
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(5).getDesc()); // "Fecha de Generación");
-		cellValue.setCellValue(Date.from(fechaImportacion.atZone(ZoneId.systemDefault()).toInstant()));
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(styleParam);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(6).getDesc()); // "Descripción");
-		cellValue.setCellValue(reportVersion.getDescripcion());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(7).getDesc()); // "Usuario");
-		cellValue.setCellValue(reportVersion.getUsuario());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue(literalesParametros.get(8).getDesc()); // "Comentarios");
-		cellValue.setCellValue(reportVersion.getComentarios());
-		cellHeader.setCellStyle(keyParam);
-		cellValue.setCellStyle(valueStyle);
-
+		// Información de parámetros
+		rowNum = writeParametro(parametros, rowNum, Constants.VERSION, String.valueOf(reportVersion.getId()), keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.ROLES_FILE, reportVersion.getRoleVersion().getNombreFichero(), keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.STAFFING_FILE, reportVersion.getStaffingVersion().getNombreFichero(), keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.SCREENSHOOT, (reportVersion.getScreenshot() == 0) ? Constants.YES : Constants.NO, keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.DATE, Date.from(reportVersion.getFechaImportacion().atZone(ZoneId.systemDefault()).toInstant()), keyParamStyle, dateStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.DESCRIPTION, reportVersion.getDescripcion(), keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.USER, reportVersion.getUsuario(), keyParamStyle, valueStyle);
+		rowNum = writeParametro(parametros, rowNum, Constants.COMENTS, reportVersion.getComentarios(), keyParamStyle, valueStyle);
 
 		Sheet sheet = workbook.createSheet(id);
 		int j = 0;
@@ -385,7 +383,7 @@ public class ExportServiceImpl implements ExportService {
 			for (Profile profile : profileList) {
 
 				j = 0;
-				row = sheet.createRow(i++);
+				Row row = sheet.createRow(i++);
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
 				cell.setCellStyle(style);
@@ -429,7 +427,7 @@ public class ExportServiceImpl implements ExportService {
 				cell.setCellValue(profile.getExperiencia());
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
-				String perfilTecnico = (!profile.getTecnicoSolution().isEmpty())?profile.getTecnicoSolution():"";
+				String perfilTecnico = (!profile.getTecnicoSolution().isEmpty()) ? profile.getTecnicoSolution() : "";
 				perfilTecnico = (!profile.getTecnicoIntegration().isEmpty()) ? perfilTecnico.concat(";").concat(profile.getTecnicoIntegration()) : perfilTecnico;
 				cell.setCellValue(perfilTecnico);
 				cell.setCellStyle(style);
@@ -450,7 +448,6 @@ public class ExportServiceImpl implements ExportService {
 
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
-
 
 		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
