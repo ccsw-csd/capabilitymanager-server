@@ -166,7 +166,7 @@ public class ExportServiceImpl implements ExportService {
 
 			cell.setCellValue(profileTotal.getTotals().get(0));
 
-			cell.setCellValue((Long) profileTotal.getTotals().get(0));
+			cell.setCellValue(profileTotal.getTotals().get(0));
 
 			cell.setCellStyle(style);
 		}
@@ -186,36 +186,32 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 
-	public List<ReportVersionDto> findAll() {
-		return this.reportversionservice.findAll().stream().map(rv -> {
-			ReportVersionDto rvdto = new ReportVersionDto();
-			RoleVersion roleVersion = roleVersionService.findById(Long.valueOf(rv.getIdVersionCapacidades()));
-			rvdto.setRoleVersion(roleVersion == null ? null
-					: new RoleVersionDto(roleVersion.getId(), roleVersion.getIdTipoInterfaz(),
-							roleVersion.getFechaImportacion(), roleVersion.getNumRegistros(),
-							roleVersion.getNombreFichero(), roleVersion.getDescripcion(), roleVersion.getUsuario()));
-			StaffingVersion staffingVersion = staffingVersionService.findById(Long.valueOf(rv.getIdVersionStaffing()));
-			rvdto.setStaffingVersion(staffingVersion == null ? null
-					: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(),
-							staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
-							staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(),
-							staffingVersion.getUsuario()));
-			rvdto.setId(rv.getId());
-			rvdto.setUsuario(rv.getUsuario());
-			rvdto.setDescripcion(rv.getDescripcion());
-			rvdto.setScreenshot(rv.getScreenshot());
-			rvdto.setComentarios(rv.getComentarios());
-			rvdto.setFechaImportacion(rv.getFechaImportacion());
-			rvdto.setFechaModificacion(rv.getFechaModificacion());
-			return rvdto;
-		}).toList();
+	public ReportVersionDto findVersion(Long idReport) {
+		ReportVersion rv = this.reportversionservice.findById(idReport);
+		ReportVersionDto rvdto = new ReportVersionDto();
+		RoleVersion roleVersion = roleVersionService.findById(Long.valueOf(rv.getIdVersionCapacidades()));
+		rvdto.setRoleVersion(roleVersion == null ? null
+				: new RoleVersionDto(roleVersion.getId(), roleVersion.getIdTipoInterfaz(), roleVersion.getFechaImportacion(), roleVersion.getNumRegistros(), roleVersion.getNombreFichero(),
+						roleVersion.getDescripcion(), roleVersion.getUsuario()));
+		StaffingVersion staffingVersion = staffingVersionService.findById(Long.valueOf(rv.getIdVersionStaffing()));
+		rvdto.setStaffingVersion(staffingVersion == null ? null
+				: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(), staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
+						staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(), staffingVersion.getUsuario()));
+		rvdto.setId(rv.getId());
+		rvdto.setUsuario(rv.getUsuario());
+		rvdto.setDescripcion(rv.getDescripcion());
+		rvdto.setScreenshot(rv.getScreenshot());
+		rvdto.setComentarios(rv.getComentarios());
+		rvdto.setFechaImportacion(rv.getFechaImportacion());
+		rvdto.setFechaModificacion(rv.getFechaModificacion());
+		return rvdto;
 	}
-	
+
 
 
 
 	@Override
-	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
+	public void writeProfileToExcel(String id, HttpServletResponse servletResponse, Long idReport) throws IOException {
 
 		Workbook workbook = new XSSFWorkbook();
 
@@ -229,32 +225,32 @@ public class ExportServiceImpl implements ExportService {
 		Row titleRow = parametros.createRow(0);
 		parametros.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
 
-		// Crear una celda para el título
-		CellStyle titleParam = workbook.createCellStyle();
-		Cell titleCell = titleRow.createCell(0);
-		CellStyle keyParam = workbook.createCellStyle();
-		
 		XSSFFont fonts = ((XSSFWorkbook) workbook).createFont();
 		fonts.setFontName("Arial");
 		fonts.setFontHeightInPoints((short) 10);
 		fonts.setBold(true);
-		titleParam.setFont(fonts);
-		
-		titleCell.setCellValue("PARAMETROS");
-		titleParam.setAlignment(HorizontalAlignment.CENTER);
-		titleParam.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-		titleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		titleCell.setCellStyle(titleParam);
-		
+
+		// Crear una celda para el título
+		CellStyle titleParamStyle = workbook.createCellStyle();
+		titleParamStyle.setFont(fonts);
+		titleParamStyle.setAlignment(HorizontalAlignment.CENTER);
+		titleParamStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
+		titleParamStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		CellStyle valueStyle = workbook.createCellStyle();
+		valueStyle.setAlignment(HorizontalAlignment.LEFT);
+		valueStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+		valueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		CellStyle keyParam = workbook.createCellStyle();
 		keyParam.setAlignment(HorizontalAlignment.LEFT);
 		keyParam.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		keyParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		keyParam.setFont(fonts);
-	
-		CellStyle valueStyle = workbook.createCellStyle();
-		valueStyle.setAlignment(HorizontalAlignment.LEFT);
-		valueStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
-		valueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		Cell titleCell = titleRow.createCell(0);
+		titleCell.setCellValue("PARAMETROS");
+		titleCell.setCellStyle(titleParamStyle);
 
 		//formato de la fecha
 		CellStyle styleParam = workbook.createCellStyle();
@@ -262,89 +258,84 @@ public class ExportServiceImpl implements ExportService {
 		CreationHelper createHelper = workbook.getCreationHelper();
 		styleParam.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
 		styleParam.setAlignment(HorizontalAlignment.LEFT);
-		styleParam.setFillForegroundColor(IndexedColors.AQUA.getIndex());
+		styleParam.setFillForegroundColor(IndexedColors.WHITE.getIndex());
 		styleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-		List<ReportVersionDto> reportVersions = findAll();
+		ReportVersionDto reportVersion = findVersion(idReport);
 		int rowNum = 1;
 
-		for (ReportVersionDto paramRole : reportVersions) {
-			Row row = parametros.createRow(rowNum++);
-			LocalDateTime fechaImportacion = paramRole.getFechaImportacion();
-			
-			Cell cellHeader = row.createCell(0);
-			Cell cellValue = row.createCell(1);
-			cellValue.setCellStyle(valueStyle);
+		Row row = parametros.createRow(rowNum++);
+		LocalDateTime fechaImportacion = reportVersion.getFechaImportacion();
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Versión");
-			cellValue.setCellValue(paramRole.getId());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		Cell cellHeader = row.createCell(0);
+		Cell cellValue = row.createCell(1);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Archivo Roles");
-			cellValue.setCellValue(paramRole.getRoleVersion().getNombreFichero());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Versión");
+		cellValue.setCellValue(reportVersion.getId());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Archivo Staffing");
-			cellValue.setCellValue(paramRole.getStaffingVersion().getNombreFichero());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Archivo Roles");
+		cellValue.setCellValue(reportVersion.getRoleVersion().getNombreFichero());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("ScreenShot");
-			cellValue.setCellValue(paramRole.getScreenshot());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Archivo Staffing");
+		cellValue.setCellValue(reportVersion.getStaffingVersion().getNombreFichero());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Fecha de Generación");
-			cellValue.setCellValue(Date.from(fechaImportacion.atZone(ZoneId.systemDefault()).toInstant()));
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(styleParam);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("ScreenShot");
+		cellValue.setCellValue((reportVersion.getScreenshot()==0)?"NO":"SI");
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Descripción");
-			cellValue.setCellValue(paramRole.getDescripcion());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Fecha de Generación");
+		cellValue.setCellValue(Date.from(fechaImportacion.atZone(ZoneId.systemDefault()).toInstant()));
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(styleParam);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Usuario");
-			cellValue.setCellValue(paramRole.getUsuario());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Descripción");
+		cellValue.setCellValue(reportVersion.getDescripcion());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			row = parametros.createRow(rowNum++);
-			cellHeader = row.createCell(0);
-			cellValue = row.createCell(1);
-			cellHeader.setCellValue("Comentarios");
-			cellValue.setCellValue(paramRole.getComentarios());
-			cellHeader.setCellStyle(keyParam);
-			cellValue.setCellStyle(valueStyle);
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Usuario");
+		cellValue.setCellValue(reportVersion.getUsuario());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-			break;
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Comentarios");
+		cellValue.setCellValue(reportVersion.getComentarios());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
 
-		}
 
-	
 		Sheet sheet = workbook.createSheet(id);
 		int j = 0;
 
@@ -396,7 +387,7 @@ public class ExportServiceImpl implements ExportService {
 			for (Profile profile : profileList) {
 
 				j = 0;
-				Row row = sheet.createRow(i++);
+				row = sheet.createRow(i++);
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
 				cell.setCellStyle(style);
