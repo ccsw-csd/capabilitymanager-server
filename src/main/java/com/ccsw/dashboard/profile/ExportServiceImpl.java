@@ -13,8 +13,6 @@ import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-//import org.apache.commons.csv.CSVFormat;
-//import org.apache.commons.csv.CSVPrinter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -248,8 +246,11 @@ public class ExportServiceImpl implements ExportService {
 		keyParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		keyParam.setFont(fonts);
 
+		List<Literal> literalesParametros = literalService.findByTypeAndSubtype("Excel Detail", "p");
+		Literal tituloParametro = literalesParametros.get(0);
+
 		Cell titleCell = titleRow.createCell(0);
-		titleCell.setCellValue("PARAMETROS");
+		titleCell.setCellValue(tituloParametro.getDesc());
 		titleCell.setCellStyle(titleParamStyle);
 
 		//formato de la fecha
@@ -271,10 +272,7 @@ public class ExportServiceImpl implements ExportService {
 		Cell cellValue = row.createCell(1);
 		cellValue.setCellStyle(valueStyle);
 
-		row = parametros.createRow(rowNum++);
-		cellHeader = row.createCell(0);
-		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Versión");
+		cellHeader.setCellValue(literalesParametros.get(1).getDesc()); // "Versión");
 		cellValue.setCellValue(reportVersion.getId());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -282,7 +280,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Archivo Roles");
+		cellHeader.setCellValue(literalesParametros.get(2).getDesc()); // "Archivo Roles");
 		cellValue.setCellValue(reportVersion.getRoleVersion().getNombreFichero());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -290,7 +288,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Archivo Staffing");
+		cellHeader.setCellValue(literalesParametros.get(3).getDesc()); // "Archivo Staffing");
 		cellValue.setCellValue(reportVersion.getStaffingVersion().getNombreFichero());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -298,7 +296,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("ScreenShot");
+		cellHeader.setCellValue(literalesParametros.get(4).getDesc()); // "ScreenShot");
 		cellValue.setCellValue((reportVersion.getScreenshot()==0)?"NO":"SI");
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -306,7 +304,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Fecha de Generación");
+		cellHeader.setCellValue(literalesParametros.get(5).getDesc()); // "Fecha de Generación");
 		cellValue.setCellValue(Date.from(fechaImportacion.atZone(ZoneId.systemDefault()).toInstant()));
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(styleParam);
@@ -314,7 +312,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Descripción");
+		cellHeader.setCellValue(literalesParametros.get(6).getDesc()); // "Descripción");
 		cellValue.setCellValue(reportVersion.getDescripcion());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -322,7 +320,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Usuario");
+		cellHeader.setCellValue(literalesParametros.get(7).getDesc()); // "Usuario");
 		cellValue.setCellValue(reportVersion.getUsuario());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
@@ -330,7 +328,7 @@ public class ExportServiceImpl implements ExportService {
 		row = parametros.createRow(rowNum++);
 		cellHeader = row.createCell(0);
 		cellValue = row.createCell(1);
-		cellHeader.setCellValue("Comentarios");
+		cellHeader.setCellValue(literalesParametros.get(8).getDesc()); // "Comentarios");
 		cellValue.setCellValue(reportVersion.getComentarios());
 		cellHeader.setCellStyle(keyParam);
 		cellValue.setCellStyle(valueStyle);
