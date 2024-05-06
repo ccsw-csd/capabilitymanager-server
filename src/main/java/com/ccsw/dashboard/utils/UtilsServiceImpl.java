@@ -122,7 +122,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @return 			column value in Date format
 	 */
 	public Date getDateValue(Row row, int column) {
-		Date result = null;
+		Date result = null; // Constants.FUNDATIONDAYLESSONE;
 		Cell col = row.getCell(column);
 		if(col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {

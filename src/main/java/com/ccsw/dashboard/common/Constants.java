@@ -89,6 +89,7 @@ public class Constants {
 		COLVCPROFILEPROYECTOANTERIOR(34),
 		COL_VCPROFILEMESESBENCH(54);
 
+
 		private final int excelPosition;
 
 		StaffingDatabasePos(int position) {
