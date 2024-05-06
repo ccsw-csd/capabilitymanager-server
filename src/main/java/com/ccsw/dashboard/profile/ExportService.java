@@ -14,7 +14,7 @@ public interface ExportService {
 
 	void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException;
 
-	void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException;
+	void writeProfileToExcel(String id, HttpServletResponse servletResponse, Long idReport) throws IOException;
 
 	void setProfileGroup(List<ProfileGroup> profileGroup);
 
