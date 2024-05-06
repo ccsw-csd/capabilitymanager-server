@@ -19,15 +19,15 @@ public class Constants {
 	public static final int ROW_EVIDENCE_LIST_START = 1;
 	public static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
 
-	public static final String VCPROFILEROLL1_OP1  = "Software Engineer";
-	public static final String VCPROFILEROLL1EX_OP1  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
-	public static final String VCPROFILEROLL1_OP2  = "Business Analyst";
-	public static final String VCPROFILEROLL1EX_OP2  = "Business Analyst (Functional Analyst, Product Owner)";
-	public static final String VCPROFILEROLL1_OP3  = "Engagement Managers";
-	public static final String VCPROFILEROLL1EX_OP3  = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
-	public static final String VCPROFILEROLL1EX_OP3_2  = "Engagement Managers (EM, Responsable de proyecto)";
-	public static final String VCPROFILEROLL1_OP4  = "Architects";
-	public static final String VCPROFILEROLL1EX_OP4  = "Architects";
+	public static final String VCPROFILEROLL1_SE  = "Software Engineer";
+	public static final String VCPROFILEROLL1EX_SE  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
+	public static final String VCPROFILEROLL1_BA  = "Business Analyst";
+	public static final String VCPROFILEROLL1EX_BA  = "Business Analyst (Functional Analyst, Product Owner)";
+	public static final String VCPROFILEROLL1_EM  = "Engagement Managers";
+	public static final String VCPROFILEROLL1EX_EM_PMO = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
+	public static final String VCPROFILEROLL1EX_EM = "Engagement Managers (EM, Responsable de proyecto)";
+	public static final String VCPROFILEROLL1_AR = "Architects";
+	public static final String VCPROFILEROLL1EX_AR = "Architects";
 
 	public static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
 	public static final String ERROR_INIT2  = ") ERROR: ";
@@ -88,6 +88,7 @@ public class Constants {
 		COL_VCPROFILECOLABORACIONES(63),
 		COLVCPROFILEPROYECTOANTERIOR(34),
 		COL_VCPROFILEMESESBENCH(54);
+
 
 		private final int excelPosition;
 

@@ -76,6 +76,7 @@ public class ExportServiceImpl implements ExportService {
 		this.profileGroup = profileGroup;
 	}
 
+
 	public List<ProfileTotal> getProfileTotals() {
 		return profileTotals;
 	}
@@ -101,16 +102,14 @@ public class ExportServiceImpl implements ExportService {
 		String currentDateTime = dateFormatter.format(new Date());
 
 		servletResponse.setContentType("text/csv");
+
+		servletResponse.addHeader("Content-Disposition","attachment; filename="+ id + "_" + currentDateTime.substring(0, 10) +".csv");
+
 		servletResponse.addHeader("Content-Disposition",
 				"attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
 
-		try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
-			csvPrinter.printRecord(id, "Total");
-			for (ProfileTotal profileTotal : profileTotals) {
-				csvPrinter.printRecord(profileTotal.getProfile(), profileTotal.getTotals().get(0));
-			}
-		} catch (IOException e) {
-//			log.error("Error While writing CSV ", e);
+			//			log.error("Error While writing CSV ", e);
+
 		}
 
 	}
@@ -154,7 +153,15 @@ public class ExportServiceImpl implements ExportService {
 			cell.setCellValue(profileTotal.getProfile());
 			cell.setCellStyle(style);
 			cell = row.createCell(1);
+<<<<<<< HEAD
 			cell.setCellValue((Long) profileTotal.getTotals().get(0));
+=======
+
+			cell.setCellValue(profileTotal.getTotals().get(0));
+
+			cell.setCellValue(profileTotal.getTotals().get(0));
+
+>>>>>>> sprint-13
 			cell.setCellStyle(style);
 		}
 
@@ -172,6 +179,7 @@ public class ExportServiceImpl implements ExportService {
 		outputStream.close();
 	}
 
+<<<<<<< HEAD
 	public List<ReportVersionDto> findAll() {
 		return this.reportversionservice.findAll().stream().map(rv -> {
 			ReportVersionDto rvdto = new ReportVersionDto();
@@ -203,6 +211,38 @@ public class ExportServiceImpl implements ExportService {
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse) throws IOException {
 
 		Workbook workbook = new XSSFWorkbook();
+=======
+
+	public ReportVersionDto findVersion(Long idReport) {
+		ReportVersion rv = this.reportversionservice.findById(idReport);
+		ReportVersionDto rvdto = new ReportVersionDto();
+		RoleVersion roleVersion = roleVersionService.findById(Long.valueOf(rv.getIdVersionCapacidades()));
+		rvdto.setRoleVersion(roleVersion == null ? null
+				: new RoleVersionDto(roleVersion.getId(), roleVersion.getIdTipoInterfaz(), roleVersion.getFechaImportacion(), roleVersion.getNumRegistros(), roleVersion.getNombreFichero(),
+						roleVersion.getDescripcion(), roleVersion.getUsuario()));
+		StaffingVersion staffingVersion = staffingVersionService.findById(Long.valueOf(rv.getIdVersionStaffing()));
+		rvdto.setStaffingVersion(staffingVersion == null ? null
+				: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(), staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
+						staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(), staffingVersion.getUsuario()));
+		rvdto.setId(rv.getId());
+		rvdto.setUsuario(rv.getUsuario());
+		rvdto.setDescripcion(rv.getDescripcion());
+		rvdto.setScreenshot(rv.getScreenshot());
+		rvdto.setComentarios(rv.getComentarios());
+		rvdto.setFechaImportacion(rv.getFechaImportacion());
+		rvdto.setFechaModificacion(rv.getFechaModificacion());
+		return rvdto;
+	}
+
+
+
+
+	@Override
+	public void writeProfileToExcel(String id, HttpServletResponse servletResponse, Long idReport) throws IOException {
+
+		Workbook workbook = new XSSFWorkbook();
+
+>>>>>>> sprint-13
 		Sheet parametros = workbook.createSheet("Parametros");
 
 		int param = 0;
@@ -213,15 +253,19 @@ public class ExportServiceImpl implements ExportService {
 		Row titleRow = parametros.createRow(0);
 		parametros.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
 
+<<<<<<< HEAD
 		// Crear una celda para el título
 		CellStyle titleParam = workbook.createCellStyle();
 		Cell titleCell = titleRow.createCell(0);
 		CellStyle keyParam = workbook.createCellStyle();
 		
+=======
+>>>>>>> sprint-13
 		XSSFFont fonts = ((XSSFWorkbook) workbook).createFont();
 		fonts.setFontName("Arial");
 		fonts.setFontHeightInPoints((short) 10);
 		fonts.setBold(true);
+<<<<<<< HEAD
 		titleParam.setFont(fonts);
 		
 		titleCell.setCellValue("PARAMETROS");
@@ -230,15 +274,38 @@ public class ExportServiceImpl implements ExportService {
 		titleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		titleCell.setCellStyle(titleParam);
 		
+=======
+
+		// Crear una celda para el título
+		CellStyle titleParamStyle = workbook.createCellStyle();
+		titleParamStyle.setFont(fonts);
+		titleParamStyle.setAlignment(HorizontalAlignment.CENTER);
+		titleParamStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
+		titleParamStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		CellStyle valueStyle = workbook.createCellStyle();
+		valueStyle.setAlignment(HorizontalAlignment.LEFT);
+		valueStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+		valueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		CellStyle keyParam = workbook.createCellStyle();
+>>>>>>> sprint-13
 		keyParam.setAlignment(HorizontalAlignment.LEFT);
 		keyParam.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		keyParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		keyParam.setFont(fonts);
+<<<<<<< HEAD
 	
 		CellStyle valueStyle = workbook.createCellStyle();
 		valueStyle.setAlignment(HorizontalAlignment.LEFT);
 		valueStyle.setFillForegroundColor(IndexedColors.AQUA.getIndex());
 		valueStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+=======
+
+		Cell titleCell = titleRow.createCell(0);
+		titleCell.setCellValue("PARAMETROS");
+		titleCell.setCellStyle(titleParamStyle);
+>>>>>>> sprint-13
 
 		//formato de la fecha
 		CellStyle styleParam = workbook.createCellStyle();
@@ -246,6 +313,7 @@ public class ExportServiceImpl implements ExportService {
 		CreationHelper createHelper = workbook.getCreationHelper();
 		styleParam.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
 		styleParam.setAlignment(HorizontalAlignment.LEFT);
+<<<<<<< HEAD
 		styleParam.setFillForegroundColor(IndexedColors.AQUA.getIndex());
 		styleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
@@ -331,6 +399,89 @@ public class ExportServiceImpl implements ExportService {
 		Sheet sheet = workbook.createSheet(id);
 
 		int j = 0;
+=======
+		styleParam.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+		styleParam.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		ReportVersionDto reportVersion = findVersion(idReport);
+		int rowNum = 1;
+
+		Row row = parametros.createRow(rowNum++);
+		LocalDateTime fechaImportacion = reportVersion.getFechaImportacion();
+
+		Cell cellHeader = row.createCell(0);
+		Cell cellValue = row.createCell(1);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Versión");
+		cellValue.setCellValue(reportVersion.getId());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Archivo Roles");
+		cellValue.setCellValue(reportVersion.getRoleVersion().getNombreFichero());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Archivo Staffing");
+		cellValue.setCellValue(reportVersion.getStaffingVersion().getNombreFichero());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("ScreenShot");
+		cellValue.setCellValue((reportVersion.getScreenshot()==0)?"NO":"SI");
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Fecha de Generación");
+		cellValue.setCellValue(Date.from(fechaImportacion.atZone(ZoneId.systemDefault()).toInstant()));
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(styleParam);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Descripción");
+		cellValue.setCellValue(reportVersion.getDescripcion());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Usuario");
+		cellValue.setCellValue(reportVersion.getUsuario());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+		row = parametros.createRow(rowNum++);
+		cellHeader = row.createCell(0);
+		cellValue = row.createCell(1);
+		cellHeader.setCellValue("Comentarios");
+		cellValue.setCellValue(reportVersion.getComentarios());
+		cellHeader.setCellStyle(keyParam);
+		cellValue.setCellStyle(valueStyle);
+
+
+		Sheet sheet = workbook.createSheet(id);
+		int j = 0;
+
+>>>>>>> sprint-13
 		sheet.setColumnWidth(j++, 2500);
 		sheet.setColumnWidth(j++, 2500);
 		sheet.setColumnWidth(j++, 3500);
@@ -377,8 +528,14 @@ public class ExportServiceImpl implements ExportService {
 		for (ProfileGroup pgroup : profileGroup) {
 			List<Profile> profileList = pgroup.getProfile();
 			for (Profile profile : profileList) {
+<<<<<<< HEAD
 				j = 0;
 				Row row = sheet.createRow(i++);
+=======
+
+				j = 0;
+				row = sheet.createRow(i++);
+>>>>>>> sprint-13
 				Cell cell = row.createCell(j++);
 				cell.setCellValue(profile.getGgid());
 				cell.setCellStyle(style);
@@ -422,7 +579,9 @@ public class ExportServiceImpl implements ExportService {
 				cell.setCellValue(profile.getExperiencia());
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
-				cell.setCellValue(profile.getTecnico());
+				String perfilTecnico = (!profile.getTecnicoSolution().isEmpty())?profile.getTecnicoSolution():"";
+				perfilTecnico = (!profile.getTecnicoIntegration().isEmpty()) ? perfilTecnico.concat(";").concat(profile.getTecnicoIntegration()) : perfilTecnico;
+				cell.setCellValue(perfilTecnico);
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				cell.setCellValue(profile.getSkillCloudNative());
@@ -442,6 +601,10 @@ public class ExportServiceImpl implements ExportService {
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String currentDateTime = dateFormatter.format(new Date());
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> sprint-13
 		ServletOutputStream outputStream = servletResponse.getOutputStream();
 		servletResponse.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
@@ -452,8 +615,11 @@ public class ExportServiceImpl implements ExportService {
 		workbook.close();
 		outputStream.close();
 	}
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> sprint-13
 
 	@Override
 	public void writeProfileToTemplateExcel(String id, HttpServletResponse servletResponse) throws IOException {
