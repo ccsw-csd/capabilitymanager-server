@@ -44,7 +44,7 @@ public class Constants {
 	public static final String ROLES_FILE  = "Archivo Roles";
 	public static final String STAFFING_FILE  = "Archivo Staffing";
 	public static final String SCREENSHOOT  = "ScreenShot";
-	public static final String DATE  = "Fecha de Generación";
+	public static final String DATE_GENERACION  = "Fecha de Generación";
 	public static final String DESCRIPTION  = "Descripción";
 	public static final String USER  = "Usuario";
 	public static final String COMENTS  = "Comentarios";

@@ -27,11 +27,10 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 
 	@Autowired
 	private ReportVersionRepository reportVersionRepository;
-	private Object reportVersionService;
 
 	@Override
 	public List<ReportVersion> findAll() {
-		return (List<ReportVersion>) this.reportVersionRepository.findAll().stream().sorted().toList();
+		return this.reportVersionRepository.findAll().stream().sorted().toList();
 	}
 
 	@Override

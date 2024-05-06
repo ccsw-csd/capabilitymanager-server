@@ -5,11 +5,18 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -131,4 +138,90 @@ public class UtilsServiceImpl implements UtilsService {
 		}
 		return result;
 	}
+
+	/**
+	 * Método que escribe los datos en cada campo
+	 *
+	 * @param sheet
+	 * @param rowNum
+	 * @param key
+	 * @param value
+	 * @param keyStyle
+	 * @param valueStyle
+	 * @return
+	 */
+	public int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle, CellStyle valueStyle) {
+		Row row = sheet.createRow(rowNum++);
+		Cell cellHeader = row.createCell(0);
+		cellHeader.setCellValue(key);
+		cellHeader.setCellStyle(keyStyle);
+		Cell cellValue = row.createCell(1);
+		if (value instanceof Date) {
+			cellValue.setCellValue((Date) value);
+		} else {
+			cellValue.setCellValue(value.toString());
+		}
+		cellValue.setCellStyle(valueStyle);
+		return rowNum;
+	}
+
+	/**
+	 * Método que le da estilo a las celdas
+	 *
+	 * @param workbook
+	 * @param bold
+	 * @param color
+	 * @return
+	 */
+	public CellStyle createCellStyle(Workbook workbook, boolean bold, IndexedColors color) {
+		CellStyle style = workbook.createCellStyle();
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setFillForegroundColor(color.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(bold);
+		style.setFont(font);
+		return style;
+	}
+
+	/**
+	 * Estilo de los datos en cada celda
+	 *
+	 * @param workbook
+	 * @return
+	 */
+	public CellStyle createDateCellStyle(Workbook workbook) {
+		CellStyle style = workbook.createCellStyle();
+		style.setWrapText(true);
+		CreationHelper createHelper = workbook.getCreationHelper();
+		style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		return style;
+	}
+
+	/**
+	 * estilo del titulo
+	 *
+	 * @param workbook
+	 * @param bold
+	 * @param color
+	 * @return
+	 */
+	public CellStyle createTitleStyle(Workbook workbook, boolean bold, IndexedColors color) {
+		CellStyle style = workbook.createCellStyle();
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setFillForegroundColor(color.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		font.setBold(bold);
+		style.setFont(font);
+		return style;
+	}
+
 }
