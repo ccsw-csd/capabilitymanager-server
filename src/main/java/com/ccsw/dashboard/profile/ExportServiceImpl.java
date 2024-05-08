@@ -12,13 +12,9 @@ import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-//import org.apache.commons.csv.CSVFormat;
-//import org.apache.commons.csv.CSVPrinter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -45,6 +41,7 @@ import com.ccsw.dashboard.roleversion.model.RoleVersionDto;
 import com.ccsw.dashboard.staffingversion.StaffingVersionService;
 import com.ccsw.dashboard.staffingversion.model.StaffingVersion;
 import com.ccsw.dashboard.staffingversion.model.StaffingVersionDto;
+import com.ccsw.dashboard.utils.UtilsServiceImpl;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -67,6 +64,9 @@ public class ExportServiceImpl implements ExportService {
 
 	@Autowired
 	private RoleVersionService roleVersionService;
+
+	@Autowired
+	private UtilsServiceImpl utilsServiceImpl;
 
 	List<ProfileTotal> profileTotals;
 	List<ProfileGroup> profileGroup;
@@ -102,8 +102,7 @@ public class ExportServiceImpl implements ExportService {
 
 		servletResponse.setContentType("text/csv");
 
-		servletResponse.addHeader("Content-Disposition",
-				"attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
+		servletResponse.addHeader("Content-Disposition", "attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
 
 		servletResponse.addHeader("Content-Disposition",
 				"attachment; filename=" + id + "_" + currentDateTime.substring(0, 10) + ".csv");
@@ -130,11 +129,15 @@ public class ExportServiceImpl implements ExportService {
 		sheet.setColumnWidth(0, 10000);
 		sheet.setColumnWidth(1, 2000);
 
+
 		Row header = sheet.createRow(0);
 
 		CellStyle headerStyle = workbook.createCellStyle();
 		headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	
+
+
 
 		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
 		font.setFontName("Arial");
@@ -187,15 +190,12 @@ public class ExportServiceImpl implements ExportService {
 		ReportVersionDto rvdto = new ReportVersionDto();
 		RoleVersion roleVersion = roleVersionService.findById(Long.valueOf(rv.getIdVersionCapacidades()));
 		rvdto.setRoleVersion(roleVersion == null ? null
-				: new RoleVersionDto(roleVersion.getId(), roleVersion.getIdTipoInterfaz(),
-						roleVersion.getFechaImportacion(), roleVersion.getNumRegistros(),
-						roleVersion.getNombreFichero(), roleVersion.getDescripcion(), roleVersion.getUsuario()));
+				: new RoleVersionDto(roleVersion.getId(), roleVersion.getIdTipoInterfaz(), roleVersion.getFechaImportacion(), roleVersion.getNumRegistros(), roleVersion.getNombreFichero(),
+						roleVersion.getDescripcion(), roleVersion.getUsuario()));
 		StaffingVersion staffingVersion = staffingVersionService.findById(Long.valueOf(rv.getIdVersionStaffing()));
 		rvdto.setStaffingVersion(staffingVersion == null ? null
-				: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(),
-						staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
-						staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(),
-						staffingVersion.getUsuario()));
+				: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(), staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
+						staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(), staffingVersion.getUsuario()));
 		rvdto.setId(rv.getId());
 		rvdto.setUsuario(rv.getUsuario());
 		rvdto.setDescripcion(rv.getDescripcion());
@@ -206,115 +206,33 @@ public class ExportServiceImpl implements ExportService {
 		return rvdto;
 	}
 
-	/**
-	 * Método que escribe los datos en cada campo
-	 * @param sheet
-	 * @param rowNum
-	 * @param key
-	 * @param value
-	 * @param keyStyle
-	 * @param valueStyle
-	 * @return
-	 */
-	private int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle,
-			CellStyle valueStyle) {
-		Row row = sheet.createRow(rowNum++);
-		Cell cellHeader = row.createCell(0);
-		cellHeader.setCellValue(key);
-		cellHeader.setCellStyle(keyStyle);
-		Cell cellValue = row.createCell(1);
-		if (value instanceof Date) {
-			cellValue.setCellValue((Date) value);
-		} else {
-			cellValue.setCellValue(value.toString());
-		}
-		cellValue.setCellStyle(valueStyle);
-		return rowNum;
-	}
 
 	/**
-	 * Método que le da estilo a las celdas
-	 * @param workbook
-	 * @param bold
-	 * @param color
-	 * @return
-	 */
-	private CellStyle createCellStyle(Workbook workbook, boolean bold, IndexedColors color) {
-		CellStyle style = workbook.createCellStyle();
-		style.setAlignment(HorizontalAlignment.LEFT);
-		style.setFillForegroundColor(color.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-		font.setFontName("Arial");
-		font.setFontHeightInPoints((short) 10);
-		font.setBold(bold);
-		style.setFont(font);
-		return style;
-	}
-
-	/**
-	 * Estilo de los datos en cada celda
-	 * @param workbook
-	 * @return
-	 */
-	private CellStyle createDateCellStyle(Workbook workbook) {
-		CellStyle style = workbook.createCellStyle();
-		style.setWrapText(true);
-		CreationHelper createHelper = workbook.getCreationHelper();
-		style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
-		style.setAlignment(HorizontalAlignment.LEFT);
-		style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		return style;
-	}
-
-	
-	/**
-	 * estilo del titulo 
-	 * @param workbook
-	 * @param bold
-	 * @param color
-	 * @return
-	 */
-	private CellStyle createTitleStyle(Workbook workbook, boolean bold, IndexedColors color) {
-		CellStyle style = workbook.createCellStyle();
-		style.setAlignment(HorizontalAlignment.CENTER);
-		style.setFillForegroundColor(color.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-		font.setFontName("Arial");
-		font.setFontHeightInPoints((short) 10);
-		font.setBold(bold);
-		style.setFont(font);
-		return style;
-	}
-
-	/**
-	 * 
+	 *
 	 * Método que escribe en un excel información los perfiles
-	 * 
+	 *
 	 * @param id              The ID used for naming the Excel file.
-	 * @param servletResponse The HttpServletResponse object for sending the
-	 *                        response.
+	 * @param servletResponse The HttpServletResponse object for sending the response.
 	 * @param idReport        The ID of the report version.
-	 * @throws IOException if an I/O error occurs while writing the Excel file or
-	 *                     sending the response.
+	 * @throws IOException if an I/O error occurs while writing the Excel file or sending the response.
 	 */
 	@Override
 	public void writeProfileToExcel(String id, HttpServletResponse servletResponse, Long idReport) throws IOException {
 
 		Workbook workbook = new XSSFWorkbook();
 		Sheet parametros = workbook.createSheet(Constants.PARAMETROS);
+		CellStyle wrappedStyle = workbook.createCellStyle();
+		wrappedStyle.setWrapText(true);
 
 		// Establecer anchos de columna
 		parametros.setColumnWidth(0, 5000);
-		parametros.setColumnWidth(1, 20000);
+		parametros.setColumnWidth(1, 15000);
 
 		// Establecer estilos de celda
-		CellStyle keyParamStyle = createCellStyle(workbook, true, IndexedColors.GREY_25_PERCENT);
-		CellStyle valueStyle = createCellStyle(workbook, false, IndexedColors.WHITE);
-		CellStyle dateStyle = createDateCellStyle(workbook);
-		CellStyle TitleStyle = createTitleStyle(workbook, true, IndexedColors.AQUA);
+		CellStyle keyParamStyle = utilsServiceImpl.createCellStyle(workbook, true, IndexedColors.GREY_25_PERCENT);
+		CellStyle valueStyle = utilsServiceImpl.createCellStyle(workbook, false, IndexedColors.WHITE);
+		CellStyle dateStyle = utilsServiceImpl.createDateCellStyle(workbook);
+		CellStyle TitleStyle = utilsServiceImpl.createTitleStyle(workbook, true, IndexedColors.PALE_BLUE);
 
 		// Crear fila para el título
 		Row titleRow = parametros.createRow(0);
@@ -327,23 +245,15 @@ public class ExportServiceImpl implements ExportService {
 		int rowNum = 1;
 
 		// Información de parámetros
-		rowNum = writeParametro(parametros, rowNum, Constants.VERSION, String.valueOf(reportVersion.getId()),
-				keyParamStyle, valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.ROLES_FILE,
-				reportVersion.getRoleVersion().getNombreFichero(), keyParamStyle, valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.STAFFING_FILE,
-				reportVersion.getStaffingVersion().getNombreFichero(), keyParamStyle, valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.SCREENSHOOT,
-				(reportVersion.getScreenshot() == 0) ? Constants.YES : Constants.NO, keyParamStyle, valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.DATE,
-				Date.from(reportVersion.getFechaImportacion().atZone(ZoneId.systemDefault()).toInstant()),
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.VERSION, String.valueOf(reportVersion.getId()), keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.ROLES_FILE, reportVersion.getRoleVersion().getNombreFichero(), keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.STAFFING_FILE, reportVersion.getStaffingVersion().getNombreFichero(), keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.SCREENSHOOT, (reportVersion.getScreenshot() == 0) ? Constants.YES : Constants.NO, keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.DATE_GENERACION, Date.from(reportVersion.getFechaImportacion().atZone(ZoneId.systemDefault()).toInstant()),
 				keyParamStyle, dateStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.DESCRIPTION, reportVersion.getDescripcion(),
-				keyParamStyle, valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.USER, reportVersion.getUsuario(), keyParamStyle,
-				valueStyle);
-		rowNum = writeParametro(parametros, rowNum, Constants.COMENTS, reportVersion.getComentarios(),
-				keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.DESCRIPTION, reportVersion.getDescripcion(), keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.USER, reportVersion.getUsuario(), keyParamStyle, valueStyle);
+		rowNum = utilsServiceImpl.writeParametro(parametros, rowNum, Constants.COMENTS, reportVersion.getComentarios(), keyParamStyle, valueStyle);
 
 		Sheet sheet = workbook.createSheet(id);
 		int j = 0;
@@ -441,9 +351,7 @@ public class ExportServiceImpl implements ExportService {
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
 				String perfilTecnico = (!profile.getTecnicoSolution().isEmpty()) ? profile.getTecnicoSolution() : "";
-				perfilTecnico = (!profile.getTecnicoIntegration().isEmpty())
-						? perfilTecnico.concat(";").concat(profile.getTecnicoIntegration())
-						: perfilTecnico;
+				perfilTecnico = (!profile.getTecnicoIntegration().isEmpty()) ? perfilTecnico.concat(";").concat(profile.getTecnicoIntegration()) : perfilTecnico;
 				cell.setCellValue(perfilTecnico);
 				cell.setCellStyle(style);
 				cell = row.createCell(j++);
