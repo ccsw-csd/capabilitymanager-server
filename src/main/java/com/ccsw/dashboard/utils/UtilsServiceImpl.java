@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -44,7 +45,8 @@ public class UtilsServiceImpl implements UtilsService {
 	public String getVersion() {
 
 		try {
-			return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
+			return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes()
+					.get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
 		} catch (Exception e) {
 			LOG.error("Error al extraer la version");
 		}
@@ -54,36 +56,40 @@ public class UtilsServiceImpl implements UtilsService {
 
 	/**
 	 * Get the main Excel tab given a file
-	 * @param file 	Excel File
-	 * @return 		selected Excel tab
+	 * 
+	 * @param file Excel File
+	 * @return selected Excel tab
 	 * @throws BadRequestException It is not possible to read the provided file
 	 */
 	public Sheet obtainSheet(MultipartFile file) throws BadRequestException {
 		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
 			return workbook.getSheetAt(Constants.FIRST_SHEET);
 		} catch (Exception e) {
-			throw new BadRequestException("An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
+			throw new BadRequestException(
+					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
 	}
 
 	/**
-	 * Check Input Object if ContentType is not valid or fileData is empty or null get throw
-	 * @param 	dto ImportRequestDto Object
-	 * @throws 	UnsupportedMediaTypeException or UnprocessableEntityException
+	 * Check Input Object if ContentType is not valid or fileData is empty or null
+	 * get throw
+	 * 
+	 * @param dto ImportRequestDto Object
+	 * @throws UnsupportedMediaTypeException or UnprocessableEntityException
 	 */
 	public void checkInputObject(ImportRequestDto dto) {
 		LOG.debug(" >>>> checkInputObject ");
 		if (dto.getFileData().getOriginalFilename() == Constants.EMPTY) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
-			.append(Constants.ERROR_INIT2).append(" FileData is empty");
-			LOG.error(errorData.toString() );
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+					.append(Constants.ERROR_INIT2).append(" FileData is empty");
+			LOG.error(errorData.toString());
 			throw new UnsupportedMediaTypeException("FileData is empty");
 		}
 		if (!Constants.ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
 			StringBuilder errorData = new StringBuilder();
-			errorData.append(Constants.ERROR_INIT).append( Thread.currentThread().getStackTrace()[1].getMethodName() )
-			.append(Constants.ERROR_INIT2).append("FileData dont has valid format");
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+					.append(Constants.ERROR_INIT2).append("FileData dont has valid format");
 			LOG.error(errorData.toString());
 			throw new UnprocessableEntityException("FileData dont has valid format");
 		}
@@ -92,19 +98,20 @@ public class UtilsServiceImpl implements UtilsService {
 
 	/**
 	 * Get String value from Row
-	 * @param row		to recover value
-	 * @param column	value to recover
-	 * @return 			column value in string format
+	 * 
+	 * @param row    to recover value
+	 * @param column value to recover
+	 * @return column value in string format
 	 */
 	public String getStringValue(Row row, int column) {
 		String result = Constants.EMPTY;
 		Cell col = row.getCell(column);
-		if(col != null) {
+		if (col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {
 				result = String.valueOf((int) col.getNumericCellValue());
-			} else if (col.getCellType() == CellType.STRING){
+			} else if (col.getCellType() == CellType.STRING) {
 				result = col.getStringCellValue();
-			} else if(col.getCellType() == CellType.BOOLEAN) {
+			} else if (col.getCellType() == CellType.BOOLEAN) {
 				result = String.valueOf(col.getBooleanCellValue());
 			}
 		}
@@ -113,25 +120,26 @@ public class UtilsServiceImpl implements UtilsService {
 
 	/**
 	 * Get Grade Value from row
-	 * @param row		Excel row
-	 * @param colum		Colum
-	 * @return	String caracter
+	 * 
+	 * @param row   Excel row
+	 * @param colum Colum
+	 * @return String caracter
 	 */
 	public String getGradeValue(Row row, int colum) {
-		return getStringValue(row, colum).substring(0,1);
+		return getStringValue(row, colum).substring(0, 1);
 	}
-
 
 	/**
 	 * Get Date value from Row
-	 * @param row		to recover date value
-	 * @param column	value to recover
-	 * @return 			column value in Date format
+	 * 
+	 * @param row    to recover date value
+	 * @param column value to recover
+	 * @return column value in Date format
 	 */
 	public Date getDateValue(Row row, int column) {
 		Date result = null; // Constants.FUNDATIONDAYLESSONE;
 		Cell col = row.getCell(column);
-		if(col != null) {
+		if (col != null) {
 			if (col.getCellType() == CellType.NUMERIC) {
 				result = col.getDateCellValue();
 			}
@@ -150,7 +158,8 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param valueStyle
 	 * @return
 	 */
-	public int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle, CellStyle valueStyle) {
+	public int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle,
+			CellStyle valueStyle) {
 		Row row = sheet.createRow(rowNum++);
 		Cell cellHeader = row.createCell(0);
 		cellHeader.setCellValue(key);
@@ -175,9 +184,14 @@ public class UtilsServiceImpl implements UtilsService {
 	 */
 	public CellStyle createCellStyle(Workbook workbook, boolean bold, IndexedColors color) {
 		CellStyle style = workbook.createCellStyle();
+		style.setWrapText(true);
 		style.setAlignment(HorizontalAlignment.LEFT);
 		style.setFillForegroundColor(color.getIndex());
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
 		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
 		font.setFontName("Arial");
 		font.setFontHeightInPoints((short) 10);
@@ -194,10 +208,10 @@ public class UtilsServiceImpl implements UtilsService {
 	 */
 	public CellStyle createDateCellStyle(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
-		style.setWrapText(true);
 		CreationHelper createHelper = workbook.getCreationHelper();
 		style.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy HH:mm:ss"));
 		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setBorderRight(BorderStyle.THIN);
 		style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		return style;
@@ -215,6 +229,9 @@ public class UtilsServiceImpl implements UtilsService {
 		CellStyle style = workbook.createCellStyle();
 		style.setAlignment(HorizontalAlignment.CENTER);
 		style.setFillForegroundColor(color.getIndex());
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
 		font.setFontName("Arial");

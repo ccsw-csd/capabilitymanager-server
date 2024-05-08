@@ -129,11 +129,15 @@ public class ExportServiceImpl implements ExportService {
 		sheet.setColumnWidth(0, 10000);
 		sheet.setColumnWidth(1, 2000);
 
+
 		Row header = sheet.createRow(0);
 
 		CellStyle headerStyle = workbook.createCellStyle();
 		headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	
+
+
 
 		XSSFFont font = ((XSSFWorkbook) workbook).createFont();
 		font.setFontName("Arial");
@@ -217,16 +221,18 @@ public class ExportServiceImpl implements ExportService {
 
 		Workbook workbook = new XSSFWorkbook();
 		Sheet parametros = workbook.createSheet(Constants.PARAMETROS);
+		CellStyle wrappedStyle = workbook.createCellStyle();
+		wrappedStyle.setWrapText(true);
 
 		// Establecer anchos de columna
 		parametros.setColumnWidth(0, 5000);
-		parametros.setColumnWidth(1, 20000);
+		parametros.setColumnWidth(1, 15000);
 
 		// Establecer estilos de celda
 		CellStyle keyParamStyle = utilsServiceImpl.createCellStyle(workbook, true, IndexedColors.GREY_25_PERCENT);
 		CellStyle valueStyle = utilsServiceImpl.createCellStyle(workbook, false, IndexedColors.WHITE);
 		CellStyle dateStyle = utilsServiceImpl.createDateCellStyle(workbook);
-		CellStyle TitleStyle = utilsServiceImpl.createTitleStyle(workbook, true, IndexedColors.AQUA);
+		CellStyle TitleStyle = utilsServiceImpl.createTitleStyle(workbook, true, IndexedColors.PALE_BLUE);
 
 		// Crear fila para el título
 		Row titleRow = parametros.createRow(0);
