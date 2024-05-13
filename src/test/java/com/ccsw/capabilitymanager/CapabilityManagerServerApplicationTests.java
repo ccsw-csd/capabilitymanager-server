@@ -1,10 +1,10 @@
-package com.ccsw.dashboard;
+package com.ccsw.capabilitymanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CodewarServerApplicationTests {
+class CapabilityManagerServerApplicationTests {
 
 	@Test
 	void contextLoads() {
