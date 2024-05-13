@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ccsw</groupId>
-	<artifactId>dashboard-server</artifactId>
+	<artifactId>capabilitymanager-server</artifactId>
 	<version>1.0.0</version>
-	<name>dashboard</name>
-	<description>Dashboard Server</description>
+	<name>capabilitymanager</name>
+	<description>CapabilityManager Server</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
