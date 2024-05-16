@@ -57,7 +57,7 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	private Date fechaIncorporacion;
 	
 	@Column(name = "asignacion")
-	private String asignacion;
+	private Integer asignacion;
 	
 	@Column(name = "status")
 	private String status;
@@ -89,6 +89,9 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "ingles_hablado")
 	private String inglesHablado;
 
+	@Column(name = "jornada")
+	private String jornada;
+
 	@Column(name = "meses_bench")
 	private String mesesBench;
 
@@ -101,27 +104,27 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 		this.id = id;
 	}
 
-	public int getNumImportCodeID() {
+	public int getNumImportCode() {
 		return numImportCode;
 	}
 
-	public void setNumImportCodeID(int numImportCodeID) {
+	public void setNumImportCode(int numImportCodeID) {
 		this.numImportCode = numImportCodeID;
 	}
 
-	public String getSAGA() {
+	public String getSaga() {
 		return saga;
 	}
 
-	public void setSAGA(String saga) {
+	public void setSaga(String saga) {
 		this.saga = saga;
 	}
 
-	public String getGGID() {
+	public String getGgid() {
 		return ggid;
 	}
 
-	public void setGGID(String ggid) {
+	public void setGgid(String ggid) {
 		this.ggid = ggid;
 	}
 
@@ -205,11 +208,11 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 		this.fechaIncorporacion = fechaIncorporacion;
 	}
 
-	public String getAsignacion() {
+	public Integer getAsignacion() {
 		return asignacion;
 	}
 
-	public void setAsignacion(String asignacion) {
+	public void setAsignacion(Integer asignacion) {
 		this.asignacion = asignacion;
 	}
 
@@ -253,12 +256,13 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 		this.fechaDisponibilidad = fechaDisponibilidad;
 	}
 
-	public String getProyectoFuturo() {
+	
+	public String getPosicionProyectoFuturo() {
 		return posionProyectoFuturo;
 	}
 
-	public void setProyectoFuturo(String proyectoFuturo) {
-		this.posionProyectoFuturo = proyectoFuturo;
+	public void setPosicionProyectoFuturo(String posicionProyectoFuturo) {
+		this.posionProyectoFuturo = posicionProyectoFuturo;
 	}
 
 	public String getColaboraciones() {
@@ -291,6 +295,14 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 
 	public void setInglesHablado(String inglesHablado) {
 		this.inglesHablado = inglesHablado;
+	}
+
+	public String getJornada() {
+		return jornada;
+	}
+
+	public void setJornada(String jornada) {
+		this.jornada = jornada;
 	}
 
 	public String getMesesBench() {

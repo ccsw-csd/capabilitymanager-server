@@ -246,7 +246,7 @@ public class DataImportServiceImpl implements DataImportService {
 			String perfilTecnico = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PERFIL_TECNICO.getPosition());
 			String primarySkill = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PRIMARY_SKILL.getPosition());
 			Date fechaIncorporacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_FECHA_INCORPORACION.getPosition());
-			String porcentajeAsignacion = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PORCENTAJE_ASIGNACION.getPosition());
+			Integer porcentajeAsignacion = utilsServiceImpl.getIntValue(currentRow, Constants.StaffingDatabasePos.COL_PORCENTAJE_ASIGNACION.getPosition());
 			String status = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_STATUS.getPosition());
 			String clienteActual = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_CLIENTE_ACTUAL.getPosition());
 			Date fechaInicioAsignacion = utilsServiceImpl.getDateValue(currentRow, Constants.StaffingDatabasePos.COL_FECHA_INICIO_ASIGNACION.getPosition());
@@ -257,11 +257,12 @@ public class DataImportServiceImpl implements DataImportService {
 			String proyectoAnterior = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PROYECTO_ANTERIOR.getPosition());
 			String inglesEscrito = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_INGLES_ESCRITO.getPosition());
 			String inglesHablado = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_INGLES_HABLADO.getPosition());
+			String jornada = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_JORNADA.getPosition());
 			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_MESES_BENCH.getPosition());
 
-			data.setNumImportCodeID(verStaf.getId());
-			data.setSAGA(saga);
-			data.setGGID(ggid);
+			data.setNumImportCode(verStaf.getId());
+			data.setSaga(saga);
+			data.setGgid(ggid);
 			data.setCentro(centro);
 			data.setNombre(nombre);
 			data.setApellidos(apellidos);
@@ -278,11 +279,12 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setFechaInicioAsignacion(fechaInicioAsignacion);
 			data.setFechaFinAsignacion(fechaFinAsignacion);
 			data.setFechaDisponibilidad(fechaDisponibilidad);
-			data.setProyectoFuturo(posicionProyectoFuturo);
+			data.setPosicionProyectoFuturo(posicionProyectoFuturo);
 			data.setColaboraciones(colaboraciones);
 			data.setProyectoAnterior(proyectoAnterior);
 			data.setInglesEscrito(inglesEscrito);
 			data.setInglesHablado(inglesHablado);
+			data.setJornada(jornada);
 			data.setMesesBench(vcProfileMesesBench);
 
 			staffingDataImportList.add(data);

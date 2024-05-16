@@ -117,7 +117,28 @@ public class UtilsServiceImpl implements UtilsService {
 		}
 		return result;
 	}
-
+	/**
+	 * Get String value from Row
+	 * 
+	 * @param row    to recover value
+	 * @param column value to recover
+	 * @return column value in string format
+	 */
+	public Integer getIntValue(Row row, int column) {
+		String result = "0";
+		Cell col = row.getCell(column);
+		if (col != null) {
+			if (col.getCellType() == CellType.NUMERIC) {
+				result = String.valueOf((int) col.getNumericCellValue());
+			} else if (col.getCellType() == CellType.STRING) {
+				result = col.getStringCellValue();
+			} else if (col.getCellType() == CellType.BOOLEAN) {
+				result = String.valueOf(col.getBooleanCellValue());
+			}
+		}
+		return Integer.valueOf(result);
+	}
+	
 	/**
 	 * Get Grade Value from row
 	 * 
