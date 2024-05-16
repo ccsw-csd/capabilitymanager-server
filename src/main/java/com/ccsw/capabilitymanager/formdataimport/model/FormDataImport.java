@@ -7,67 +7,67 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "dm_formdata_import")
-@Table(name = "dm_formdata_import")
+@Entity(name = "formdata")
+@Table(name = "formdata")
 public class FormDataImport implements Comparable<FormDataImport> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "num_import_codeid", nullable = false)
+	@Column(name = "num_import_code_id", nullable = false)
 	private int numImportCodeId;
 
-	@Column(name = "vc_Profile_SAGA")
-	private String vcProfileSAGA;
+	@Column(name = "SAGA")
+	private String SAGA;
 
-	@Column(name = "vc_Profile_Email")
-	private String vcProfileEmail;
+	@Column(name = "email")
+	private String email;
 
-	@Column(name = "vc_Profile_Name")
-	private String vcProfileName;
+	@Column(name = "name")
+	private String name;
 
-	@Column(name = "vc_Profile_Rol_L1")
-	private String vcProfileRolL1;
+	@Column(name = "rol_L1")
+	private String rolL1;
 
-	@Column(name = "vc_Profile_Rol_L1_extendido")
-	private String vcProfileRolL1extendido;
+	@Column(name = "rol_L1_extendido")
+	private String rolL1Extendido;
 
-	@Column(name = "vc_Profile_Rol_L2_EM")
-	private String vcProfileRolL2EM;
+	@Column(name = "rol_L2_EM")
+	private String rolL2EM;
 
-	@Column(name = "vc_Profile_Rol_L2_AR")
-	private String vcProfileRolL2AR;
+	@Column(name = "rol_L2_AR")
+	private String RolL2AR;
 
-	@Column(name = "vc_Profile_Rol_L2_AN")
-	private String vcProfileRolL2AN;
+	@Column(name = "rol_L2_AN")
+	private String rolL2AN;
 
-	@Column(name = "vc_Profile_Rol_L2_SE")
-	private String vcProfileRolL2SE;
+	@Column(name = "rol_L2_SE")
+	private String rolL2SE;
 
-	@Column(name = "vc_Profile_Rol_L3")
-	private String vcProfileRolL3;
+	@Column(name = "rol_L3")
+	private String rolL3;
 
-	@Column(name = "vc_Profile_Rol_L4")
-	private String vcProfileRolL4;
+	@Column(name = "rol_L4")
+	private String rolL4;
 
-	@Column(name = "vc_Profile_Rol_Experience_EM")
-	private String vcProfileRolExperienceEM;
+	@Column(name = "rol_experience_EM")
+	private String rolExperienceEM;
 
-	@Column(name = "vc_Profile_Rol_Experience_AR")
-	private String vcProfileRolExperienceAR;
+	@Column(name = "rol_experience_AR")
+	private String rolExperienceAR;
 
-	@Column(name = "vc_Profile_Skill_Cloud_Native_Experience")
-	private String vcProfileSkillCloudNativeExperience;
+	@Column(name = "skill_cloud_native_experience")
+	private String skillCloudNativeExperience;
 
-	@Column(name = "vc_Profile_Skill_Low_Code_Experience")
-	private String vcProfileSkillLowCodeExperience;
+	@Column(name = "skill_low_code_experience")
+	private String skillLowCodeExperience;
 
-	@Column(name = "vc_Profile_Sector_Experience")
-	private String vcProfileSectorExperience;
+	@Column(name = "sector_experience")
+	private String sectorExperience;
 
-	@Column(name = "vc_Profile_Skill_Cloud_Exp")
-	private String vcProfileSkillCloudExp;
+	@Column(name = "skill_cloud_experience")
+	private String skillCloudExperience;
 
 	public int getId() {
 		return id;
@@ -85,140 +85,140 @@ public class FormDataImport implements Comparable<FormDataImport> {
 		this.numImportCodeId = numImportCodeId;
 	}
 
-	public String getVcProfileSAGA() {
-		return vcProfileSAGA;
+	public String getSAGA() {
+		return SAGA;
 	}
 
-	public void setVcProfileSAGA(String vcProfileSAGA) {
-		this.vcProfileSAGA = vcProfileSAGA;
+	public void setSAGA(String saga) {
+		this.SAGA = saga;
 	}
 
-	public String getVcProfileEmail() {
-		return vcProfileEmail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setVcProfileEmail(String vcProfileEmail) {
-		this.vcProfileEmail = vcProfileEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getVcProfileName() {
-		return vcProfileName;
+	public String getName() {
+		return name;
 	}
 
-	public void setVcProfileName(String vcProfileName) {
-		this.vcProfileName = vcProfileName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getVcProfileRolL1() {
-		return vcProfileRolL1;
+	public String getRolL1() {
+		return rolL1;
 	}
 
-	public void setVcProfileRolL1(String vcProfileRolL1) {
-		this.vcProfileRolL1 = vcProfileRolL1;
+	public void setVcProfileRolL1(String rolL1) {
+		this.rolL1 = rolL1;
 	}
 
-	public String getVcProfileRolL1extendido() {
-		return vcProfileRolL1extendido;
+	public String getRolL1extendido() {
+		return rolL1Extendido;
 	}
 
-	public void setVcProfileRolL1extendido(String vcProfileRolL1extendido) {
-		this.vcProfileRolL1extendido = vcProfileRolL1extendido;
+	public void setRolL1Extendido(String rolL1Extendido) {
+		this.rolL1Extendido = rolL1Extendido;
 	}
 
-	public String getVcProfileRolL2EM() {
-		return vcProfileRolL2EM;
+	public String getRolL2EM() {
+		return rolL2EM;
 	}
 
-	public void setVcProfileRolL2EM(String vcProfileRolL2EM) {
-		this.vcProfileRolL2EM = vcProfileRolL2EM;
+	public void setRolL2EM(String rolL2EM) {
+		this.rolL2EM = rolL2EM;
 	}
 
-	public String getVcProfileRolL2AR() {
-		return vcProfileRolL2AR;
+	public String getRolL2AR() {
+		return RolL2AR;
 	}
 
-	public void setVcProfileRolL2AR(String vcProfileRolL2AR) {
-		this.vcProfileRolL2AR = vcProfileRolL2AR;
+	public void setRolL2AR(String rolL2AR) {
+		this.RolL2AR = rolL2AR;
 	}
 
-	public String getVcProfileRolL2AN() {
-		return vcProfileRolL2AN;
+	public String getRolL2AN() {
+		return rolL2AN;
 	}
 
-	public void setVcProfileRolL2AN(String vcProfileRolL2AN) {
-		this.vcProfileRolL2AN = vcProfileRolL2AN;
+	public void setRolL2AN(String rolL2AN) {
+		this.rolL2AN = rolL2AN;
 	}
 
-	public String getVcProfileRolL2SE() {
-		return vcProfileRolL2SE;
+	public String getRolL2SE() {
+		return rolL2SE;
 	}
 
-	public void setVcProfileRolL2SE(String vcProfileRolL2SE) {
-		this.vcProfileRolL2SE = vcProfileRolL2SE;
+	public void setRolL2SE(String rolL2SE) {
+		this.rolL2SE = rolL2SE;
 	}
 
-	public String getVcProfileRolL3() {
-		return vcProfileRolL3;
+	public String getRolL3() {
+		return rolL3;
 	}
 
-	public void setVcProfileRolL3(String vcProfileRolL3) {
-		this.vcProfileRolL3 = vcProfileRolL3;
+	public void setRolL3(String rolL3) {
+		this.rolL3 = rolL3;
 	}
 
-	public String getVcProfileRolL4() {
-		return vcProfileRolL4;
+	public String getRolL4() {
+		return rolL4;
 	}
 
-	public void setVcProfileRolL4(String vcProfileRolL4) {
-		this.vcProfileRolL4 = vcProfileRolL4;
+	public void setRolL4(String rolL4) {
+		this.rolL4 = rolL4;
 	}
 
-	public String getVcProfileRolExperienceEM() {
-		return vcProfileRolExperienceEM;
+	public String getRolExperienceEM() {
+		return rolExperienceEM;
 	}
 
-	public void setVcProfileRolExperienceEM(String vcProfileRolExperienceEM) {
-		this.vcProfileRolExperienceEM = vcProfileRolExperienceEM;
+	public void setRolExperienceEM(String rolExperienceEM) {
+		this.rolExperienceEM = rolExperienceEM;
 	}
 
-	public String getVcProfileRolExperienceAR() {
-		return vcProfileRolExperienceAR;
+	public String getRolExperienceAR() {
+		return rolExperienceAR;
 	}
 
-	public void setVcProfileRolExperienceAR(String vcProfileRolExperienceAR) {
-		this.vcProfileRolExperienceAR = vcProfileRolExperienceAR;
+	public void setRolExperienceAR(String rolExperienceAR) {
+		this.rolExperienceAR = rolExperienceAR;
 	}
 
-	public String getVcProfileSkillCloudNativeExperience() {
-		return vcProfileSkillCloudNativeExperience;
+	public String getSkillCloudNativeExperience() {
+		return skillCloudNativeExperience;
 	}
 
-	public void setVcProfileSkillCloudNativeExperience(String vcProfileSkillCloudNativeExperience) {
-		this.vcProfileSkillCloudNativeExperience = vcProfileSkillCloudNativeExperience;
+	public void setSkillCloudNativeExperience(String skillCloudNativeExperience) {
+		this.skillCloudNativeExperience = skillCloudNativeExperience;
 	}
 
-	public String getVcProfileSkillLowCodeExperience() {
-		return vcProfileSkillLowCodeExperience;
+	public String getSkillLowCodeExperience() {
+		return skillLowCodeExperience;
 	}
 
-	public void setVcProfileSkillLowCodeExperience(String vcProfileSkillLowCodeExperience) {
-		this.vcProfileSkillLowCodeExperience = vcProfileSkillLowCodeExperience;
+	public void setSkillLowCodeExperience(String skillLowCodeExperience) {
+		this.skillLowCodeExperience = skillLowCodeExperience;
 	}
 
-	public String getVcProfileSectorExperience() {
-		return vcProfileSectorExperience;
+	public String getSectorExperience() {
+		return sectorExperience;
 	}
 
-	public void setVcProfileSectorExperience(String vcProfileSectorExperience) {
-		this.vcProfileSectorExperience = vcProfileSectorExperience;
+	public void setSectorExperience(String sectorExperience) {
+		this.sectorExperience = sectorExperience;
 	}
 
-	public String getVcProfileSkillCloudExp() {
-		return vcProfileSkillCloudExp;
+	public String getSkillCloudExp() {
+		return skillCloudExperience;
 	}
 
-	public void setVcProfileSkillCloudExp(String vcProfileSkillCloudExp) {
-		this.vcProfileSkillCloudExp = vcProfileSkillCloudExp;
+	public void setSkillCloudExp(String skillCloudExp) {
+		this.skillCloudExperience = skillCloudExp;
 	}
 
 	@Override

@@ -100,8 +100,8 @@ public class VersionStaffing {
 		return fichero;
 	}
 
-	public void setFichero(String fichero) {
-		this.fichero = fichero;
+	public void setFichero(String urlFichero) {
+		this.fichero = urlFichero;
 	}
 	
 	

@@ -10,54 +10,54 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dm_certificaciones_import")
+@Table(name = "certificaciones")
 public class CertificatesDataImport  implements Comparable<CertificatesDataImport>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "vc_saga", nullable = false)
-	private String vcSAGA;
+	@Column(name = "saga", nullable = false)
+	private String SAGA;
 
-	@Column(name = "vc_partner", nullable = false)
-	private String vcPartner;
+	@Column(name = "partner", nullable = false)
+	private String partner;
 
-	@Column(name = "vc_certificado")
-	private String vcCertificado;
+	@Column(name = "certificado")
+	private String certificado;
 
-	@Column(name = "vc_name_gtd")
-	private String vcNameGTD;
+	@Column(name = "name_gtd")
+	private String nameGTD;
 
-	@Column(name = "vc_certification_gtd")
-	private String vcCertificationGTD;
+	@Column(name = "certification_gtd")
+	private String certificationGTD;
 	
-	@Column(name = "vc_code")
-	private String vcCode;
+	@Column(name = "code")
+	private String code;
 
-	@Column(name = "vc_sector")
-	private String vcSector;
+	@Column(name = "sector")
+	private String sector;
 
-	@Column(name = "vc_modulo")
-	private String vcModulo;
+	@Column(name = "modulo")
+	private String modulo;
 	
-	@Column(name = "vc_id_candidato")
-	private String vcIdCandidato;
+	@Column(name = "id_candidato")
+	private String idCandidato;
 
-	@Column(name = "vc_fecha_certificado", nullable = false)
-	private Date vcFechaCertificado;
+	@Column(name = "fecha_certificado", nullable = false)
+	private Date fechaCertificado;
 	
-	@Column(name = "vc_fecha_expiracion")
-	private Date vcFechaExpiracion;
+	@Column(name = "fecha_expiracion")
+	private Date fechaExpiracion;
 
-	@Column(name = "vc_activo")
-	private String vcActivo;
+	@Column(name = "activo")
+	private String activo;
 
-	@Column(name = "vc_anexo")
-	private String vcAnexo;
+	@Column(name = "anexo")
+	private String anexo;
 
-	@Column(name = "vc_comentario_anexo")
-	private String vcComentarioAnexo;
+	@Column(name = "comentario_anexo")
+	private String comentarioAnexo;
 	
 	@Column(name = "num_import_code_id")
     private int numImportCodeId;
@@ -70,116 +70,116 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 		this.id = id;
 	}
 
-	public String getVcSAGA() {
-		return vcSAGA;
+	public String getSAGA() {
+		return SAGA;
 	}
 
-	public void setVcSAGA(String vcSAGA) {
-		this.vcSAGA = vcSAGA;
+	public void setSAGA(String saga) {
+		this.SAGA = saga;
 	}
 
-	public String getVcPartner() {
-		return vcPartner;
+	public String getPartner() {
+		return partner;
 	}
 
-	public void setVcPartner(String vcPartner) {
-		this.vcPartner = vcPartner;
+	public void setPartner(String partner) {
+		this.partner = partner;
 	}
 
-	public String getVcCertificado() {
-		return vcCertificado;
+	public String getCertificado() {
+		return certificado;
 	}
 
-	public void setVcCertificado(String vcCertificado) {
-		this.vcCertificado = vcCertificado;
+	public void setCertificado(String certificado) {
+		this.certificado = certificado;
 	}
 
-	public String getVcNameGTD() {
-		return vcNameGTD;
+	public String getNameGTD() {
+		return nameGTD;
 	}
 
-	public void setVcNameGTD(String vcNameGTD) {
-		this.vcNameGTD = vcNameGTD;
+	public void setNameGTD(String nameGTD) {
+		this.nameGTD = nameGTD;
 	}
 
-	public String getVcCertificationGTD() {
-		return vcCertificationGTD;
+	public String getCertificationGTD() {
+		return certificationGTD;
 	}
 
-	public void setVcCertificationGTD(String vcCertificationGTD) {
-		this.vcCertificationGTD = vcCertificationGTD;
+	public void setCertificationGTD(String certificationGTD) {
+		this.certificationGTD = certificationGTD;
 	}
 
-	public String getVcCode() {
-		return vcCode;
+	public String getCode() {
+		return code;
 	}
 
-	public void setVcCode(String vcCode) {
-		this.vcCode = vcCode;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getVcSector() {
-		return vcSector;
+	public String getSector() {
+		return sector;
 	}
 
-	public void setVcSector(String vcSector) {
-		this.vcSector = vcSector;
+	public void setSecto(String sector) {
+		this.sector = sector;
 	}
 
-	public String getVcModulo() {
-		return vcModulo;
+	public String getModulo() {
+		return modulo;
 	}
 
-	public void setVcModulo(String vcModulo) {
-		this.vcModulo = vcModulo;
+	public void setModulo(String modulo) {
+		this.modulo = modulo;
 	}
 
-	public String getVcIdCandidato() {
-		return vcIdCandidato;
+	public String getIdCandidato() {
+		return idCandidato;
 	}
 
-	public void setVcIdCandidato(String vcIdCandidato) {
-		this.vcIdCandidato = vcIdCandidato;
+	public void setIdCandidato(String idCandidato) {
+		this.idCandidato = idCandidato;
 	}
 
-	public Date getVcFechaCertificado() {
-		return vcFechaCertificado;
+	public Date getFechaCertificado() {
+		return fechaCertificado;
 	}
 
-	public void setVcFechaCertificado(Date vcFechaCertificado) {
-		this.vcFechaCertificado = vcFechaCertificado;
+	public void setFechaCertificado(Date fechaCertificado) {
+		this.fechaCertificado = fechaCertificado;
 	}
 
 	public Date getVcFechaExpiracion() {
-		return vcFechaExpiracion;
+		return fechaExpiracion;
 	}
 
-	public void setVcFechaExpiracion(Date vcFechaExpiracion) {
-		this.vcFechaExpiracion = vcFechaExpiracion;
+	public void setFechaExpiracion(Date fechaExpiracion) {
+		this.fechaExpiracion = fechaExpiracion;
 	}
 
-	public String getVcActivo() {
-		return vcActivo;
+	public String getActivo() {
+		return activo;
 	}
 
-	public void setVcActivo(String vcActivo) {
-		this.vcActivo = vcActivo;
+	public void setActivo(String activo) {
+		this.activo = activo;
 	}
 
-	public String getVcAnexo() {
-		return vcAnexo;
+	public String getAnexo() {
+		return anexo;
 	}
 
-	public void setVcAnexo(String vcAnexo) {
-		this.vcAnexo = vcAnexo;
+	public void setAnexo(String anexo) {
+		this.anexo = anexo;
 	}
 
-	public String getVcComentarioAnexo() {
-		return vcComentarioAnexo;
+	public String getComentarioAnexo() {
+		return comentarioAnexo;
 	}
 
-	public void setVcComentarioAnexo(String vcComentarioAnexo) {
-		this.vcComentarioAnexo = vcComentarioAnexo;
+	public void setComentarioAnexo(String comentarioAnexo) {
+		this.comentarioAnexo = comentarioAnexo;
 	}
 
 	public int getNumImportCodeId() {

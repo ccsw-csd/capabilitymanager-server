@@ -19,15 +19,15 @@ public class Constants {
 	public static final int ROW_EVIDENCE_LIST_START = 1;
 	public static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
 
-	public static final String VCPROFILEROLL1_SE  = "Software Engineer";
-	public static final String VCPROFILEROLL1EX_SE  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
-	public static final String VCPROFILEROLL1_BA  = "Business Analyst";
-	public static final String VCPROFILEROLL1EX_BA  = "Business Analyst (Functional Analyst, Product Owner)";
-	public static final String VCPROFILEROLL1_EM  = "Engagement Managers";
-	public static final String VCPROFILEROLL1EX_EM_PMO = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
-	public static final String VCPROFILEROLL1EX_EM = "Engagement Managers (EM, Responsable de proyecto)";
-	public static final String VCPROFILEROLL1_AR = "Architects";
-	public static final String VCPROFILEROLL1EX_AR = "Architects";
+	public static final String ROLL1_SE  = "Software Engineer";
+	public static final String ROLL1EX_SE  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
+	public static final String ROLL1_BA  = "Business Analyst";
+	public static final String ROLL1EX_BA  = "Business Analyst (Functional Analyst, Product Owner)";
+	public static final String ROLL1_EM  = "Engagement Managers";
+	public static final String ROLL1EX_EM_PMO = "Engagement Managers (EM, Responsable de proyecto, PMO, Scrum Master)";
+	public static final String ROLL1EX_EM = "Engagement Managers (EM, Responsable de proyecto)";
+	public static final String ROLL1_AR = "Architects";
+	public static final String ROLL1EX_AR = "Architects";
 
 	public static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
 	public static final String ERROR_INIT2  = ") ERROR: ";
@@ -54,22 +54,22 @@ public class Constants {
 	
 	
 	public static enum RolsDatabasePos {
-		COL_VCPROFILEEMAIL(3),
-		COL_VCPROFILENAME(4),
-		COL_VCPROFILESAGA(5),
-		COL_VCPROFILEROLL1EXTENDIDO(6),
-		COL_VCPROFILEROLL2EM(7),
-		COL_VCPROFILEROLL2AR(8),
-		COL_VCPROFILEROLL2AN(9),
-		COL_VCPROFILEROLL2SE(10),
-		COL_VCPROFILEROLEXPERIENCEEM(11),
-		COL_VCPROFILEROLEXPERIENCEAR(12),
-		COL_VCPROFILEROLL3(13),
-		COL_VCPROFILESKILLCLOUDNATIVEEXPERIENCE(14),
-		COL_VCPROFILESKILLLOWCODEEXPERIENCE(15),
-		COL_VCPROFILEROLL4(16),
-		COL_VCPROFILESECTOREXPERIENCE(17),
-		COL_VCPROFILESKILLCLOUDEXP(18);
+		COL_SAGA(5),
+		COL_EMAIL(3),
+		COL_NAME(4),
+		COL_ROLL1_EXTENDIDO(6),
+		COL_ROLL2_EM(7),
+		COL_ROLL2_AR(8),
+		COL_ROLL2_AN(9),
+		COL_ROLL2_SE(10),
+		COL_ROLL3(13),
+		COL_ROLL4(16),
+		COL_ROL_EXPERIENCE_EM(11),
+		COL_ROL_EXPERIENCE_AR(12),
+		COL_SKILL_CLOUD_NATIVE_EXPERIENCE(14),
+		COL_SKILLL_OWCODE_EXPERIENCE(15),
+		COL_SECTOR_EXPERIENCE(17),
+		COL_SKILL_CLOUD_EXPERIENCE(18);
 
 		private final int excelPosition;
 		RolsDatabasePos(int position) {
@@ -82,27 +82,30 @@ public class Constants {
 	}
 
 	public static enum StaffingDatabasePos {
-		COL_VCPROFILESAGA(1),
-		COL_VCPROFILEGGID(0),
-		COL_VCPROFILENOMBRE(2),
-		COL_VCPROFILEAPELLIDOS(3),
-		COL_VCPROFILECATEGORIA(9),
-		COL_VCPROFILEPRACTICA(4),
-		COL_VCPROFILEGRADO(8),
-		COL_VCPROFILECENTRO(10),
-		COL_VCPROFILELOCALIZACION(65),
-		COL_VCPROFILEPERFILTECNICO(36),
-		COL_VCPROFILEFECHAINCORPORACION(32),
-		COL_VCPROFILEPORCENTAJEASIGNACION(11),
-		COL_VCPROFILESTATUS(12),
-		COL_VCPROFILECLIENTEACTUAL(15),
-		COL_VCPROFILEFECHAINICIOASIGNACION(22),
-		COL_VCPROFILEFECHAFINASIGNACION(23),
-		COL_VCPROFILEFECHADISPONIBILIDAD(17),
-		COL_VCPROFILEPOSICIONPROYECTOFUTURO(24),
-		COL_VCPROFILECOLABORACIONES(63),
-		COLVCPROFILEPROYECTOANTERIOR(34),
-		COL_VCPROFILEMESESBENCH(54);
+		COL_SAGA(1),
+		COL_GGID(0),
+		COL_CENTRO(10),
+		COL_NOMBRE(2),
+		COL_APELLIDOS(3),
+		COL_LOCALIZACION(65),
+		COL_PRACTICA(4),
+		COL_GRADO(8),
+		COL_CATEGORIA(9),
+		COL_PERFIL_TECNICO(36),
+		COL_PRIMARY_SKILL(42),
+		COL_FECHA_INCORPORACION(32),
+		COL_PORCENTAJE_ASIGNACION(11),
+		COL_STATUS(12),
+		COL_CLIENTE_ACTUAL(15),
+		COL_FECHA_INICIO_ASIGNACION(22),
+		COL_FECHA_FIN_ASIGNACION(23),
+		COL_FECHA_DISPONIBILIDAD(17),
+		COL_POSICION_PROYECTO_FUTURO(24),
+		COL_COLABORACIONES(63),
+		COL_PROYECTO_ANTERIOR(34),
+		COL_INGLES_ESCRITO(44),
+		COL_INGLES_HABLADO(45),
+		COL_MESES_BENCH(54);
 
 
 		private final int excelPosition;
@@ -117,20 +120,20 @@ public class Constants {
 	}
 
 	public static enum CertificatesDatabasePos {
-		COL_VCSAGA(14),
-		COL_VCPARTNER(6),
-		COL_VCCERTIFICADO(7),
-		COL_VCNAMEGTD(8),
-		COL_VCCERTIFICATIONGTD(9),
-		COL_VCCODE(10),
-		COL_VCSECTOR(11),
-		COL_VCMODULO(12),
-		COL_VCIDCANDIDATO(19),
-		COL_VCFECHACERTIFICADO(15),
-		COL_VCFECHAEXPIRACION(16),
-		COL_VCACTIVO(17),
-		COL_VCANEXO(19),
-		COL_VCCOMENTARIOANEXO(20);
+		COL_SAGA(14),
+		COL_PARTNER(6),
+		COL_CERTIFICADO(7),
+		COL_NAME_GTD(8),
+		COL_CERTIFICATION_GTD(9),
+		COL_CODE(10),
+		COL_SECTOR(11),
+		COL_MODULO(12),
+		COL_ID_CANDIDATO(19),
+		COL_FECHA_CERTIFICADO(15),
+		COL_FECHA_EXPIRACION(16),
+		COL_ACTIVO(17),
+		COL_ANEXO(19),
+		COL_COMENTARIO_ANEXO(20);
 
 		private final int excelPosition;
 		CertificatesDatabasePos(int position) {
