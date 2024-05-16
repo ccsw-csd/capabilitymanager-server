@@ -2,73 +2,34 @@ package com.ccsw.capabilitymanager.listadobench.model;
 
 import java.util.Date;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name="vista_listado_bench")
 public class ListadoBench {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(name="vc_Profile_SAGA")
-    private String saga;    
-    
-    @Column(name="vc_Profile_GGID ggid")
-    private String ggid; 
-    
-    @Column(name="vc_Profile_Nombre")
-    private String nombre; 
-    
-    @Column(name="vc_Profile_Apellidos")
-    private String apellidos;  
-    
-    @Column(name="vc_Profile_Practica")
-    private String practica;     
-    
-    @Column(name="vc_Profile_Grado")
-    private String grado;      
-    
-    @Column(name="vc_Profile_Categoria")
-    private String categoria;  
-    
-    @Column(name="vc_Profile_Perfil_Tecnico")
-    private String perfilTecnico;
-    
-    @Column(name="vc_Profile_Fecha_Incorporacion")
-    private Date fechaIncorporacion;  
-    
-    @Column(name="vc_Profile_Asignacion")
-    private Integer asignacion;     
-    
-    @Column(name="vc_Profile_Status")
-    private String status;     
-    
-    @Column(name="vc_Profile_Cliente_Actual")
-    private String clienteActual; 
-    
-    @Column(name="vc_Profile_Fecha_Inicio_Asignacion")
-    private Date fechaInicioAsignacion;  
-    
-    @Column(name="vc_Profile_Fecha_Fin_Asignacion")
-    private Date fechaFinAsignacion;
-    
-    @Column(name="vc_Profile_Fecha_Disponibilidad")
-    private Date fechaDisponibilidad;
-    
-    @Column(name="vc_Profile_Posicion_Proyecto_Futuro")
-    private String posicionProyectoFuturo;  
-    
-    @Column(name="vc_Profile_Colaboraciones")
-    private String colaboraciones;
-    
-    @Column(name="vc_Profile_Proyecto_Anterior")
-    private String proyectoAnterior;
-    
-    @Column(name="vc_Profile_Meses_Bench")
-    private String mesesBench;
-    
+	private Long id;
+	private String saga;
+	private String ggid;
+	private String nombre;
+	private String apellidos;
+	private String practica;
+	private String grado;
+	private String categoria;
+	private String centro;
+	private String rol;
+	private String perfilTecnico;
+	private String primarySkill;
+	private Date fechaIncorporacion;
+	private Integer asignacion;
+	private String status;
+	private String clienteActual;
+	private Date fechaInicioAsignacion;
+	private Date fechaFinAsignacion;
+	private Date fechaDisponibilidad;
+	private String posicionProyectoFuturo;
+	private String colaboraciones;
+	private String proyectoAnterior;
+	private String inglesEscrito;
+	private String inglesHablado;
+	private String jornada;
+	private String mesesBench;
 
 	public Long getId() {
 		return id;
@@ -130,6 +91,22 @@ public class ListadoBench {
 		return categoria;
 	}
 
+	public String getCentro() {
+		return centro;
+	}
+
+	public void setCentro(String centro) {
+		this.centro = centro;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
@@ -140,6 +117,14 @@ public class ListadoBench {
 
 	public void setPerfilTecnico(String perfilTecnico) {
 		this.perfilTecnico = perfilTecnico;
+	}
+
+	public String getPrimarySkill() {
+		return primarySkill;
+	}
+
+	public void setPrimarySkill(String primarySkill) {
+		this.primarySkill = primarySkill;
 	}
 
 	public Date getFechaIncorporacion() {
@@ -222,6 +207,30 @@ public class ListadoBench {
 		this.proyectoAnterior = proyectoAnterior;
 	}
 
+	public String getInglesEscrito() {
+		return inglesEscrito;
+	}
+
+	public void setInglesEscrito(String inglesEscrito) {
+		this.inglesEscrito = inglesEscrito;
+	}
+
+	public String getInglesHablado() {
+		return inglesHablado;
+	}
+
+	public void setInglesHablado(String inglesHablado) {
+		this.inglesHablado = inglesHablado;
+	}
+
+	public String getJornada() {
+		return jornada;
+	}
+
+	public void setJornada(String jornada) {
+		this.jornada = jornada;
+	}
+
 	public String getMesesBench() {
 		return mesesBench;
 	}
@@ -229,5 +238,5 @@ public class ListadoBench {
 	public void setMesesBench(String mesesBench) {
 		this.mesesBench = mesesBench;
 	}
-    
+
 }
