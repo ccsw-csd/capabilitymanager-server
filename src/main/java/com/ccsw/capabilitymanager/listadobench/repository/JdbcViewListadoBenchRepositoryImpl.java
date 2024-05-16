@@ -23,28 +23,28 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 	public Collection<ListadoBench> getListadoPersonasBench() {
 		return jdbcTemplate.query("SELECT DISTINCT " +
 				"stf.Id AS id, " +
-				"stf.vc_Profile_SAGA AS saga, " +
-				"stf.vc_Profile_GGID AS ggid, " +
-				"stf.vc_Profile_Nombre AS nombre, " +
-				"stf.vc_Profile_Apellidos AS apellidos, " +
-				"stf.vc_Profile_Practica AS practica, " +
-				"stf.vc_Profile_Grado AS grado, " +
-				"stf.vc_Profile_Categoria AS categoria, " +
-				"stf.vc_Profile_Perfil_Tecnico AS perfil, " +
-				"stf.vc_Profile_Fecha_Incorporacion AS fIncorporacion, " +
-				"COALESCE(stf.vc_Profile_Asignacion, 0) AS porcentajeAsignacion, " +
-				"stf.vc_Profile_Cliente_Actual AS clienteActual, " +
-				"stf.vc_Profile_Fecha_Inicio_Asignacion AS inicioAsignacion, " +
-				"stf.vc_Profile_Fecha_Fin_Asignacion AS finAsignacion, " +
-				"stf.vc_Profile_Fecha_Disponibilidad AS fDisponibilidad, " +
-				"stf.vc_Profile_Posicion_Proyecto_Futuro AS posicionFuturo, " +
-				"stf.vc_Profile_Colaboraciones AS colaboraciones, " +
-				"stf.vc_Profile_Proyecto_Anterior AS proyectoAnterior, " +
-				"stf.vc_Profile_Meses_Bench AS mesesBench, " +
-				"stf.vc_Profile_Status AS status " +
-				"FROM dm_staffing_import stf " +
-				"WHERE stf.num_Import_CodeId COLLATE utf8mb4_general_ci = (select max(id) from version_staffing)"
-				+ " and (vc_Profile_Status not like 'En Proyecto%' and vc_Profile_Status not like 'Baja%' and vc_Profile_Status not like 'TRI%')", this::mapRowToDataFormation);
+				"stf.SAGA AS saga, " +
+				"stf.GGID AS ggid, " +
+				"stf.nombre AS nombre, " +
+				"stf.apellidos AS apellidos, " +
+				"stf.practica AS practica, " +
+				"stf.grado AS grado, " +
+				"stf.categoria AS categoria, " +
+				"stf.perfil_tecnico AS perfil, " +
+				"stf.fecha_incorporacion AS fIncorporacion, " +
+				"COALESCE(stf.asignacion, 0) AS porcentajeAsignacion, " +
+				"stf.cliente_actual AS clienteActual, " +
+				"stf.fecha_inicio_asignacion AS inicioAsignacion, " +
+				"stf.fecha_fin_asignacion AS finAsignacion, " +
+				"stf.fecha_disponibilidad AS fDisponibilidad, " +
+				"stf.posicion_proyecto_futuro AS posicionFuturo, " +
+				"stf.colaboraciones AS colaboraciones, " +
+				"stf.proyecto_anterior AS proyectoAnterior, " +
+				"stf.meses_bench AS mesesBench, " +
+				"stf.status AS status " +
+				"FROM staffing stf " +
+				"WHERE stf.num_import_code_id COLLATE utf8mb4_general_ci = (select max(id) from version_staffing)"
+				+ " and (status not like 'En Proyecto%' and status not like 'Baja%' and status not like 'TRI%')", this::mapRowToDataFormation);
 	}
 
 	private ListadoBench mapRowToDataFormation(ResultSet row, int rowNum) throws SQLException {

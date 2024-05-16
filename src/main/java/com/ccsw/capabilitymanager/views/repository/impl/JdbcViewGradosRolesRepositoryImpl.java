@@ -27,19 +27,17 @@ public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesReposit
 	public Collection<GradeRole> findAll(int idVersionCapacidades, int idVersionStaffing) {
 		return jdbcTemplate.query("select\r\n"
 				+ "    fr.id as id,\r\n"
-				+ "    sg.vc_Profile_Grado as grado,\r\n"
-				+ "    fr.vc_Profile_Rol_L1 as role_level_1,\r\n"
-				+ "    fr.vc_Profile_SAGA as saga,\r\n"
-				+ "    fr.num_Import_CodeId as idCapacidades,\r\n"
-				+ "	   sg.num_Import_CodeId as idStaffing\r\n"
-				+ "from\r\n"
-				+ "    dm_staffing_import sg,\r\n"
-				+ "    dm_formdata_import fr\r\n"
+				+ "    sg.grado as grado,\r\n"
+				+ "    fr.rol_L1 as role_level_1,\r\n"
+				+ "    fr.SAGA as saga,\r\n"
+				+ "    fr.num_import_code_id as idCapacidades,\r\n"
+				+ "	   sg.num_import_code_id as idStaffing\r\n"
+				+ "from staffing sg, formdata fr\r\n"
 				+ "where\r\n"
-				+ "    fr.num_Import_CodeId = ? and \r\n"
-				+ "	   sg.num_Import_CodeId = ? and\r\n"
-				+ "    (fr.vc_Profile_Rol_L2_EM like '%" + Constants.VCPROFILEROLL1_EM + "%' or fr.vc_Profile_Rol_L2_EM = '') and\r\n"
-				+ "    sg.vc_Profile_SAGA = fr.vc_Profile_SAGA",
+				+ "    fr.num_import_code_id = ? and \r\n"
+				+ "	   sg.num_import_code_id = ? and\r\n"
+				+ "    (fr.rol_L2_EM like '%" + Constants.ROLL1_EM + "%' or fr.rol_L2_EM = '') and\r\n"
+				+ "    sg.SAGA = fr.SAGA",
 				this::mapRowToGradeRoles,
 				idVersionCapacidades,idVersionStaffing);
 	}

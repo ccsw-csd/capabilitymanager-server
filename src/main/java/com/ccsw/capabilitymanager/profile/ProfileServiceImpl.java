@@ -266,7 +266,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 		List<ProfileTotal> profileTotalList = new ArrayList<>();
 		for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
-			String actual = i == 0 ? Constants.VCPROFILEROLL1_AR : Constants.VCPROFILEROLL1_SE;
+			String actual = i == 0 ? Constants.ROLL1_AR : Constants.ROLL1_SE;
 			String perfil = i==0?"Solution":"SE";
 			List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
 			ArrayList<Long> totals = new ArrayList<Long>();
@@ -330,7 +330,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 		List<ProfileTotal> profileTotalList = new ArrayList<>();
 		for (int i = 0; i < findByTypeAndSubtype.toArray().length; i++) {
-			String actual = i == 0 ? Constants.VCPROFILEROLL1_AR : Constants.VCPROFILEROLL1_SE;
+			String actual = i == 0 ? Constants.ROLL1_AR : Constants.ROLL1_SE;
 			String perfil = i==0?"Integration":"SE";
 			List<Profile> listArchitects = list.stream().filter(p->p.getActual().equals(actual)).filter(p->p.getPerfil().contains(perfil)).toList();
 			ArrayList<Long> totals = new ArrayList<Long>();

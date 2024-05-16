@@ -1,98 +1,64 @@
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `dashboard`@`%` 
-    SQL SECURITY DEFINER
-VIEW `tmp_export_formdata` AS
-    SELECT 
-        `form`.`Id` AS `id`,
-        (CASE
-            WHEN ISNULL(`form`.`num_Import_CodeId`) THEN 0
-            ELSE `form`.`num_Import_CodeId`
-        END) AS `id_Import_capacidades`,
-        (CASE
-            WHEN ISNULL(`staffing`.`num_Import_CodeId`) THEN 0
-            ELSE `staffing`.`num_Import_CodeId`
-        END) AS `id_Import_staffing`,
-        COALESCE(`staffing`.`vc_Profile_GGID`, '') AS `vc_Profile_Staffing_GGID`,
-        `form`.`vc_Profile_SAGA` AS `vc_Profile_SAGA`,
-        `form`.`vc_Profile_Rol_L1` AS `vc_Profile_Rol_Actual`,
-        CONCAT_WS('',
-                REPLACE(`form`.`vc_Profile_Rol_L2_EM`,
-                    'N/A;',
-                    ''),
-                REPLACE(`form`.`vc_Profile_Rol_L2_AR`,
-                    'N/A;',
-                    ''),
-                REPLACE(`form`.`vc_Profile_Rol_L2_AN`,
-                    'N/A;',
-                    ''),
-                REPLACE(`form`.`vc_Profile_Rol_L2_SE`,
-                    'N/A;',
-                    '')) AS `vc_Profile_Rol_Perfil`,
-        CONCAT_WS('',
-                REPLACE(`form`.`vc_Profile_Rol_L3`,
-                    'N/A;',
-                    ''),
-                REPLACE(`form`.`vc_Profile_Rol_L4`,
-                    'N/A;',
-                    '')) AS `vc_Profile_Rol_Perfil_Tecnico`,
-        CONCAT_WS('',
-                REPLACE(`form`.`vc_Profile_Rol_Experience_EM`,
-                    'N/A;',
-                    ''),
-                REPLACE(`form`.`vc_Profile_Rol_Experience_AR`,
-                    'N/A;',
-                    '')) AS `vc_Profile_Rol_Perfil_Experiencia`,
-        REPLACE(`form`.`vc_Profile_Skill_Cloud_Native_Experience`,
-            'N/A;',
-            '') AS `vc_Profile_Skill_Cloud_Native`,
-        REPLACE(`form`.`vc_Profile_Skill_Cloud_Exp`,
-            'N/A;',
-            '') AS `vc_Profile_Skill_Cloud_Native_Experiencia`,
-        REPLACE(`form`.`vc_Profile_Skill_Low_Code_Experience`,
-            'N/A;',
-            '') AS `vc_Profile_Skill_Low_Code`,
-        REPLACE(`form`.`vc_Profile_Sector_Experience`,
-            'N/A;',
-            '') AS `vc_Profile_Sector_Experiencia`,
-        COALESCE(`form`.`vc_Profile_Name`, '') AS `vc_Profile_Nombre_Completo`,
-        COALESCE(`form`.`vc_Profile_Email`, '') AS `vc_Profile_Email`,
-        COALESCE(`staffing`.`vc_Profile_Practica`, '') AS `vc_Profile_Staffing_Practica`,
-        COALESCE(`staffing`.`vc_Profile_Grado`, '') AS `vc_Profile_Staffing_Grado`,
-        COALESCE(`staffing`.`vc_Profile_Categoria`, '') AS `vc_Profile_Staffing_Categoria`,
-        COALESCE(`staffing`.`vc_Profile_Centro`, '') AS `vc_Profile_Staffing_Centro`,
-        COALESCE(`staffing`.`vc_Profile_Localizacion`, '') AS `vc_Profile_Staffing_Localizacion`,
-        COALESCE(`staffing`.`vc_Profile_Status`, '') AS `vc_Profile_Staffing_Status`,
-        COALESCE(`staffing`.`vc_Profile_Perfil_Tecnico`,
-                '') AS `vc_Profile_Staffing_Perfil_Tecnico`
-    FROM
-        (`dm_formdata_import` `form`
-        LEFT JOIN `dm_staffing_import` `staffing` ON ((`form`.`vc_Profile_SAGA` = `staffing`.`vc_Profile_SAGA`)))     
-            
-
-CREATE 
-    ALGORITHM = UNDEFINED 
-    DEFINER = `dashboard`@`%` 
-    SQL SECURITY DEFINER
-VIEW `vista_grados_roles` AS
-    SELECT 
-        `fr`.`Id` AS `id`,
-        `sg`.`vc_Profile_Grado` AS `vc_Grado`,
-        `fr`.`vc_Profile_Rol_L1` AS `vc_Profile_Rol_L1`,
-        `fr`.`vc_Profile_SAGA` AS `vc_Profile_SAGA`,
-        (CASE
-            WHEN ISNULL(`fr`.`num_Import_CodeId`) THEN 0
-            ELSE `fr`.`num_Import_CodeId`
-        END) AS `id_Import_capacidades`,
-        (CASE
-            WHEN ISNULL(`sg`.`num_Import_CodeId`) THEN 0
-            ELSE `sg`.`num_Import_CodeId`
-        END) AS `id_Import_staffing`
-    FROM
-        (`dm_staffing_import` `sg`
-        JOIN `dm_formdata_import` `fr` ON ((`sg`.`vc_Profile_SAGA` = `fr`.`vc_Profile_SAGA`)))
-    WHERE
-        ((`fr`.`vc_Profile_Rol_L1` LIKE 'Software%')
-            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Business%')
-            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Engagement%')
-            OR (`fr`.`vc_Profile_Rol_L1` LIKE 'Architect%'))
+-- capabilitymanager.tmp_export_formdata source
+create or replace
+algorithm = UNDEFINED view `capabilitymanager`.`tmp_export_formdata` as
+select
+    `form`.`Id` as `id`,
+    (case
+        when isnull(`form`.`num_import_code_id`) then 0
+        else `form`.`num_import_code_id`
+    end) as `id_Import_capacidades`,
+    (case
+        when isnull(`staffing`.`num_import_code_id`) then 0
+        else `staffing`.`num_import_code_id`
+    end) as `id_Import_staffing`,
+    coalesce(`staffing`.`GGID`, '') as `Staffing_GGID`,
+    `form`.`SAGA` as `SAGA`,
+    `form`.`rol_L1` as `rol_Actual`,
+    concat_ws('', replace(`form`.`rol_L2_EM`, 'N/A;', ''), replace(`form`.`rol_L2_AR`, 'N/A;', ''), replace(`form`.`rol_L2_AN`, 'N/A;', ''), replace(`form`.`rol_L2_SE`, 'N/A;', '')) as `rol_Perfil`,
+    concat_ws('', replace(`form`.`rol_L3`, 'N/A;', ''), replace(`form`.`rol_L4`, 'N/A;', '')) as `rol_Perfil_Tecnico`,
+    concat_ws('', replace(`form`.`rol_experience_EM`, 'N/A;', ''), replace(`form`.`rol_experience_AR`, 'N/A;', '')) as `rol_Perfil_Experiencia`,
+    replace(`form`.`skill_cloud_native_experience`, 'N/A;', '') as `Skill_Cloud_Native`,
+    replace(`form`.`skill_cloud_experience`, 'N/A;', '') as `Skill_Cloud_Native_Experiencia`,
+    replace(`form`.`skill_low_code_experience`, 'N/A;', '') as `Skill_Low_Code`,
+    replace(`form`.`sector_experience`, 'N/A;', '') as `Sector_Experiencia`,
+    coalesce(`form`.`name`, '') as `Nombre_Completo`,
+    coalesce(`form`.`email`, '') as `Email`,
+    coalesce(`staffing`.`practica`, '') as `Staffing_Practica`,
+    coalesce(`staffing`.`grado`, '') as `Staffing_Grado`,
+    coalesce(`staffing`.`categoria`, '') as `Staffing_Categoria`,
+    coalesce(`staffing`.`centro`, '') as `Staffing_Centro`,
+    coalesce(`staffing`.`localizacion`, '') as `Staffing_Localizacion`,
+    coalesce(`staffing`.`status`, '') as `Staffing_Status`,
+    coalesce(`staffing`.`perfil_tecnico`, '') as `Staffing_Perfil_Tecnico`
+from
+    (`capabilitymanager`.`formdata` `form`
+left join `capabilitymanager`.`staffing` `staffing` on
+    ((`form`.`SAGA` = `staffing`.`SAGA`)));
+    
+   
+   
+-- capabilitymanager.vista_grados_roles source
+create or replace
+algorithm = UNDEFINED view `capabilitymanager`.`vista_grados_roles` as
+select
+    `fr`.`id` as `id`,
+    `sg`.`grado` as `vc_Grado`,
+    `fr`.`rol_L1` as `Rol_L1`,
+    `fr`.`SAGA` as `SAGA`,
+    (case
+        when isnull(`fr`.`num_import_code_id`) then 0
+        else `fr`.`num_import_code_id`
+    end) as `id_Import_capacidades`,
+    (case
+        when isnull(`sg`.`num_import_code_id`) then 0
+        else `sg`.`num_import_code_id`
+    end) as `id_Import_staffing`
+from
+    (`capabilitymanager`.`staffing` `sg`
+join `capabilitymanager`.`formdata` `fr` on
+    ((`sg`.`SAGA` = `fr`.`SAGA`)))
+where
+    ((`fr`.`rol_L1` like 'Software%')
+        or (`fr`.`rol_L1` like 'Business%')
+            or (`fr`.`rol_L1` like 'Engagement%')
+                or (`fr`.`rol_L1` like 'Architect%'));

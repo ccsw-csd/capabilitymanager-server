@@ -24,63 +24,63 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 
 	@Override
 	public Collection<Profile> generateConutersSummaryByRole(int idVersionCapacidades, int idVersionStaffing, String profileId) {
-		return jdbcTemplate.query("select dsi.vc_Profile_GGID as ggid,\r\n" +
-				"	dsi.vc_Profile_SAGA as saga,\r\n" +
-				"	dsi.vc_Profile_Practica  as practica,\r\n" +
-				"	dsi.vc_Profile_Grado as grado,\r\n" +
-				"	dsi.vc_Profile_Categoria as categoria,\r\n" +
-				"	dsi.vc_Profile_Centro as centro,\r\n" +
-				"	concat(dsi.vc_Profile_Apellidos , ', ', dsi.vc_Profile_Nombre) as nombreCompleto,\r\n" +
-				"	dfi.vc_Profile_Email as email,\r\n" +
-				"	dsi.vc_Profile_Localizacion as localizacion,\r\n" +
-				"	dsi.vc_Profile_Status as status,\r\n" +
-				"   dsi.vc_Profile_Perfil_Tecnico as perfilStaffing,"
-				+ "	   dfi.vc_Profile_Rol_L1 as role_level_1,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_AR as role_level_2_ar,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_EM as role_level_2_em,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_SE as role_level_2_se,\r\n"
-				+ "	   dfi.vc_Profile_Rol_Experience_AR as experience_ar,\r\n"
-				+ "	   dfi.vc_Profile_Rol_Experience_EM  as experience_em, \r\n"
-				+ "	   dfi.vc_Profile_Sector_Experience as sector_experience, \r\n"
-				+ "	   dfi.vc_Profile_Skill_Cloud_Native_Experience as cloud_native_experience, \r\n"
-				+ "	   dfi.vc_Profile_Skill_Low_Code_Experience as low_code_experience, \r\n"
-				+ "	   dfi.vc_Profile_Rol_L3 as tecnicoL3, dfi.vc_Profile_Rol_L4 as tecnicoL4 \r\n"
-				+ "from dm_formdata_import dfi , dm_staffing_import dsi\r\n"
-				+ "where dfi.num_Import_CodeId = ? and \r\n"
-				+ "	  dsi.num_Import_CodeId = ? and\r\n"
-				+ "	  dfi.vc_Profile_Rol_L1 = ? and\r\n"
-				+ "	  dfi.vc_Profile_SAGA = dsi.vc_Profile_SAGA",
+		return jdbcTemplate.query("select dsi.GGID as ggid,\r\n" +
+				"	dsi.SAGA as saga,\r\n" +
+				"	dsi.practica  as practica,\r\n" +
+				"	dsi.grado as grado,\r\n" +
+				"	dsi.categoria as categoria,\r\n" +
+				"	dsi.centro as centro,\r\n" +
+				"	concat(dsi.apellidos , ', ', dsi.nombre) as nombreCompleto,\r\n" +
+				"	dfi.email as email,\r\n" +
+				"	dsi.localizacion as localizacion,\r\n" +
+				"	dsi.status as status,\r\n" +
+				"   dsi.perfil_tecnico as perfilStaffing,"
+				+ "	   dfi.rol_L1 as role_level_1,\r\n"
+				+ "	   dfi.rol_L2_AR as role_level_2_ar,\r\n"
+				+ "	   dfi.rol_L2_EM as role_level_2_em,\r\n"
+				+ "	   dfi.rol_L2_SE as role_level_2_se,\r\n"
+				+ "	   dfi.rol_experience_AR as experience_ar,\r\n"
+				+ "	   dfi.rol_experience_EM  as experience_em, \r\n"
+				+ "	   dfi.sector_experience as sector_experience, \r\n"
+				+ "	   dfi.skill_cloud_native_experience as cloud_native_experience, \r\n"
+				+ "	   dfi.skill_low_code_Experience as low_code_experience, \r\n"
+				+ "	   dfi.rol_L3 as tecnicoL3, dfi.rol_L4 as tecnicoL4 \r\n"
+				+ "from formdata dfi , staffing dsi\r\n"
+				+ "where dfi.num_import_code_id = ? and \r\n"
+				+ "	  dsi.num_import_code_id = ? and\r\n"
+				+ "	  dfi.rol_L1 = ? and\r\n"
+				+ "	  dfi.SAGA = dsi.SAGA",
 				this::mapRowToInformeRoles,
 				idVersionCapacidades,idVersionStaffing,profileId);
 	}
 
 	@Override
 	public Collection<Profile> generateConutersSummaryByAll(int idVersionCapacidades, int idVersionStaffing) {
-		return jdbcTemplate.query("select dsi.vc_Profile_GGID as ggid,\r\n" +
-				"	dsi.vc_Profile_SAGA as saga,\r\n" +
-				"	dsi.vc_Profile_Practica  as practica,\r\n" +
-				"	dsi.vc_Profile_Grado as grado,\r\n" +
-				"	dsi.vc_Profile_Categoria as categoria,\r\n" +
-				"	dsi.vc_Profile_Centro as centro,\r\n" +
-				"	concat(dsi.vc_Profile_Apellidos , ', ', dsi.vc_Profile_Nombre) as nombreCompleto,\r\n" +
-				"	dfi.vc_Profile_Email as email,\r\n" +
-				"	dsi.vc_Profile_Localizacion as localizacion,\r\n" +
-				"	dsi.vc_Profile_Status as status,\r\n" +
-				"   dsi.vc_Profile_Perfil_Tecnico as perfilStaffing,"
-				+ "	dfi.vc_Profile_Rol_L1 as role_level_1,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_AR as role_level_2_ar,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_EM as role_level_2_em,\r\n"
-				+ "	   dfi.vc_Profile_Rol_L2_SE as role_level_2_se,\r\n"
-				+ "	   dfi.vc_Profile_Rol_Experience_AR as experience_ar,\r\n"
-				+ "	   dfi.vc_Profile_Rol_Experience_EM  as experience_em, \r\n"
-				+ "	   dfi.vc_Profile_Sector_Experience as sector_experience, \r\n"
-				+ "	   dfi.vc_Profile_Skill_Cloud_Native_Experience as cloud_native_experience, \r\n"
-				+ "	   dfi.vc_Profile_Skill_Low_Code_Experience as low_code_experience, \r\n"
-				+ "	   dfi.vc_Profile_Rol_L3 as tecnicoL3, \r\n" + "	   dfi.vc_Profile_Rol_L4 as tecnicoL4 \r\n"
-				+ "from dm_formdata_import dfi , dm_staffing_import dsi\r\n"
-				+ "where dfi.num_Import_CodeId = ? and \r\n"
-				+ "	  dsi.num_Import_CodeId = ? and\r\n"
-				+ "	  dfi.vc_Profile_SAGA = dsi.vc_Profile_SAGA",
+		return jdbcTemplate.query("select dsi.GGID as ggid,\r\n" +
+				"	dsi.SAGA as saga,\r\n" +
+				"	dsi.practica  as practica,\r\n" +
+				"	dsi.grado as grado,\r\n" +
+				"	dsi.categoria as categoria,\r\n" +
+				"	dsi.centro as centro,\r\n" +
+				"	concat(dsi.apellidos , ', ', dsi.nombre) as nombreCompleto,\r\n" +
+				"	dfi.email as email,\r\n" +
+				"	dsi.localizacion as localizacion,\r\n" +
+				"	dsi.status as status,\r\n" +
+				"   dsi.perfil_tecnico as perfilStaffing,"
+				+ "	   dfi.rol_L1 as role_level_1,\r\n"
+				+ "	   dfi.rol_L2_AR as role_level_2_ar,\r\n"
+				+ "	   dfi.rol_L2_EM as role_level_2_em,\r\n"
+				+ "	   dfi.rol_L2_SE as role_level_2_se,\r\n"
+				+ "	   dfi.rol_experience_AR as experience_ar,\r\n"
+				+ "	   dfi.rol_experience_EM  as experience_em, \r\n"
+				+ "	   dfi.sector_experience as sector_experience, \r\n"
+				+ "	   dfi.skill_cloud_native_experience as cloud_native_experience, \r\n"
+				+ "	   dfi.skill_low_code_Experience as low_code_experience, \r\n"
+				+ "	   dfi.rol_L3 as tecnicoL3, dfi.rol_L4 as tecnicoL4 \r\n"
+				+ "from formdata dfi , staffing dsi\r\n"
+				+ "where dfi.num_import_code_id = ? and \r\n"
+				+ "	  dsi.num_import_code_id = ? and\r\n"
+				+ "	  dfi.SAGA = dsi.SAGA",
 				this::mapRowToInformeRoles,
 				idVersionCapacidades,idVersionStaffing);
 	}

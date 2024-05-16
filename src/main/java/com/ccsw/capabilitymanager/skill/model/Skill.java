@@ -3,47 +3,44 @@ package com.ccsw.capabilitymanager.skill.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dm_synthesisdata_import")
+@Table(name = "synthesisdata_import")
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="vc_Profile_Name", nullable = false)
+    @Column(name="name", nullable = false)
     private String name;
 
-    @Column(name="vc_Skill_Type", nullable = false)
+    @Column(name="vc_skill_type", nullable = false)
     private String skillType;
 
-    @Column(name="num_Skill_Level", nullable = false)
+    @Column(name="num_skill_Level", nullable = false)
     private int skyllLevel;
 
-    @Column(name="vc_Skill_Description", nullable = false)
+    @Column(name="skill_description", nullable = false)
     private String skillDescription;
 
-    //@Column(name = "vc_Profile_RegNumber")
-    // private String profileRegNumber;
-
-    @Column(name = "vc_Profile_TalentID", nullable = false)
+    @Column(name = "talentID", nullable = false)
     private String tanlentID;
 
-    @Column(name = "vc_Profile_Location", nullable = false)
+    @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "vc_Profile_Circle", nullable = false)
+    @Column(name = "circle", nullable = false)
     private String profileCircle;
 
-    @Column(name = "vc_Profile_Type", nullable = false)
+    @Column(name = "type", nullable = false)
     private String profileType;
 
-    @Column(name = "vc_Profile_Company")
+    @Column(name = "company")
     private String company;
 
-    @Column(name = "vc_Profile_Manager")
+    @Column(name = "manager")
     private String manager;
 
-    @Column(name = "vc_Profile_Mentor")
+    @Column(name = "mentor")
     private String mentor;
 
     public Skill() {
