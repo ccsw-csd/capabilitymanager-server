@@ -29,8 +29,11 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 				"stf.apellidos AS apellidos, " +
 				"stf.practica AS practica, " +
 				"stf.grado AS grado, " +
-				"stf.categoria AS categoria, " +
-				"stf.perfil_tecnico AS perfil, " +
+				"stf.categoria AS categoria,\r\n"
+				+ "stf.centro as centro,\r\n"
+				+ "form.rol_L1 as rol, "
+				+ "stf.perfil_tecnico AS perfil,\r\n"
+				+ "stf.primary_skill as primarySkill, " +
 				"stf.fecha_incorporacion AS fIncorporacion, " +
 				"COALESCE(stf.asignacion, 0) AS porcentajeAsignacion, " +
 				"stf.cliente_actual AS clienteActual, " +
@@ -39,11 +42,16 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 				"stf.fecha_disponibilidad AS fDisponibilidad, " +
 				"stf.posicion_proyecto_futuro AS posicionFuturo, " +
 				"stf.colaboraciones AS colaboraciones, " +
-				"stf.proyecto_anterior AS proyectoAnterior, " +
+				"stf.proyecto_anterior AS proyectoAnterior,\r\n"
+				+ "stf.ingles_escrito  as inglesEscrito,\r\n"
+				+ "stf.ingles_hablado as inglesHablado,\r\n"
+				+ "stf.jornada as jornada, " +
 				"stf.meses_bench AS mesesBench, " +
 				"stf.status AS status " +
-				"FROM staffing stf " +
-				"WHERE stf.num_import_code_id COLLATE utf8mb4_general_ci = (select max(id) from version_staffing)"
+				"FROM staffing stf, formdata form \r\n"
+				+ "WHERE stf.num_import_code_id COLLATE utf8mb4_general_ci = (select max(id) from version_staffing)\r\n"
+				+ " and form.num_import_code_id  COLLATE utf8mb4_general_ci = (select max(id) from version_capacidades)\r\n"
+				+ " and stf.SAGA = form.SAGA\r\n"
 				+ " and (status not like 'En Proyecto%' and status not like 'Baja%' and status not like 'TRI%')", this::mapRowToDataFormation);
 	}
 
@@ -57,7 +65,10 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 		dataFormation.setPractica(row.getString("practica"));
 		dataFormation.setGrado(row.getString("grado"));
 		dataFormation.setCategoria(row.getString("categoria"));
+		dataFormation.setCentro(row.getString("centro"));
+		dataFormation.setRol(row.getString("rol"));
 		dataFormation.setPerfilTecnico(row.getString("perfil"));
+		dataFormation.setPrimarySkill(row.getString("primarySkill"));
 		dataFormation.setFechaIncorporacion(row.getDate("fIncorporacion"));
 		dataFormation.setAsignacion(row.getInt("porcentajeAsignacion"));
 		dataFormation.setStatus(row.getString("status"));
@@ -68,6 +79,9 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 		dataFormation.setPosicionProyectoFuturo(row.getString("posicionFuturo"));
 		dataFormation.setColaboraciones(row.getString("colaboraciones"));
 		dataFormation.setProyectoAnterior(row.getString("proyectoAnterior"));
+		dataFormation.setInglesEscrito(row.getString("inglesEscrito"));
+		dataFormation.setInglesHablado(row.getString("inglesHablado"));
+		dataFormation.setJornada(row.getString("jornada"));
 		dataFormation.setMesesBench(row.getString("mesesBench"));
 
 		return dataFormation;
