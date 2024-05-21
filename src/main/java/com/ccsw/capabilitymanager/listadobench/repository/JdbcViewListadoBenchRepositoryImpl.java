@@ -50,7 +50,8 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
                 "FROM staffing stf " +
                 "LEFT JOIN formdata form ON stf.SAGA = form.SAGA " +
                 "WHERE stf.num_import_code_id COLLATE utf8mb4_general_ci = (SELECT MAX(id) FROM version_staffing) " +
-                "AND stf.status IN ('Disponible', 'BDCS', 'CHECK')";
+                "AND stf.status IN ('Disponible', 'TRI+BDCS', 'En proyecto+BDCS', 'BDCS')";
+
 
         return jdbcTemplate.query(query, this::mapRowToDataFormation);
     }
