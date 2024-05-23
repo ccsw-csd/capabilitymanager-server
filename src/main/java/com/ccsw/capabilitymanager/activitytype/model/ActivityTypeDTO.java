@@ -32,4 +32,3 @@ public class ActivityTypeDTO {
         this.nombre = nombre;
     }
 }
-

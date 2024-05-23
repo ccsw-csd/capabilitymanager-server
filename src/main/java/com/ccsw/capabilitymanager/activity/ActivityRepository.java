@@ -1,9 +1,12 @@
 package com.ccsw.capabilitymanager.activity;
 
+import com.ccsw.capabilitymanager.activity.model.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ccsw.capabilitymanager.activity.model.Activity;
+import java.util.List;
 
-public interface ActivityRepository extends JpaRepository<Activity, Long>{
-    
+public interface ActivityRepository extends JpaRepository<Activity, Long> {
+
+    List<Activity> findBySaga(String saga);
+
 }
