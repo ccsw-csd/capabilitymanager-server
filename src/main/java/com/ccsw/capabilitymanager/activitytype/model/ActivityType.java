@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.activitytype.model;
 
+import com.ccsw.capabilitymanager.activity.model.Activity;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,16 +15,16 @@ public class ActivityType {
     @Column(name = "nombre_actividad")
     private String nombre;
 
-    // Constructor sin parámetros
+    @OneToOne(mappedBy = "tipoActividad")
+    private Activity activity;
+
     public ActivityType() {
     }
 
-    // Constructor con parámetros
     public ActivityType(String nombre) {
         this.nombre = nombre;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -39,5 +40,12 @@ public class ActivityType {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-}
 
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+}
