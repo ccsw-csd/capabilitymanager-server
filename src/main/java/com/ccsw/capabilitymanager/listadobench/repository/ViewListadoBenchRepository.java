@@ -1,10 +1,11 @@
 package com.ccsw.capabilitymanager.listadobench.repository;
 
-import java.util.Collection;
-
 import com.ccsw.capabilitymanager.listadobench.model.ListadoBench;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public interface ViewListadoBenchRepository {
-	public Collection<ListadoBench> getListadoPersonasBench();
-
+	Collection<ListadoBench> getListadoPersonasBench();
+	Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga); // Nuevo método
 }
