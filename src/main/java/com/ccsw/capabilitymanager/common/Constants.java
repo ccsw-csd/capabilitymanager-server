@@ -145,5 +145,25 @@ public class Constants {
 			return excelPosition;
 		}
 	}
+	
+	public static enum ItinerariosDatabasePos {
+		COL_GGID(14),
+		COL_TIPO_ACTIVIDAD(6),
+		COL_NOMBRE_ACTIVIDAD(7),
+		COL_CODIGO_ACTIVIDAD(8),
+		COL_FECHA_INICIO(9),
+		COL_FECHA_FINALIZACION(10),
+		COL_PORCENTAJE_AVANCE(11),
+		COL_FECHA_ULTIMA_ACTIVIDAD(12);
+
+		private final int excelPosition;
+		ItinerariosDatabasePos(int position) {
+			this.excelPosition = position;
+		}
+
+		public int getPosition() {
+			return excelPosition;
+		}
+	}
 
 }

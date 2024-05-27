@@ -25,6 +25,8 @@ import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
 import com.ccsw.capabilitymanager.formdataimport.model.FormDataImport;
+import com.ccsw.capabilitymanager.itinerariosdataimport.ItinerariosDataImportRepository;
+import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosDataImport;
 import com.ccsw.capabilitymanager.staffingdataimport.StaffingDataImportRepository;
 import com.ccsw.capabilitymanager.staffingdataimport.model.StaffingDataImport;
 import com.ccsw.capabilitymanager.utils.UtilsServiceImpl;
@@ -32,6 +34,8 @@ import com.ccsw.capabilitymanager.versioncapacidades.VersionCapatidadesRepositor
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesRepository;
 import com.ccsw.capabilitymanager.versioncertificados.model.VersionCertificaciones;
+import com.ccsw.capabilitymanager.versionitinerarios.VersionItinerariosRepository;
+import com.ccsw.capabilitymanager.versionitinerarios.model.VersionItinerarios;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
 
@@ -50,6 +54,9 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private CertificatesDataImportRepository certificatesDataImportRepository;
+	
+	@Autowired
+	private ItinerariosDataImportRepository itinerariosDataImportRepository;
 
 	@Autowired
 	private VersionCapatidadesRepository versionCapatidadesRepository;
@@ -59,6 +66,9 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private VersionCertificacionesRepository versionCertificacionesRepository;
+	
+	@Autowired
+	private VersionItinerariosRepository versionItinerariosRepository;
 
 	@Autowired
 	DataImportService service;
@@ -90,6 +100,9 @@ public class DataImportServiceImpl implements DataImportService {
 			break;
 		case "3":
 			importResponseDto = processCertificatesDoc(dto);
+			break;
+		case "4":
+			importResponseDto = processItinerariosDoc(dto);
 			break;
 		default:
 			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto,
@@ -399,6 +412,83 @@ public class DataImportServiceImpl implements DataImportService {
 		logger.debug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
 		return importResponseDto;
 	}
+	
+	/**
+	 * Process Itinerarios Document received (waitting specificatios)
+	 *
+	 * @param dto ImportRequestDto Object
+	 * @return ImportResponseDto Object
+	 */
+	private ImportResponseDto processItinerariosDoc(ImportRequestDto dto) {
+		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
+		ImportResponseDto importResponseDto = new ImportResponseDto();
+		importResponseDto.setBucketName(dataservice.getBucketName());
+		importResponseDto.setPath(dataservice.getS3Endpoint());
+
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
+		VersionItinerarios verItinerarios = null;
+		try {
+			verItinerarios = createItinerariosVersion(dto);
+		} catch (Exception e) {
+			setErrorToReturn(Thread.currentThread().getStackTrace()[1].getMethodName(), importResponseDto, e,
+					HttpStatus.UNPROCESSABLE_ENTITY);
+			return importResponseDto;
+		}
+
+		List<ItinerariosDataImport> listItinerariosDataImport = new ArrayList<>();
+		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
+		ItinerariosDataImport data = null;
+		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
+			data = new ItinerariosDataImport();
+			String vcGGID = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_GGID.getPosition());
+			String vcCodigoActividad = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_CODIGO_ACTIVIDAD.getPosition());
+			String vcNombreActividad = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_NOMBRE_ACTIVIDAD.getPosition());
+			String vcFechaInicio = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_FECHA_INICIO.getPosition());
+			String vcFechaFinalizacion = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_FECHA_FINALIZACION.getPosition());
+			String vcTipoActividad = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_TIPO_ACTIVIDAD.getPosition());
+			String vcPorcentaje = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_PORCENTAJE_AVANCE.getPosition());
+			String vcFechaUltimaActividad = utilsServiceImpl.getStringValue(currentRow,
+					Constants.ItinerariosDatabasePos.COL_FECHA_ULTIMA_ACTIVIDAD.getPosition());
+
+
+			data.setGGID(vcGGID);
+			data.setCodigoActividad(vcCodigoActividad);
+			data.setNombreActividad(vcNombreActividad);
+			data.setFechaInicio(vcFechaInicio);
+			data.setFechaFinalizacion(vcFechaFinalizacion);
+			data.setTipoActividad(vcTipoActividad);
+			data.setPorcentajeAvance(vcPorcentaje);
+			data.setFechaUltimaActividad(vcFechaUltimaActividad);
+
+
+
+			if (!data.getGGID().isEmpty()) {
+				listItinerariosDataImport.add(data);
+			}
+			currentRow = sheet.getRow(i);
+		}
+
+		if (listItinerariosDataImport != null && !listItinerariosDataImport.isEmpty()) {
+			saveAllItinerariosDataImport(listItinerariosDataImport);
+
+		} else {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			logger.error(errorData.toString());
+			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
+		}
+
+		logger.debug("[DataImportServiceImpl]       processItinerariosDoc >>>>");
+		return importResponseDto;
+	}
 
 	/**
 	 * Create an save on database CapacityVersion Object
@@ -481,6 +571,36 @@ public class DataImportServiceImpl implements DataImportService {
 		return versionCertificacionesRepository.save(versionCer);
 	}
 	
+	/**
+	 * Create an save on database ItinerariosVersion Object (with
+	 * ItinerariosDataImport relations)
+	 *
+	 * @param numReg         num registers on Excel
+	 * @param fileName       Excell File name
+	 * @param description    Description
+	 * @param user           User who uploads data
+	 * @param idTipointerfaz idTipointerfaz value
+	 * @param bs             File in byte array
+	 * @return CapacityVersion Object inserted on database
+	 * @throws IOException
+	 */
+	private VersionItinerarios createItinerariosVersion(ImportRequestDto dto) throws IOException {
+		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
+		int numReg = sheet.getPhysicalNumberOfRows() - 1;
+
+		VersionItinerarios versionIti = new VersionItinerarios();
+		versionIti.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
+		versionIti.setFechaImportacion(LocalDateTime.now());
+		versionIti.setNumRegistros(numReg);
+		versionIti.setNombreFichero(dto.getFileData().getOriginalFilename());
+		versionIti.setDescription(dto.getDescription());
+		versionIti.setUsuario(dto.getUser());
+		// versionCer.setFichero(dto.getFileData().getBytes());
+		//		versionCer.setCertificates(setCertificacionesDataImport(versionCer, sheet));
+
+		return versionItinerariosRepository.save(versionIti);
+	}
+	
 
 	/**
 	 * Save list FormDataImport on database
@@ -532,6 +652,26 @@ public class DataImportServiceImpl implements DataImportService {
 			List<CertificatesDataImport> certificatesDataImportList) {
 		try {
 			return certificatesDataImportRepository.saveAll(certificatesDataImportList);
+		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
+			throw new UnprocessableEntityException(errorData.toString());
+		}
+	}
+	
+	/**
+	 * Save list CertificatesDataImport on database
+	 *
+	 * @param certificatesDataImportList List of objects to save
+	 * @return List<CertificatesDataImport>
+	 */
+	@Transactional
+	private List<ItinerariosDataImport> saveAllItinerariosDataImport(
+			List<ItinerariosDataImport> itinerariosDataImportList) {
+		try {
+			return itinerariosDataImportRepository.saveAll(itinerariosDataImportList);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
