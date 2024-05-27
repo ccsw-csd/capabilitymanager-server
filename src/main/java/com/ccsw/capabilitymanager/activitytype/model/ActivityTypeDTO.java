@@ -5,17 +5,8 @@ public class ActivityTypeDTO {
     private Long id;
     private String nombre;
 
-    // Constructor sin parámetros
-    public ActivityTypeDTO() {
-    }
-
-    // Constructor con parámetros
-    public ActivityTypeDTO(Long id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
-
     // Getters y Setters
+
     public Long getId() {
         return id;
     }

@@ -16,7 +16,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> findAll() {
-        return (List<Activity>) this.activityRepository.findAll();
+        return this.activityRepository.findAll();
     }
 
     @Override

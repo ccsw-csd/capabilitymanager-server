@@ -1,14 +1,14 @@
 package com.ccsw.capabilitymanager.listadobench.service;
 
-import java.util.List;
-
+import com.ccsw.capabilitymanager.listadobench.model.ListadoBench;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.capabilitymanager.listadobench.model.ListadoBench;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface ListadoBenchService {
+    List<ListadoBench> getListadoPersonasBench();
 
-	public List<ListadoBench> getListadoPersonasBench();
-
+    Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga);  // Nuevo método
 }
