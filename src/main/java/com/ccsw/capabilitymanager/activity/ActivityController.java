@@ -4,7 +4,10 @@ import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,12 +17,11 @@ import java.util.stream.Collectors;
 public class ActivityController {
 
     @Autowired
+    DozerBeanMapper mapper;
+    @Autowired
     private ActivityService activityService;
 
-    @Autowired
-    DozerBeanMapper mapper;
-
-    @GetMapping("/all")
+    @GetMapping("")
     public List<ActivityDTO> findAll() {
         List<Activity> activities = activityService.findAll();
         return activities.stream().map(activity -> mapper.map(activity, ActivityDTO.class)).collect(Collectors.toList());

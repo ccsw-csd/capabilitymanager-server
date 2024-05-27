@@ -1,9 +1,8 @@
 package com.ccsw.capabilitymanager.activity;
 
-import java.util.List;
-
 import com.ccsw.capabilitymanager.activity.model.Activity;
-import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+
+import java.util.List;
 
 public interface ActivityService {
 
