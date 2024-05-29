@@ -8,5 +8,5 @@ public interface ActivityService {
 
     List<Activity> findAll();
 
-    List<Activity> findBySaga(String saga);
+    List<Activity> findByGgid(String ggid);
 }

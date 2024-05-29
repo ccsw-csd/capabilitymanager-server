@@ -14,11 +14,11 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_actividad_id", nullable = false)
     private ActivityType tipoActividad;
 
-    @Column(name = "codigo_actividad", nullable = false, unique = true)
+    @Column(name = "codigo_actividad", nullable = false)
     private String codigoActividad;
 
     @Column(name = "nombre_actividad", nullable = false)
