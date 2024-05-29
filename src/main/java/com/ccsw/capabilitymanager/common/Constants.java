@@ -145,5 +145,34 @@ public class Constants {
 			return excelPosition;
 		}
 	}
+	
+	
+	public static enum ItinerariosDatabasePos {
+		COL_GGID(0),
+		COL_FIRST_NAME(1),
+		COL_LAST_NAME(2),
+		COL_EMAIL_ID(3),
+		COL_GLOBAL_GRADE(4),
+		COL_COUNTRY(5),
+		COL_SBU(6),
+		COL_BU(7),
+		COL_PATHWAY_ID(8),
+		COL_PATHWAY_TITLE(9),
+		COL_TOTAL_PATH(10),
+		COL_COMPLETED_CONTENT(11),
+		COL_COMPLETION_PERCENT(12),
+		COL_ENROLLMENT_DATE(13),
+		COL_RECENT_ACTIVITY(14),
+		COL_COMPLETED_DATE(15);
+
+		private final int excelPosition;
+		ItinerariosDatabasePos(int position) {
+			this.excelPosition = position;
+		}
+
+		public int getPosition() {
+			return excelPosition;
+		}
+	}
 
 }
