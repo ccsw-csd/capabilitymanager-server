@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-    List<Activity> findBySaga(String saga);
+    List<Activity> findByGgid(String ggid);
 
 }

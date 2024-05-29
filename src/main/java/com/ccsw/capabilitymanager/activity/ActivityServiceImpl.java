@@ -20,7 +20,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<Activity> findBySaga(String saga) {
-        return activityRepository.findBySaga(saga).stream().toList();
+    public List<Activity> findByGgid(String ggid) {
+        return activityRepository.findByGgid(ggid).stream().toList();
     }
 }

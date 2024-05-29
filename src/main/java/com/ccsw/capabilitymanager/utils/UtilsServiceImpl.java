@@ -140,6 +140,33 @@ public class UtilsServiceImpl implements UtilsService {
 	}
 	
 	/**
+	 * Get Decimal value from Row
+	 * 
+	 * @param row    to recover value
+	 * @param column value to recover
+	 * @return column value as double
+	 */
+	public double getDecimalValue(Row row, int column) {
+	    double result = 0.0; // Valor predeterminado en caso de que la celda esté vacía
+	    Cell col = row.getCell(column);
+	    if (col != null) {
+	        if (col.getCellType() == CellType.NUMERIC) {
+	            result = col.getNumericCellValue();
+	        } else if (col.getCellType() == CellType.STRING) {
+	            try {
+	                result = Double.parseDouble(col.getStringCellValue());
+	            } catch (NumberFormatException e) {
+	                // Manejar errores de conversión
+	                System.err.println("Error al convertir la cadena a double: " + e.getMessage());
+	            }
+	        } else if (col.getCellType() == CellType.BOOLEAN) {
+	            result = col.getBooleanCellValue() ? 1.0 : 0.0;
+	        }
+	    }
+	    return result;
+	}
+	
+	/**
 	 * Get Grade Value from row
 	 * 
 	 * @param row   Excel row
