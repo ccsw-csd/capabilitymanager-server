@@ -1,11 +1,14 @@
 package com.ccsw.capabilitymanager.dataimport;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -20,6 +23,7 @@ import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.common.Constants;
+import com.ccsw.capabilitymanager.common.exception.ResponseStatusException;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
@@ -182,6 +186,19 @@ public class DataImportServiceImpl implements DataImportService {
 			String vcProfileSkillCloudExp = utilsServiceImpl.getStringValue(currentRow,
 					Constants.RolsDatabasePos.COL_SKILL_CLOUD_EXPERIENCE.getPosition());
 
+			Map<String, String> noNulables = new HashMap<>();
+	        noNulables.put(vcProfileSAGA, "Saga");
+
+
+		       // Verificar si alguno de los campos es nulo o está vacío
+            for (Map.Entry<String, String> entry : noNulables.entrySet()) {
+                if (entry.getKey() == null || entry.getKey().isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Row " + i + " is missing required field: " + entry.getValue());
+                }
+            }
+			
+			
 			data.setSAGA(vcProfileSAGA);
 			data.setEmail(vcProfileEmail);
 			data.setName(vcProfileName);
@@ -278,6 +295,21 @@ public class DataImportServiceImpl implements DataImportService {
 			String jornada = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_JORNADA.getPosition());
 			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_MESES_BENCH.getPosition());
 
+			Map<String, String> noNulables = new HashMap<>();
+	        noNulables.put(saga, "Saga");
+	        noNulables.put(ggid, "Ggid");
+	        noNulables.put(centro, "Centro");
+	        noNulables.put(nombre, "Nombre");
+
+
+		       // Verificar si alguno de los campos es nulo o está vacío
+            for (Map.Entry<String, String> entry : noNulables.entrySet()) {
+                if (entry.getKey() == null || entry.getKey().isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Row " + i + " is missing required field: " + entry.getValue());
+                }
+            }
+		
 			data.setNumImportCode(verStaf.getId());
 			data.setSaga(saga);
 			data.setGgid(ggid);
@@ -380,7 +412,24 @@ public class DataImportServiceImpl implements DataImportService {
 					Constants.CertificatesDatabasePos.COL_ANEXO.getPosition());
 			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow,
 					Constants.CertificatesDatabasePos.COL_COMENTARIO_ANEXO.getPosition());
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String vcFechaExpiracionStr = dateFormat.format(vcFechaExpiracion);
+			
+			Map<String, String> noNulables = new HashMap<>();
+	        noNulables.put(vcFechaExpiracionStr, "Fecha Certificado");
+	        noNulables.put(vcSAGA, "Ggid");
 
+
+
+		       // Verificar si alguno de los campos es nulo o está vacío
+            for (Map.Entry<String, String> entry : noNulables.entrySet()) {
+                if (entry.getKey() == null || entry.getKey().isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Row " + i + " is missing required field: " + entry.getValue());
+                }
+            }
+			
 			data.setSAGA(vcSAGA);
 			data.setPartner(vcPartner);
 			data.setCertificado(vcCertificado);
@@ -431,6 +480,7 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
+		
 		VersionItinerarios verItinerarios = null;
 		try {
 			verItinerarios = createItinerariosVersion(dto);
@@ -482,6 +532,22 @@ public class DataImportServiceImpl implements DataImportService {
 			Date vcCompletedDate = utilsServiceImpl.getDateValue(currentRow,
 					Constants.ItinerariosDatabasePos.COL_COMPLETED_DATE.getPosition());
 
+
+			Map<String, String> noNulables = new HashMap<>();
+	        noNulables.put(vcGGID, "GGID");
+	        noNulables.put(vcPathwayId, "PathwayId");
+	        noNulables.put(vcFirstName, "FirstName");
+	        noNulables.put(vcLastName, "LastName");
+
+
+
+		       // Verificar si alguno de los campos es nulo o está vacío
+            for (Map.Entry<String, String> entry : noNulables.entrySet()) {
+                if (entry.getKey() == null || entry.getKey().isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Row " + i + " is missing required field: " + entry.getValue());
+                }
+            }
 
 			data.setGGID(vcGGID);
 			data.setFirstName(vcFirstName);
@@ -777,7 +843,7 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setTrace(trace);
 	}
 
-	private void setRolL1(FormDataImport formDataImport) {
+	/*private void setRolL1(FormDataImport formDataImport) {
 		switch (formDataImport.getRolL1extendido()) {
 		case Constants.ROLL1EX_SE:
 			formDataImport.setVcProfileRolL1(Constants.ROLL1_SE);
@@ -794,6 +860,22 @@ public class DataImportServiceImpl implements DataImportService {
 		default:
 			formDataImport.setVcProfileRolL1(Constants.EMPTY);
 		}
-	}
+	}*/
+	
+	private void setRolL1(FormDataImport formDataImport) {
+	    String rolL1extendido = formDataImport.getRolL1extendido();
 
+	    if (rolL1extendido.startsWith("Software Engineer")) {
+	        formDataImport.setVcProfileRolL1(Constants.ROLL1_SE);
+	    } else if (rolL1extendido.startsWith("Business Analyst")) {
+	        formDataImport.setVcProfileRolL1(Constants.ROLL1_BA);
+	    } else if (rolL1extendido.startsWith("Engagement Managers")) {
+	        formDataImport.setVcProfileRolL1(Constants.ROLL1_EM);
+	    } else if (rolL1extendido.startsWith("Architects")) {
+	        formDataImport.setVcProfileRolL1(Constants.ROLL1_AR);
+	    } else {
+	        formDataImport.setVcProfileRolL1(Constants.EMPTY);
+	    }
+	}
+	
 }
