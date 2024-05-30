@@ -480,7 +480,6 @@ public class DataImportServiceImpl implements DataImportService {
 		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
-		
 		VersionItinerarios verItinerarios = null;
 		try {
 			verItinerarios = createItinerariosVersion(dto);
@@ -532,7 +531,6 @@ public class DataImportServiceImpl implements DataImportService {
 			Date vcCompletedDate = utilsServiceImpl.getDateValue(currentRow,
 					Constants.ItinerariosDatabasePos.COL_COMPLETED_DATE.getPosition());
 
-
 			Map<String, String> noNulables = new HashMap<>();
 	        noNulables.put(vcGGID, "GGID");
 	        noNulables.put(vcPathwayId, "PathwayId");
@@ -548,7 +546,7 @@ public class DataImportServiceImpl implements DataImportService {
                             "Row " + i + " is missing required field: " + entry.getValue());
                 }
             }
-
+      
 			data.setGGID(vcGGID);
 			data.setFirstName(vcFirstName);
 			data.setLastName(vcLastName);
