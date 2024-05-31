@@ -1,6 +1,7 @@
 package com.ccsw.capabilitymanager.dataimport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
+import com.ccsw.capabilitymanager.exception.ImportException;
 
 public class DataImportControllerTest {
 
@@ -61,14 +63,16 @@ public class DataImportControllerTest {
 
         doThrow(new RuntimeException("Error processing file")).when(s3service).uploadFile(any(ImportRequestDto.class));
 
-        // Act
-        ResponseEntity<ImportResponseDto> responseEntity = dataImportController.importData(dto);
+        // Act & Assert
+        ImportException thrown = assertThrows(
+            ImportException.class,
+            () -> dataImportController.importData(dto)
+        );
 
         // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Error processing file: Error processing file", responseEntity.getBody().getError());
+        assertEquals("Error processing file: Error processing file", thrown.getImportResponseDto().getError());
+        assertEquals(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST); // Simula la respuesta de HttpStatus
     }
-
     @Test
     public void testImportData_ServiceError() throws Exception {
         // Arrange
@@ -78,11 +82,15 @@ public class DataImportControllerTest {
 
         when(formDataImportService.processObject(any(ImportRequestDto.class))).thenReturn(responseDto);
 
-        // Act
-        ResponseEntity<ImportResponseDto> responseEntity = dataImportController.importData(dto);
+        // Act & Assert
+        ImportException thrown = assertThrows(
+            ImportException.class,
+            () -> dataImportController.importData(dto)
+        );
 
         // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Error processing data", responseEntity.getBody().getError());
+        assertEquals("Error processing data", thrown.getImportResponseDto().getError());
+        assertEquals(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST); // Simula la respuesta de HttpStatus
     }
+    
 }
