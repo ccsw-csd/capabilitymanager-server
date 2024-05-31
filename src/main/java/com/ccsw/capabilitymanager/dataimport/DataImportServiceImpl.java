@@ -193,8 +193,11 @@ public class DataImportServiceImpl implements DataImportService {
 		       // Verificar si alguno de los campos es nulo o está vacío
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
                 if (entry.getKey() == null || entry.getKey().isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Row " + i + " is missing required field: " + entry.getValue());
+                	ImportResponseDto error = new ImportResponseDto();
+                	error.setStatus(HttpStatus.BAD_REQUEST);
+                	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
+                	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                    return error;
                 }
             }
 			
@@ -305,8 +308,11 @@ public class DataImportServiceImpl implements DataImportService {
 		       // Verificar si alguno de los campos es nulo o está vacío
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
                 if (entry.getKey() == null || entry.getKey().isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Row " + i + " is missing required field: " + entry.getValue());
+                	ImportResponseDto error = new ImportResponseDto();
+                	error.setStatus(HttpStatus.BAD_REQUEST);
+                	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
+                	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                    return error;
                 }
             }
 		
@@ -425,8 +431,11 @@ public class DataImportServiceImpl implements DataImportService {
 		       // Verificar si alguno de los campos es nulo o está vacío
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
                 if (entry.getKey() == null || entry.getKey().isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Row " + i + " is missing required field: " + entry.getValue());
+                	ImportResponseDto error = new ImportResponseDto();
+                	error.setStatus(HttpStatus.BAD_REQUEST);
+                	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
+                	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                    return error;
                 }
             }
 			
@@ -542,8 +551,11 @@ public class DataImportServiceImpl implements DataImportService {
 		       // Verificar si alguno de los campos es nulo o está vacío
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
                 if (entry.getKey() == null || entry.getKey().isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Row " + i + " is missing required field: " + entry.getValue());
+                	ImportResponseDto error = new ImportResponseDto();
+                	error.setStatus(HttpStatus.BAD_REQUEST);
+                	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
+                	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                    return error;
                 }
             }
       
