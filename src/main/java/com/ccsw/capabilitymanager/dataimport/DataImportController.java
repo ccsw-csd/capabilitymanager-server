@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
+import com.ccsw.capabilitymanager.exception.ImportException;
 
 @RequestMapping(value = "/import")
 @RestController
@@ -54,7 +55,7 @@ public class DataImportController {
 
 			return ResponseEntity.status(HttpStatus.OK).body(importResponseDto);
 		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(importResponseDto);
+			throw new ImportException(importResponseDto);
 		}
 	}
 
