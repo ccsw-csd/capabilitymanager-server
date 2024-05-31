@@ -22,7 +22,7 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
 
     @Override
     public Collection<ListadoBench> getListadoPersonasBench() {
-        String query = "SELECT DISTINCT " +
+        String query = "SELECT " +
                 "stf.Id AS id, " +
                 "stf.SAGA AS saga, " +
                 "stf.GGID AS ggid, " +
@@ -32,7 +32,7 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
                 "stf.grado AS grado, " +
                 "stf.categoria AS categoria, " +
                 "stf.centro AS centro, " +
-                "form.rol_L1 AS rol, " +
+                "COALESCE(form.rol_L1, '') AS rol, " +
                 "stf.perfil_tecnico AS perfil, " +
                 "stf.primary_skill AS primarySkill, " +
                 "stf.fecha_incorporacion AS fIncorporacion, " +
@@ -50,16 +50,15 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
                 "stf.meses_bench AS mesesBench, " +
                 "stf.status AS status " +
                 "FROM staffing stf " +
-                "LEFT JOIN formdata form ON stf.SAGA = form.SAGA " +
-                "WHERE stf.num_import_code_id COLLATE utf8mb4_general_ci = (SELECT MAX(id) FROM version_staffing) " +
+                "LEFT JOIN (SELECT SAGA, MAX(rol_L1) AS rol_L1 FROM formdata GROUP BY SAGA) form ON stf.SAGA = form.SAGA " +
+                "WHERE stf.num_import_code_id = (SELECT MAX(id) FROM version_staffing) " +
                 "AND stf.status IN ('Disponible', 'TRI+BDCS', 'BDCS')";
-
 
         return jdbcTemplate.query(query, this::mapRowToDataFormation);
     }
 
     public Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga) {
-        String query = "SELECT DISTINCT " +
+        String query = "SELECT " +
                 "stf.Id AS id, " +
                 "stf.SAGA AS saga, " +
                 "stf.GGID AS ggid, " +
@@ -69,7 +68,7 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
                 "stf.grado AS grado, " +
                 "stf.categoria AS categoria, " +
                 "stf.centro AS centro, " +
-                "form.rol_L1 AS rol, " +
+                "COALESCE(form.rol_L1, '') AS rol, " +
                 "stf.perfil_tecnico AS perfil, " +
                 "stf.primary_skill AS primarySkill, " +
                 "stf.fecha_incorporacion AS fIncorporacion, " +
@@ -91,7 +90,7 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
                 "WHERE stf.num_import_code_id = (SELECT MAX(id) FROM version_staffing) AND stf.SAGA = ?";
 
         List<ListadoBench> empleados = jdbcTemplate.query(query, new Object[]{saga}, this::mapRowToDataFormation);
-        return Optional.ofNullable(empleados.isEmpty() ? null : empleados);
+        return Optional.of(empleados);
     }
 
     private ListadoBench mapRowToDataFormation(ResultSet row, int rowNum) throws SQLException {
