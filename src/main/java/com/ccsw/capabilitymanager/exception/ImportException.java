@@ -5,7 +5,11 @@ import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 
 public class ImportException extends RuntimeException {
 	
-	   private ImportResponseDto importResponseDto;
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ImportResponseDto importResponseDto;
 
 	    public ImportException(ImportResponseDto importResponseDto) {
 	        super();

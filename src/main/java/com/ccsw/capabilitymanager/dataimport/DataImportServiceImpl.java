@@ -420,11 +420,11 @@ public class DataImportServiceImpl implements DataImportService {
 					Constants.CertificatesDatabasePos.COL_COMENTARIO_ANEXO.getPosition());
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String vcFechaExpiracionStr = dateFormat.format(vcFechaExpiracion);
+			String vcFechaCertificadoStr = (vcFechaCertificado != null) ? dateFormat.format(vcFechaCertificado) : "";
 			
 			Map<String, String> noNulables = new HashMap<>();
-	        noNulables.put(vcFechaExpiracionStr, "Fecha Certificado");
-	        noNulables.put(vcSAGA, "Ggid");
+	        noNulables.put(vcFechaCertificadoStr, "Fecha Certificado");
+	        noNulables.put(vcSAGA, "SAGA");
 
 
 
