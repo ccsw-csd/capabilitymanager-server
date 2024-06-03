@@ -26,7 +26,7 @@ public class DefaultHandlerAdviceException extends ResponseEntityExceptionHandle
     @ExceptionHandler
     public ResponseEntity<ImportResponseDto> handleImportException(ImportException ex) {
         ImportResponseDto importResponseDto = ex.getImportResponseDto();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(importResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(importResponseDto);
     }
 
 }
