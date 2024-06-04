@@ -285,14 +285,14 @@ public class DataImportServiceImplTest {
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_PARTNER.getPosition())).thenReturn("email1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_CERTIFICADO.getPosition())).thenReturn("name1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_NAME_GTD.getPosition())).thenReturn("Software Engineer");
-        when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_FECHA_EXPIRACION.getPosition())).thenReturn(dia);
+        when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_FECHA_CERTIFICADO.getPosition())).thenReturn(dia);
         // Add other necessary mock values for mockRow1
 
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_SAGA.getPosition())).thenReturn("saga2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_PARTNER.getPosition())).thenReturn("email2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_CERTIFICADO.getPosition())).thenReturn("name2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_NAME_GTD.getPosition())).thenReturn("Software Engineer");
-        when(utilsServiceImpl.getDateValue(mockRow2, Constants.CertificatesDatabasePos.COL_FECHA_EXPIRACION.getPosition())).thenReturn(dia);
+        when(utilsServiceImpl.getDateValue(mockRow2, Constants.CertificatesDatabasePos.COL_FECHA_CERTIFICADO.getPosition())).thenReturn(dia);
        
         when(dto.getDocumentType()).thenReturn("3");
         when(dto.getDescription()).thenReturn("des");
