@@ -135,7 +135,7 @@ public class ResponseStatusException extends NestedRuntimeException {
 	@Override
 	public String getMessage() {
 		HttpStatus code = HttpStatus.resolve(this.status);
-		String msg = (code != null ? code : this.status) + (this.reason != null ? " ERROR: State="+this.reason.getStatus()+" -> \"" + this.reason.getError() + "\"" : "");
+		String msg =  this.reason.getError();
 		return NestedExceptionUtils.buildMessage(msg, getCause());
 	}
 

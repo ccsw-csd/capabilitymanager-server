@@ -227,12 +227,14 @@ public class DataImportServiceImplTest {
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.StaffingDatabasePos.COL_GGID.getPosition())).thenReturn("email1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.StaffingDatabasePos.COL_CENTRO.getPosition())).thenReturn("name1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.StaffingDatabasePos.COL_NOMBRE.getPosition())).thenReturn("Software Engineer");
+        when(utilsServiceImpl.getStringValue(mockRow1, Constants.StaffingDatabasePos.COL_PRACTICE_AREA.getPosition())).thenReturn("Ultimo campo");
         // Add other necessary mock values for mockRow1
 
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.StaffingDatabasePos.COL_SAGA.getPosition())).thenReturn("saga2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.StaffingDatabasePos.COL_GGID.getPosition())).thenReturn("email2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.StaffingDatabasePos.COL_CENTRO.getPosition())).thenReturn("name2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.StaffingDatabasePos.COL_NOMBRE.getPosition())).thenReturn("Software Engineer");
+        when(utilsServiceImpl.getStringValue(mockRow2, Constants.StaffingDatabasePos.COL_PRACTICE_AREA.getPosition())).thenReturn("Ultimo campo");
        
         when(dto.getDocumentType()).thenReturn("1");
         when(dto.getDescription()).thenReturn("des");
