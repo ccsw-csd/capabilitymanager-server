@@ -17,11 +17,8 @@ public class CertificatesActividadDataImport  implements Comparable<Certificates
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(name = "GGID")
-	private String GGID;
-	
-	@Column(name = "SAGA")
+		
+	@Column(name = "SAGA", nullable = false)
 	private String SAGA;
 	
 	@Column(name = "codigo_actividad", nullable = false)
@@ -57,14 +54,6 @@ public class CertificatesActividadDataImport  implements Comparable<Certificates
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getGGID() {
-		return GGID;
-	}
-
-	public void setGGID(String gGID) {
-		GGID = gGID;
 	}
 
 	public String getPathwayId() {
