@@ -1,4 +1,4 @@
-package com.ccsw.capabilitymanager.itinerariosdataimport.model;
+package com.ccsw.capabilitymanager.certificatesdataimport.model;
 
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "actividad")
-public class ItinerariosActividadDataImport  implements Comparable<ItinerariosActividadDataImport>{
+public class CertificatesActividadDataImport  implements Comparable<CertificatesActividadDataImport>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,20 @@ public class ItinerariosActividadDataImport  implements Comparable<ItinerariosAc
 	@Column(name = "GGID")
 	private String GGID;
 	
+	@Column(name = "SAGA")
+	private String SAGA;
+	
 	@Column(name = "codigo_actividad", nullable = false)
 	private String pathwayId;
 
 	@Column(name = "nombre_actividad", nullable = false)
 	private String pathwayTitle;
+	
+	@Column(name = "observaciones")
+	private String observaciones;
+	
+	@Column(name = "estado")
+	private String estado;
 	
 	@Column(name = "porcentaje_avance")
 	private Double completionPercent;
@@ -113,9 +122,35 @@ public class ItinerariosActividadDataImport  implements Comparable<ItinerariosAc
 	public void setTypeActivity(Integer typeActivity) {
 		this.typeActivity = typeActivity;
 	}
+	
+	
+	public String getSAGA() {
+		return SAGA;
+	}
+
+	public void setSAGA(String sAGA) {
+		SAGA = sAGA;
+	}
+	
+	
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 
 	@Override
-	public int compareTo(ItinerariosActividadDataImport o) {
+	public int compareTo(CertificatesActividadDataImport o) {
 		
 		return 0;
 	}
