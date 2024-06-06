@@ -471,6 +471,7 @@ public class DataImportServiceImpl implements DataImportService {
 			certificateActivity.setCompletionPercent(100.00); 
 			certificateActivity.setEnrollmentDate(vcFechaCertificado == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado); 
 			certificateActivity.setCompletedDate(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaExpiracion);
+			certificateActivity.setRecentActivityDate(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado);
 			certificateActivity.setObservaciones(vcComentarioAnexo);
 			certificateActivity.setEstado("Finalizado");
 			certificateActivity.setTypeActivity(8);
@@ -606,7 +607,11 @@ public class DataImportServiceImpl implements DataImportService {
 			dataActivity.setPathwayTitle(vcPathwayTitle);
 			dataActivity.setCompletionPercent(numericValue); 
 			dataActivity.setEnrollmentDate(vcEnrollmentDate); 
+			if(vcRecentActivity != null) {
 			dataActivity.setRecentActivityDate(vcRecentActivity);
+			}else {
+			dataActivity.setRecentActivityDate(vcEnrollmentDate);	
+			}
 			dataActivity.setCompletedDate(vcCompletedDate);
 			dataActivity.setTypeActivity(8);
 			
