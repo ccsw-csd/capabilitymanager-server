@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesActividadDataImportRepository;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
+import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesActividadDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
@@ -59,6 +61,9 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private CertificatesDataImportRepository certificatesDataImportRepository;
+	
+	@Autowired
+	private CertificatesActividadDataImportRepository certificatesActividadDataImportRepository;
 	
 	@Autowired
 	private ItinerariosDataImportRepository itinerariosDataImportRepository;
@@ -387,10 +392,13 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 
 		List<CertificatesDataImport> listCertificacionesDataImport = new ArrayList<>();
+		List<CertificatesActividadDataImport> listCertificadosActividadDataImport = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
 		CertificatesDataImport data = null;
+		CertificatesActividadDataImport certificateActivity = null;
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new CertificatesDataImport();
+			certificateActivity = new CertificatesActividadDataImport();
 			String vcSAGA = utilsServiceImpl.getStringValue(currentRow,
 					Constants.CertificatesDatabasePos.COL_SAGA.getPosition());
 			String vcPartner = utilsServiceImpl.getStringValue(currentRow,
@@ -454,16 +462,29 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setActivo(vcActivo);
 			data.setAnexo(vcAnexo);
 			data.setComentarioAnexo(vcComentarioAnexo);
-
 			data.setNumImportCodeId(verCertificaciones.getId());
+			
+		
+			certificateActivity.setSAGA(vcSAGA);
+			certificateActivity.setPathwayId(vcCode);
+			certificateActivity.setPathwayTitle(vcCertificado);
+			certificateActivity.setCompletionPercent(100.00); 
+			certificateActivity.setEnrollmentDate(vcFechaCertificado == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado); 
+			certificateActivity.setCompletedDate(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaExpiracion);
+			certificateActivity.setObservaciones(vcComentarioAnexo);
+			certificateActivity.setEstado("Finalizado");
+			certificateActivity.setTypeActivity(8);
+			
 			if (!data.getSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
+				listCertificadosActividadDataImport.add(certificateActivity);
 			}
 			currentRow = sheet.getRow(i);
 		}
 
 		if (listCertificacionesDataImport != null && !listCertificacionesDataImport.isEmpty()) {
 			saveAllCertificatesDataImport(listCertificacionesDataImport);
+			saveCertificadosActividadDataImport(listCertificadosActividadDataImport);
 
 		} else {
 			StringBuilder errorData = new StringBuilder();
@@ -739,6 +760,10 @@ public class DataImportServiceImpl implements DataImportService {
 		try {
 			return formDataImportRepository.saveAll(formDataImportList);
 		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -755,6 +780,10 @@ public class DataImportServiceImpl implements DataImportService {
 		try {
 			return staffingDataImportRepository.saveAll(staffingDataImportList);
 		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -772,6 +801,10 @@ public class DataImportServiceImpl implements DataImportService {
 		try {
 			return certificatesDataImportRepository.saveAll(certificatesDataImportList);
 		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -789,6 +822,10 @@ public class DataImportServiceImpl implements DataImportService {
 		try {
 			return itinerariosDataImportRepository.saveAll(itinerariosDataImportList);
 		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -806,11 +843,36 @@ public class DataImportServiceImpl implements DataImportService {
 		try {
 			return itinerariosActividadDataImportRepository.saveAll(itinerariosActividadDataImportList);
 		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
 	}
 	
+	
+	/**
+	 * Save list CertificadosImport on database
+	 *
+	 * @param CertificadosDataImportList List of objects to save
+	 * @return List<ItinerariosDataImport>
+	 */
+	@Transactional
+	private List<CertificatesActividadDataImport> saveCertificadosActividadDataImport(
+			List<CertificatesActividadDataImport> certificadosActividadDataImportList) {
+		try {
+			return certificatesActividadDataImportRepository.saveAll(certificadosActividadDataImportList);
+		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+			.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
+			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			throw new UnprocessableEntityException(respuestaEr);
+		}
+	}
 	
 
 	private void setErrorToReturn(String function, ImportResponseDto importResponseDto, Exception e,
