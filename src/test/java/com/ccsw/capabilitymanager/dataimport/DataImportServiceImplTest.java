@@ -25,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesActividadDataImportRepository;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
+import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesActividadDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
@@ -82,6 +84,9 @@ public class DataImportServiceImplTest {
     
     @Mock
 	private CertificatesDataImportRepository certificatesDataImportRepository;
+    
+    @Mock
+	private CertificatesActividadDataImportRepository certificatesActividadDataImportRepository;
 	
     @Mock
 	private ItinerariosDataImportRepository itinerariosDataImportRepository;
@@ -285,28 +290,39 @@ public class DataImportServiceImplTest {
         // Mock cell values for each row
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_SAGA.getPosition())).thenReturn("saga1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_PARTNER.getPosition())).thenReturn("email1");
+        when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_CODE.getPosition())).thenReturn("code");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_CERTIFICADO.getPosition())).thenReturn("name1");
         when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_NAME_GTD.getPosition())).thenReturn("Software Engineer");
         when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_FECHA_CERTIFICADO.getPosition())).thenReturn(dia);
+        when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_FECHA_EXPIRACION.getPosition())).thenReturn(dia);
+        when(utilsServiceImpl.getStringValue(mockRow1, Constants.CertificatesDatabasePos.COL_CERTIFICATION_GTD.getPosition())).thenReturn("Software Engineer");
+        when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_ANEXO.getPosition())).thenReturn(dia);
+        
         // Add other necessary mock values for mockRow1
 
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_SAGA.getPosition())).thenReturn("saga2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_PARTNER.getPosition())).thenReturn("email2");
+        when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_CODE.getPosition())).thenReturn("code");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_CERTIFICADO.getPosition())).thenReturn("name2");
         when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_NAME_GTD.getPosition())).thenReturn("Software Engineer");
         when(utilsServiceImpl.getDateValue(mockRow2, Constants.CertificatesDatabasePos.COL_FECHA_CERTIFICADO.getPosition())).thenReturn(dia);
-       
+        when(utilsServiceImpl.getDateValue(mockRow1, Constants.CertificatesDatabasePos.COL_FECHA_EXPIRACION.getPosition())).thenReturn(dia);
+        when(utilsServiceImpl.getStringValue(mockRow2, Constants.CertificatesDatabasePos.COL_CERTIFICATION_GTD.getPosition())).thenReturn("Software Engineer");
+        when(utilsServiceImpl.getDateValue(mockRow2, Constants.CertificatesDatabasePos.COL_ANEXO.getPosition())).thenReturn(dia);
+        
         when(dto.getDocumentType()).thenReturn("3");
         when(dto.getDescription()).thenReturn("des");
         when(dto.getUser()).thenReturn("User");
         when(dto.getFileData()).thenReturn(file);
         
         List<CertificatesDataImport> certificatesDataImport = new ArrayList<>();
+        List<CertificatesActividadDataImport> certificatesActividadDataImport = new ArrayList<>();
         
         when(utilsServiceImpl.obtainSheet(any())).thenReturn(mockSheet);
         when(mockSheet.getPhysicalNumberOfRows()).thenReturn(3); // Simulando 2 filas de datos más la fila de encabezado
         when(versionCertificacionesRepository.save(Mockito.any())).thenReturn(versionCer);
         when(certificatesDataImportRepository.saveAll(Mockito.any())).thenReturn(certificatesDataImport);
+        when(certificatesActividadDataImportRepository.saveAll(Mockito.any())).thenReturn(certificatesActividadDataImport);
         // Mockear las filas retornadas
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_START)).thenReturn(mockRow1);
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_NEXT)).thenReturn(mockRow2);
