@@ -606,7 +606,12 @@ public class DataImportServiceImpl implements DataImportService {
 			dataActivity.setPathwayId(vcPathwayId);
 			dataActivity.setPathwayTitle(vcPathwayTitle);
 			dataActivity.setCompletionPercent(numericValue); 
-			dataActivity.setEnrollmentDate(vcEnrollmentDate); 
+			dataActivity.setEnrollmentDate(vcEnrollmentDate);
+			if (numericValue == 0.00 ) {
+			dataActivity.setEstado("No iniciado");
+			}else {
+			dataActivity.setEstado("Iniciado");	
+			}
 			if(vcRecentActivity != null) {
 			dataActivity.setRecentActivityDate(vcRecentActivity);
 			}else {
@@ -931,9 +936,9 @@ public class DataImportServiceImpl implements DataImportService {
 	        formDataImport.setVcProfileRolL1(Constants.ROLL1_SE);
 	    } else if (rolL1extendido.startsWith("Business Analyst")) {
 	        formDataImport.setVcProfileRolL1(Constants.ROLL1_BA);
-	    } else if (rolL1extendido.startsWith("Engagement Managers")) {
+	    } else if (rolL1extendido.startsWith("Engagement Manager")) {
 	        formDataImport.setVcProfileRolL1(Constants.ROLL1_EM);
-	    } else if (rolL1extendido.startsWith("Architects")) {
+	    } else if (rolL1extendido.startsWith("Architect")) {
 	        formDataImport.setVcProfileRolL1(Constants.ROLL1_AR);
 	    } else {
 	        formDataImport.setVcProfileRolL1(Constants.EMPTY);
