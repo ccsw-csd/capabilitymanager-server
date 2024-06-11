@@ -33,6 +33,9 @@ public class ItinerariosActividadDataImport  implements Comparable<ItinerariosAc
 	@Column(name = "fecha_inicio")
 	private Date enrollmentDate;
 	
+	@Column(name = "estado")
+	private String estado;
+	
 	@Column(name = "fecha_ultima_actividad")
 	private Date recentActivityDate;
 
@@ -112,6 +115,14 @@ public class ItinerariosActividadDataImport  implements Comparable<ItinerariosAc
 
 	public void setTypeActivity(Integer typeActivity) {
 		this.typeActivity = typeActivity;
+	}
+	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	@Override
