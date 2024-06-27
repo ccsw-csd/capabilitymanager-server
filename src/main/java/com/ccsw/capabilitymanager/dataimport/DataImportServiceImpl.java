@@ -612,12 +612,7 @@ public class DataImportServiceImpl implements DataImportService {
 			}else {
 			dataActivity.setEstado("Iniciado");	
 			}
-			if(vcRecentActivity != null) {
-			dataActivity.setRecentActivityDate(vcRecentActivity);
-			}else {
-			dataActivity.setRecentActivityDate(vcEnrollmentDate);	
-			}
-			dataActivity.setCompletedDate(vcCompletedDate);
+			dataActivity.setRecentActivityDate(vcRecentActivity);		
 			dataActivity.setTypeActivity(8);
 			
 			
