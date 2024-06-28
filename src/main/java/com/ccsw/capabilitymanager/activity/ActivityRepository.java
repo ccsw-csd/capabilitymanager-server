@@ -9,4 +9,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     List<Activity> findByGgid(String ggid);
 
+    List<Activity> findBySaga(String saga);
+
 }
