@@ -23,4 +23,9 @@ public class ActivityServiceImpl implements ActivityService {
     public List<Activity> findByGgid(String ggid) {
         return activityRepository.findByGgid(ggid).stream().toList();
     }
+
+    public List<Activity> findBySaga(String saga) {
+        return activityRepository.findBySaga(saga).stream().toList();
+    }
+
 }

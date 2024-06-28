@@ -27,9 +27,15 @@ public class ActivityController {
         return activities.stream().map(activity -> mapper.map(activity, ActivityDTO.class)).collect(Collectors.toList());
     }
 
-    @GetMapping("/{ggid}")
+    @GetMapping("/ggid/{ggid}")
     public List<ActivityDTO> findByGgid(@PathVariable String ggid) {
         List<Activity> activities = activityService.findByGgid(ggid);
+        return activities.stream().map(activity -> mapper.map(activity, ActivityDTO.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/saga/{saga}")
+    public List<ActivityDTO> findBySaga(@PathVariable String saga) {
+        List<Activity> activities = activityService.findBySaga(saga);
         return activities.stream().map(activity -> mapper.map(activity, ActivityDTO.class)).collect(Collectors.toList());
     }
 }
