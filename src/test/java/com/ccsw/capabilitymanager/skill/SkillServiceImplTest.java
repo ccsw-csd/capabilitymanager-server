@@ -40,5 +40,35 @@ public class SkillServiceImplTest {
 		assertNotNull(skillList);
 	}
 	
+	@Test
+	public void findBySkill() {
+		// Arrange
+		List<Skill> list = new ArrayList<Skill>();
+		String skill = "";
+		
+		when(skillRepository.findBySkillDescription(skill)).thenReturn(list);
+		
+		//Act
+		List<Skill> skillList = skillServiceImpl.findBySkill(skill);
+		
+		assertNotNull(skillList);
+	}
+	
+	@Test
+	public void findByLocation() {
+		// Arrange
+		List<Skill> list = new ArrayList<Skill>();
+		String location = "";
+		
+		when(skillRepository.findSkillByLocation(location)).thenReturn(list);
+		
+		//Act
+		List<Skill> skillList = skillServiceImpl.findByLocation(location);
+		
+		assertNotNull(skillList);
+	}
+	
+	
+	
 
 }

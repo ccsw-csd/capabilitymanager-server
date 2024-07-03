@@ -52,7 +52,33 @@ public class SkillControllerTest {
         assertNotNull(skillDtoList);
 	}
 	
+	@Test
+	public void findBySkill() {
+		// Arrange
+        List<Skill> skillList = new ArrayList<Skill>();
+        String skill = "";
 
+        when(skillService.findBySkill(skill)).thenReturn(skillList);
+
+        // Act
+        List<Skill> skillDtoList = skillController.findBySkill(skill);
+        
+        assertNotNull(skillDtoList);
+	}
+	
+	@Test
+	public void findByLocation() {
+		// Arrange
+        List<Skill> skillList = new ArrayList<Skill>();
+        String location = "";
+
+        when(skillService.findByLocation(location)).thenReturn(skillList);
+
+        // Act
+        List<Skill> skillDtoList = skillController.findByLocation(location);
+        
+        assertNotNull(skillDtoList);
+	}
 	
 
 }
