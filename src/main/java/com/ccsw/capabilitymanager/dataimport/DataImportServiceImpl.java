@@ -474,7 +474,7 @@ public class DataImportServiceImpl implements DataImportService {
 			certificateActivity.setRecentActivityDate(vcFechaExpiracion == Constants.FUNDATIONDAYLESSONE ? null : vcFechaCertificado);
 			certificateActivity.setObservaciones(vcComentarioAnexo);
 			certificateActivity.setEstado("Finalizado");
-			certificateActivity.setTypeActivity(8);
+			certificateActivity.setTypeActivity(7);
 			
 			if (!data.getSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
