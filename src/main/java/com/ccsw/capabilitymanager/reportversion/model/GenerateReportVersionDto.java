@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public class GenerateReportVersionDto {
     private int idRoleVersion;
     private int idStaffingVersion;
+    private int idVersionCertificaciones;
     private int screenshot = 0;
     private LocalDateTime fechaImportacion;
     private String description;
@@ -60,6 +61,15 @@ public class GenerateReportVersionDto {
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+	public int getIdVersionCertificaciones() {
+		return idVersionCertificaciones;
+	}
+	public void setIdVersionCertificaciones(int idVersionCertificaciones) {
+		this.idVersionCertificaciones = idVersionCertificaciones;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}  
     
     
