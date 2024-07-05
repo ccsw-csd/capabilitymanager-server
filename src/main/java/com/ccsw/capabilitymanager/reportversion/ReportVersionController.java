@@ -91,6 +91,12 @@ public class ReportVersionController {
 									staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
 									staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(),
 									staffingVersion.getUsuario()));
+					CertificatesVersion certificatesVersion = certificatesService.findById(Long.valueOf(rv.getIdVersionCertificaciones()));
+					rvdto.setCertificatesVersion(certificatesVersion == null ? null
+							: new CertificatesVersionDto(certificatesVersion.getId(), certificatesVersion.getIdTipoInterfaz(),
+									certificatesVersion.getFechaImportacion(), certificatesVersion.getNumRegistros(),
+									certificatesVersion.getNombreFichero(), certificatesVersion.getDescripcion(),
+									certificatesVersion.getUsuario()));
 					rvdto.setId(rv.getId());
 					rvdto.setUsuario(rv.getUsuario());
 					rvdto.setDescripcion(rv.getDescripcion());
