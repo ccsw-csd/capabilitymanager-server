@@ -1,6 +1,10 @@
 package com.ccsw.capabilitymanager.skill;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -30,42 +34,77 @@ public class SkillServiceImplTest {
 	@Test
 	public void findAll() {
 		// Arrange
-		List<Skill> list = new ArrayList<Skill>();
+		List<Skill> expectedSkillList = new ArrayList<Skill>();
+        Skill nuevo = new Skill();
+        nuevo.setId(1L);
+        nuevo.setName("Java");
+        expectedSkillList.add(nuevo);
 		
-		when(skillRepository.findAll()).thenReturn(list);
+		when(skillRepository.findAll()).thenReturn(expectedSkillList);
 		
 		//Act
 		List<Skill> skillList = skillServiceImpl.findAll();
 		
-		assertNotNull(skillList);
+		assertEquals(expectedSkillList, skillList);
+        verify(skillRepository, times(1)).findAll();
 	}
 	
 	@Test
 	public void findBySkill() {
 		// Arrange
-		List<Skill> list = new ArrayList<Skill>();
-		String skill = "";
+		List<Skill> expectedSkillList = new ArrayList<Skill>();
+        String skill = "test";
+        
+        Skill skill1 = new Skill();
+        skill1.setId(1L);
+        skill1.setName("Java");
+        skill1.setSkillDescription(skill);
+        
+        Skill skill2 = new Skill();
+        skill2.setId(2L);
+        skill2.setName("Spring");
+        skill2.setSkillDescription(skill);
+        
+        expectedSkillList.add(skill1);
+        expectedSkillList.add(skill2);
+
 		
-		when(skillRepository.findBySkillDescription(skill)).thenReturn(list);
+		when(skillRepository.findBySkillDescription(skill)).thenReturn(expectedSkillList);
 		
 		//Act
 		List<Skill> skillList = skillServiceImpl.findBySkill(skill);
 		
-		assertNotNull(skillList);
+		assertEquals(expectedSkillList, skillList);
+        verify(skillRepository, times(1)).findBySkillDescription(any(String.class));
+		
 	}
 	
 	@Test
 	public void findByLocation() {
 		// Arrange
-		List<Skill> list = new ArrayList<Skill>();
-		String location = "";
+		List<Skill> expectedSkillList = new ArrayList<Skill>();
+        String location = "test";
+        
+        Skill skill1 = new Skill();
+        skill1.setId(1L);
+        skill1.setName("Java");
+        skill1.setLocation(location);
+        
+        Skill skill2 = new Skill();
+        skill2.setId(2L);
+        skill2.setName("Spring");
+        skill2.setLocation(location);
+        
+        expectedSkillList.add(skill1);
+        expectedSkillList.add(skill2);
 		
-		when(skillRepository.findSkillByLocation(location)).thenReturn(list);
+		when(skillRepository.findSkillByLocation(location)).thenReturn(expectedSkillList);
 		
 		//Act
 		List<Skill> skillList = skillServiceImpl.findByLocation(location);
 		
-		assertNotNull(skillList);
+		assertEquals(expectedSkillList, skillList);
+        verify(skillRepository, times(1)).findSkillByLocation(any(String.class));
 	}
 	
 	
