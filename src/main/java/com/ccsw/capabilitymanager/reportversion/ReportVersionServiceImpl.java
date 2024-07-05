@@ -127,6 +127,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 
 		reportVersion.setIdVersionCapacidades(dto.getIdRoleVersion());
 		reportVersion.setIdVersionStaffing(dto.getIdStaffingVersion());
+		reportVersion.setIdVersionCertificaciones(dto.getIdVersionCertificaciones());
 
 		reportVersion.setDescripcion(dto.getDescription());
 		reportVersion.setComentarios(dto.getComments());
