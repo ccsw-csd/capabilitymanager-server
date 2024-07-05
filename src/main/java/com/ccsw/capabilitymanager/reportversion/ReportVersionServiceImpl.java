@@ -53,7 +53,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 			try {
 				int d = Integer.parseInt(id);
 				if (d == 0 || d == 1) {
-					return this.reportVersionRepository.findByScreenshotAndFechaImportacionBetween(id, dateTime1,
+					return this.reportVersionRepository.findByScreenshotAndFechaImportacionBetween(d, dateTime1,
 							dateTime2);
 				} else {
 					return this.reportVersionRepository.findByFechaImportacionBetween(dateTime1, dateTime2);
@@ -62,7 +62,8 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 				return this.reportVersionRepository.findByFechaImportacionBetween(dateTime1, dateTime2);
 			}
 		} else {
-			return this.reportVersionRepository.findByScreenshot(id);
+			int b = Integer.parseInt(id);
+			return this.reportVersionRepository.findByScreenshot(b);
 		}
 
 	}
