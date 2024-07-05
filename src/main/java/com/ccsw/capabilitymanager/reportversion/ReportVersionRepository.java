@@ -15,9 +15,9 @@ public interface ReportVersionRepository extends JpaRepository<ReportVersion, Lo
 	Optional<ReportVersion> findById(Long id);
 	
 	Optional<ReportVersion> findByIdVersionCapacidades(Long id);	
-	List<ReportVersion> findByScreenshot(String id);
+	List<ReportVersion> findByScreenshot(int id);
 	List<ReportVersion> findByFechaImportacionBetween(LocalDateTime to, LocalDateTime from);
-	List<ReportVersion> findByScreenshotAndFechaImportacionBetween(String id, LocalDateTime from, LocalDateTime to);
+	List<ReportVersion> findByScreenshotAndFechaImportacionBetween(int id, LocalDateTime from, LocalDateTime to);
 
 
 }

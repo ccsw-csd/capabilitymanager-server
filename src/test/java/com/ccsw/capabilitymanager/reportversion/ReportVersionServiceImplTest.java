@@ -72,7 +72,7 @@ public class ReportVersionServiceImplTest {
         reportVersion.setId(1L);
         mockReportVersions.add(reportVersion);
 
-        when(reportVersionRepository.findByScreenshotAndFechaImportacionBetween(anyString(), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(reportVersionRepository.findByScreenshotAndFechaImportacionBetween(anyInt(), any(LocalDateTime.class), any(LocalDateTime.class)))
                 .thenReturn(mockReportVersions);
 
         List<ReportVersion> result = reportVersionService.findByScreenshot(screenshot, year);
@@ -90,7 +90,7 @@ public class ReportVersionServiceImplTest {
         reportVersion.setId(1L);
         mockReportVersions.add(reportVersion);
 
-        when(reportVersionRepository.findByScreenshot(anyString())).thenReturn(mockReportVersions);
+        when(reportVersionRepository.findByScreenshot(anyInt())).thenReturn(mockReportVersions);
 
         List<ReportVersion> result = reportVersionService.findByScreenshot(screenshot, null);
 
@@ -100,7 +100,8 @@ public class ReportVersionServiceImplTest {
 
     @Test
     void testFindYears_WithScreenshot() {
-        String screenshot = "1";
+        int screenshot = 1;
+        String screenshot2 = "1";
         List<ReportVersion> mockReportVersions = new ArrayList<>();
         ReportVersion reportVersion1 = new ReportVersion();
         reportVersion1.setId(1L);
@@ -110,7 +111,7 @@ public class ReportVersionServiceImplTest {
 
         when(reportVersionRepository.findByScreenshot(screenshot)).thenReturn(mockReportVersions);
 
-        List<String> result = reportVersionService.findYears(screenshot);
+        List<String> result = reportVersionService.findYears(screenshot2);
 
         assertEquals(1, result.size());
         assertEquals("2024", result.get(0));
