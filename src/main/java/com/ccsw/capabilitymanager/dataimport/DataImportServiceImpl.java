@@ -1,6 +1,7 @@
 package com.ccsw.capabilitymanager.dataimport;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -784,14 +786,19 @@ public class DataImportServiceImpl implements DataImportService {
 	private List<StaffingDataImport> saveAllStaffingDataImport(List<StaffingDataImport> staffingDataImportList) {
 		try {
 			return staffingDataImportRepository.saveAll(staffingDataImportList);
-		} catch (Exception e) {
+		}
+
+		catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
-			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			String respuestaEx = e.getMessage();
+			String  respuesta = respuestaEx.substring(respuestaEx.indexOf('[')+1, respuestaEx.indexOf(']'));
+			String respuestaEr = respuesta + ". Error procesando el excel. Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
+		
 	}
 
 	/**
