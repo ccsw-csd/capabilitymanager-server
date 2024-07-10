@@ -159,7 +159,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 	        certificatesRolesVersion.setRolFormulario(role.getRolL2AR());
 	        certificatesRolesVersion.setCertificado(dataImport.getCertificado());
 	        certificatesRolesVersion.setUsuario(version.getUser());
-	        certificatesRolesVersion.setIdVersion(version.getIdVersionCertificaciones());
+	        certificatesRolesVersion.setNum_import_code_id(version.getIdVersionCertificaciones());
 	        
 	        certificatesRolesVersions.add(certificatesRolesVersion);
 	       }else if(role.getRolL1().equals("Engagement Managers")){
@@ -168,7 +168,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 		    certificatesRolesVersion.setRolFormulario(role.getRolL2EM());
 		    certificatesRolesVersion.setCertificado(dataImport.getCertificado());
 		    certificatesRolesVersion.setUsuario(version.getUser());   
-		    certificatesRolesVersion.setIdVersion(version.getIdVersionCertificaciones());
+		    certificatesRolesVersion.setNum_import_code_id(version.getIdVersionCertificaciones());
 		    
 		    certificatesRolesVersions.add(certificatesRolesVersion);
 		    

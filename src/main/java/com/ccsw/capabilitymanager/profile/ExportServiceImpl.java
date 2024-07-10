@@ -25,6 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.capabilitymanager.certificatesversion.CertificatesService;
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersion;
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersionDto;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.Report;
 import com.ccsw.capabilitymanager.config.literal.LiteralService;
@@ -64,6 +67,9 @@ public class ExportServiceImpl implements ExportService {
 
 	@Autowired
 	private RoleVersionService roleVersionService;
+	
+	@Autowired
+	private CertificatesService certificatesService;
 
 	@Autowired
 	private UtilsServiceImpl utilsServiceImpl;
@@ -196,6 +202,10 @@ public class ExportServiceImpl implements ExportService {
 		rvdto.setStaffingVersion(staffingVersion == null ? null
 				: new StaffingVersionDto(staffingVersion.getId(), staffingVersion.getIdTipoInterfaz(), staffingVersion.getFechaImportacion(), staffingVersion.getNumRegistros(),
 						staffingVersion.getNombreFichero(), staffingVersion.getDescripcion(), staffingVersion.getUsuario()));
+		CertificatesVersion certificatesVersion = certificatesService.findById(Long.valueOf(rv.getIdVersionCertificaciones()));
+		rvdto.setCertificatesVersion(certificatesVersion == null ? null
+				: new CertificatesVersionDto(certificatesVersion.getId(), certificatesVersion.getIdTipoInterfaz(), certificatesVersion.getFechaImportacion(), certificatesVersion.getNumRegistros(),
+						certificatesVersion.getNombreFichero(), certificatesVersion.getDescripcion(), certificatesVersion.getUsuario()));
 		rvdto.setId(rv.getId());
 		rvdto.setUsuario(rv.getUsuario());
 		rvdto.setDescripcion(rv.getDescripcion());

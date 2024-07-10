@@ -32,8 +32,8 @@ public class CertificatesRolesVersion  implements Comparable<CertificatesRolesVe
     @Column(name="Certificado", nullable = true)
     private String Certificado;
 
-    @Column(name="Id_Version", nullable = true)
-    private int idVersion;
+    @Column(name="num_import_code_id")
+    private int num_import_code_id;
     
     
 	public Long getId() {
@@ -106,15 +106,14 @@ public class CertificatesRolesVersion  implements Comparable<CertificatesRolesVe
 		Certificado = certificado;
 	}
 	
-	
-	public int getIdVersion() {
-		return idVersion;
+	public int getNum_import_code_id() {
+		return num_import_code_id;
 	}
 
 
 
-	public void setIdVersion(int idVersion) {
-		this.idVersion = idVersion;
+	public void setNum_import_code_id(int num_import_code_id) {
+		this.num_import_code_id = num_import_code_id;
 	}
 
 

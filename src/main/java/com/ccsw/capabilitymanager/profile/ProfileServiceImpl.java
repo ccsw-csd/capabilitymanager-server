@@ -74,11 +74,11 @@ public class ProfileServiceImpl implements ProfileService {
 		List<ProfileTotal> architectsCustomApps = new ArrayList<ProfileTotal>();
 		List<ProfileTotal> architectsIntegration = new ArrayList<ProfileTotal>();
 		List<GradeTotal> gradeTotal = new ArrayList<GradeTotal>();
-
+		
+		engagementManagers = findAllProfileTotals("Engagement Managers", idReport);
 		architects = findAllProfileTotals("Architects", idReport);
 		softwareEngineer = findAllProfileTotals("Software Engineer", idReport);
 		industryExperts = findAllProfileTotals("Industry Experts", idReport);
-		engagementManagers = findAllProfileTotals("Engagement Managers", idReport);
 		businessAnalyst = findAllProfileTotals("Business Analyst", idReport);
 		architectsCustomApps = findAllProfileTotals("Architects & SE Custom Apps Development", idReport);
 		architectsIntegration = findAllProfileTotals("Architects & SE Integration & APIs", idReport);
@@ -141,6 +141,11 @@ public class ProfileServiceImpl implements ProfileService {
 		totals.add(Long.valueOf(listEM.size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("SAFE")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM's Certification Level 1")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 2")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 3")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 4")).toList().size()));
 		ProfileTotal profileTotal = new ProfileTotal();
 		profileTotal.setProfile(findByTypeAndSubtype.get(0).getDesc());
 		profileTotal.setTotals(totals);
@@ -153,10 +158,16 @@ public class ProfileServiceImpl implements ProfileService {
 		totals.add(Long.valueOf(listEM.size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("SAFE")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM's Certification Level 1")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 2")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 3")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 4")).toList().size()));
 		listEM = list.stream().filter(p->p.getPerfil().contains("Scrum")).toList();
 		totals.set(0, totals.get(0) + Long.valueOf(listEM.size()));
 		totals.set(1, totals.get(1) + Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 		totals.set(2, totals.get(2) + Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
+		
 		profileTotal.setProfile(findByTypeAndSubtype.get(1).getDesc());
 		profileTotal.setTotals(totals);
 		profileTotalList.add(profileTotal);
@@ -172,6 +183,12 @@ public class ProfileServiceImpl implements ProfileService {
 			totals.add(Long.valueOf(listArchitects.size()));
 			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("SAFE")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("TOGAF")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("Arquitect Certification Level 1: Certified Architect")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("Arquitect Certification Level 2: Certified Architect")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("Arquitect Certification Level 3: Certified Architect")).toList().size()));
+			totals.add(Long.valueOf(listArchitects.stream().filter(p->p.getCertificaciones().contains("Arquitect Certification Level 4: Certified Architect")).toList().size()));
 			ProfileTotal profileTotal = new ProfileTotal();
 			profileTotal.setProfile(literal.getDesc());
 			profileTotal.setTotals(totals);

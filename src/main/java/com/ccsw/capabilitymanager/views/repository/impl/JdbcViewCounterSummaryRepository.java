@@ -84,6 +84,8 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 				this::mapRowToInformeRoles,
 				idVersionCapacidades,idVersionStaffing);
 	}
+	
+	
 
 	private Profile mapRowToInformeRoles(ResultSet row,int rowNum) throws SQLException{
 		Profile profile = new Profile();
@@ -103,6 +105,7 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 		profile.setActual(row.getString("role_level_1"));
 		profile.setExperiencia(StringUtils.isNotBlank(row.getString("experience_ar"))? row.getString("experience_ar") : row.getString("experience_em"));
 		profile.setSectorExperiencia(row.getString("sector_experience"));
+		profile.setCertificaciones(("certifica"));
 		profile.setTecnicoSolution(row.getString("tecnicoL3"));
 		profile.setTecnicoIntegration(row.getString("tecnicoL4"));
 		profile.setSkillCloudNative(row.getString("cloud_native_experience"));
