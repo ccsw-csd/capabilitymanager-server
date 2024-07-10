@@ -10,10 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ccsw.capabilitymanager.activity.model.Activity;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,12 @@ import com.ccsw.capabilitymanager.versionitinerarios.VersionItinerariosRepositor
 import com.ccsw.capabilitymanager.versionitinerarios.model.VersionItinerarios;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
+import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
+import com.ccsw.capabilitymanager.activity.model.Activity;
+import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.activity.ActivityRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -94,6 +102,13 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private s3Service s3service;
+
+	@Autowired
+	private ActivityDataImportRepository activityDataImportRepository;
+
+	@Autowired
+	private ActivityRepository activityRepository;
+
 
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
@@ -392,13 +407,13 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 
 		List<CertificatesDataImport> listCertificacionesDataImport = new ArrayList<>();
-		List<CertificatesActividadDataImport> listCertificadosActividadDataImport = new ArrayList<>();
+		List<ActivityDataImport> listActividadDataImport = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
 		CertificatesDataImport data = null;
-		CertificatesActividadDataImport certificateActivity = null;
+		ActivityDataImport certificateActivity = null;
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new CertificatesDataImport();
-			certificateActivity = new CertificatesActividadDataImport();
+			certificateActivity = new ActivityDataImport();
 			String vcSAGA = utilsServiceImpl.getStringValue(currentRow,
 					Constants.CertificatesDatabasePos.COL_SAGA.getPosition());
 			String vcPartner = utilsServiceImpl.getStringValue(currentRow,
@@ -478,14 +493,14 @@ public class DataImportServiceImpl implements DataImportService {
 			
 			if (!data.getSAGA().isEmpty()) {
 				listCertificacionesDataImport.add(data);
-				listCertificadosActividadDataImport.add(certificateActivity);
+				listActividadDataImport.add(certificateActivity);
 			}
 			currentRow = sheet.getRow(i);
 		}
 
 		if (listCertificacionesDataImport != null && !listCertificacionesDataImport.isEmpty()) {
 			saveAllCertificatesDataImport(listCertificacionesDataImport);
-			saveCertificadosActividadDataImport(listCertificadosActividadDataImport);
+			saveActividadDataImport(listActividadDataImport);
 
 		} else {
 			StringBuilder errorData = new StringBuilder();
@@ -522,13 +537,13 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 
 		List<ItinerariosDataImport> listItinerariosDataImport = new ArrayList<>();
-		List<ItinerariosActividadDataImport> listItinerariosActividadDataImport = new ArrayList<>();
+		List<ActivityDataImport> listActividadDataImport = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
 		ItinerariosDataImport data = null;
-		ItinerariosActividadDataImport dataActivity = null;
+		ActivityDataImport dataActivity = null;
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
 			data = new ItinerariosDataImport();
-			dataActivity = new ItinerariosActividadDataImport();
+			dataActivity = new ActivityDataImport();
 		
 			String vcGGID = utilsServiceImpl.getStringValue(currentRow,
 					Constants.ItinerariosDatabasePos.COL_GGID.getPosition());
@@ -619,7 +634,7 @@ public class DataImportServiceImpl implements DataImportService {
 			
 			if (!data.getGGID().isEmpty()) {
 				listItinerariosDataImport.add(data);
-				listItinerariosActividadDataImport.add(dataActivity);
+				listActividadDataImport.add(dataActivity);
 			}
 			
 			currentRow = sheet.getRow(i);
@@ -627,7 +642,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 		if (listItinerariosDataImport != null && !listItinerariosDataImport.isEmpty()) {
 			saveAllItinerariosDataImport(listItinerariosDataImport);
-			saveItinerariosActividadDataImport(listItinerariosActividadDataImport);
+			saveActividadDataImport(listActividadDataImport);
 
 		} else {
 			StringBuilder errorData = new StringBuilder();
@@ -842,6 +857,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @param ItinerariosDataImportList List of objects to save
 	 * @return List<ItinerariosDataImport>
 	 */
+	/*
 	@Transactional
 	private List<ItinerariosActividadDataImport> saveItinerariosActividadDataImport(
 			List<ItinerariosActividadDataImport> itinerariosActividadDataImportList) {
@@ -856,7 +872,7 @@ public class DataImportServiceImpl implements DataImportService {
 			throw new UnprocessableEntityException(respuestaEr);
 		}
 	}
-	
+	*/
 	
 	/**
 	 * Save list CertificadosImport on database
@@ -864,6 +880,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @param CertificadosDataImportList List of objects to save
 	 * @return List<ItinerariosDataImport>
 	 */
+	/*
 	@Transactional
 	private List<CertificatesActividadDataImport> saveCertificadosActividadDataImport(
 			List<CertificatesActividadDataImport> certificadosActividadDataImportList) {
@@ -875,6 +892,43 @@ public class DataImportServiceImpl implements DataImportService {
 			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			throw new UnprocessableEntityException(respuestaEr);
+		}
+	}*/
+
+	/**
+	 * Save list ActivityImport on database
+	 *
+	 * @param ActividadDataImportList List of objects to save
+	 * @return List<ActividadDataImport>
+	 */
+	@Transactional
+	private List<ActivityDataImport> saveActividadDataImport(
+			List<ActivityDataImport> ActividadDataImportList) {
+		try {
+			return activityDataImportRepository.saveAll(ActividadDataImportList);
+		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+					.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
+			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			throw new UnprocessableEntityException(respuestaEr);
+		}
+	}
+
+	@Transactional
+	public void saveActividad(ActivityDTO activityDto) {
+		Activity activity = new Activity();
+		BeanUtils.copyProperties(activityDto, activity, "id");
+		try {
+			activityRepository.save(activity);
+		} catch (Exception e) {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
+					.append(Constants.ERROR_INIT2);
+			logger.error(errorData.toString() + e.getMessage());
+			String respuestaEr = "Error añadiendo la actividad a la base de datos.";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
 	}
