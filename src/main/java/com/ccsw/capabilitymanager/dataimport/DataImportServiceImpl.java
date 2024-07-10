@@ -786,7 +786,9 @@ public class DataImportServiceImpl implements DataImportService {
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
 			logger.error(errorData.toString() + e.getMessage());
-			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			String respuestaEx = e.getMessage();
+			String  respuesta = respuestaEx.substring(respuestaEx.indexOf('[')+1, respuestaEx.indexOf(']'));
+			String respuestaEr = respuesta + ". Error procesando el excel. Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
 	}
