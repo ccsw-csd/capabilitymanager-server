@@ -2,12 +2,16 @@ package com.ccsw.capabilitymanager.activity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersionDto;
+import com.ccsw.capabilitymanager.dataimport.DataImportService;
 import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +25,9 @@ public class ActivityControllerTest {
 
     @Mock
     private ActivityService activityService;
+
+    @Mock
+    private DataImportService dataImportService;
 
     @Mock
     private DozerBeanMapper mapper;
@@ -91,5 +98,20 @@ public class ActivityControllerTest {
 
         assertEquals(1, result.size());
         assertEquals(activityDTO2, result.get(0));
+    }
+
+    @Test
+    public void testGuardarActividad() {
+        // Arrange
+        Long id = 1L;
+        ActivityDTO dto = new ActivityDTO();
+        dto.setId(3L);
+        dto.setNombreActividad("Actividad 3");
+
+        // Act
+        activityController.guardarActividad(dto);
+
+        // Assert
+        verify(dataImportService, times(1)).saveActividad(dto);
     }
 }

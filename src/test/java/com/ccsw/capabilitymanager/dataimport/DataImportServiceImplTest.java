@@ -3,14 +3,17 @@ package com.ccsw.capabilitymanager.dataimport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.ccsw.capabilitymanager.activity.ActivityRepository;
+import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +53,8 @@ import com.ccsw.capabilitymanager.versionitinerarios.VersionItinerariosRepositor
 import com.ccsw.capabilitymanager.versionitinerarios.model.VersionItinerarios;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
+import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.activity.model.Activity;
 
 public class DataImportServiceImplTest {
 
@@ -93,6 +99,14 @@ public class DataImportServiceImplTest {
     
     @Mock
 	private ItinerariosActividadDataImportRepository itinerariosActividadDataImportRepository;
+
+    @Mock
+    private ActivityRepository activityRepository;
+
+    @Mock
+    private ActivityDataImportRepository actividadDataImportRepository;
+
+
 
 
     @BeforeEach
@@ -316,13 +330,13 @@ public class DataImportServiceImplTest {
         when(dto.getFileData()).thenReturn(file);
         
         List<CertificatesDataImport> certificatesDataImport = new ArrayList<>();
-        List<CertificatesActividadDataImport> certificatesActividadDataImport = new ArrayList<>();
+        List<ActivityDataImport> actividadDataImport = new ArrayList<>();
         
         when(utilsServiceImpl.obtainSheet(any())).thenReturn(mockSheet);
         when(mockSheet.getPhysicalNumberOfRows()).thenReturn(3); // Simulando 2 filas de datos más la fila de encabezado
         when(versionCertificacionesRepository.save(Mockito.any())).thenReturn(versionCer);
         when(certificatesDataImportRepository.saveAll(Mockito.any())).thenReturn(certificatesDataImport);
-        when(certificatesActividadDataImportRepository.saveAll(Mockito.any())).thenReturn(certificatesActividadDataImport);
+        when(actividadDataImportRepository.saveAll(Mockito.any())).thenReturn(actividadDataImport);
         // Mockear las filas retornadas
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_START)).thenReturn(mockRow1);
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_NEXT)).thenReturn(mockRow2);
@@ -375,13 +389,13 @@ public class DataImportServiceImplTest {
         when(dto.getFileData()).thenReturn(file);
         
         List<ItinerariosDataImport> itinerariosDataImport = new ArrayList<>();
-        List<ItinerariosActividadDataImport> itinerariosActividadDataImport = new ArrayList<>();
+        List<ActivityDataImport> actividadDataImport = new ArrayList<>();
         
         when(utilsServiceImpl.obtainSheet(any())).thenReturn(mockSheet);
         when(mockSheet.getPhysicalNumberOfRows()).thenReturn(3); // Simulando 2 filas de datos más la fila de encabezado
         when(versionStaffingRepository.save(Mockito.any())).thenReturn(versionItin);
         when(itinerariosDataImportRepository.saveAll(Mockito.any())).thenReturn(itinerariosDataImport);
-        when(itinerariosActividadDataImportRepository.saveAll(Mockito.any())).thenReturn(itinerariosActividadDataImport);
+        when(actividadDataImportRepository.saveAll(Mockito.any())).thenReturn(actividadDataImport);
         // Mockear las filas retornadas
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_START)).thenReturn(mockRow1);
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_NEXT)).thenReturn(mockRow2);
@@ -395,6 +409,36 @@ public class DataImportServiceImplTest {
         // Assert
         assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
         assertEquals(expectedResponse.getError(), actualResponse.getError());
+    }
+
+    @Test
+    public void testSaveActividad_Success() {
+        // Arrange
+        ActivityDTO activityDto = new ActivityDTO();
+        activityDto.setNombreActividad("Test Activity");
+        Activity activity = new Activity();
+        BeanUtils.copyProperties(activityDto, activity, "id");
+
+        when(activityRepository.save(activity)).thenReturn(activity);
+
+        // Act & Assert
+        dataImportService.saveActividad(activityDto);
+    }
+
+    @Test
+    public void testSaveActividad_Exception() {
+        // Arrange
+        ActivityDTO activityDto = new ActivityDTO();
+        activityDto.setNombreActividad("Test Activity");
+
+        // Mock para lanzar UnprocessableEntityException cuando se llama a activityRepository.save con la instancia específica de Activity
+        when(activityRepository.save(any(Activity.class))).thenThrow(new UnprocessableEntityException("Error añadiendo la actividad a la base de datos."));
+
+        // Act & Assert
+        assertThrows(UnprocessableEntityException.class, () -> {
+            dataImportService.saveActividad(activityDto);
+        });
+
     }
 
 
