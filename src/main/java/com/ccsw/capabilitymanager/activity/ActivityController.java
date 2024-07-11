@@ -2,6 +2,8 @@ package com.ccsw.capabilitymanager.activity;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
 import com.ccsw.capabilitymanager.dataimport.DataImportService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class ActivityController {
     }
 
     @PostMapping("/guardar")
-    public void guardarActividad(@RequestBody ActivityDTO activityDto) {
+    public void guardarActividad(@RequestBody ActivityDataImportDto activityDto) {
         this.dataImportService.saveActividad(activityDto);
     }
 }

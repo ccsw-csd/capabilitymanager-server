@@ -14,6 +14,7 @@ import java.util.List;
 import com.ccsw.capabilitymanager.activity.ActivityRepository;
 import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.BeforeEach;
@@ -414,12 +415,11 @@ public class DataImportServiceImplTest {
     @Test
     public void testSaveActividad_Success() {
         // Arrange
-        ActivityDTO activityDto = new ActivityDTO();
-        activityDto.setNombreActividad("Test Activity");
-        Activity activity = new Activity();
+        ActivityDataImportDto activityDto = new ActivityDataImportDto();
+        ActivityDataImport activity = new ActivityDataImport();
         BeanUtils.copyProperties(activityDto, activity, "id");
 
-        when(activityRepository.save(activity)).thenReturn(activity);
+        when(actividadDataImportRepository.save(activity)).thenReturn(activity);
 
         // Act & Assert
         dataImportService.saveActividad(activityDto);
@@ -428,11 +428,10 @@ public class DataImportServiceImplTest {
     @Test
     public void testSaveActividad_Exception() {
         // Arrange
-        ActivityDTO activityDto = new ActivityDTO();
-        activityDto.setNombreActividad("Test Activity");
+        ActivityDataImportDto activityDto = new ActivityDataImportDto();
 
         // Mock para lanzar UnprocessableEntityException cuando se llama a activityRepository.save con la instancia específica de Activity
-        when(activityRepository.save(any(Activity.class))).thenThrow(new UnprocessableEntityException("Error añadiendo la actividad a la base de datos."));
+        when(actividadDataImportRepository.save(any(ActivityDataImport.class))).thenThrow(new UnprocessableEntityException("Error añadiendo la actividad a la base de datos."));
 
         // Act & Assert
         assertThrows(UnprocessableEntityException.class, () -> {

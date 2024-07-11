@@ -4,45 +4,60 @@ import java.util.Date;
 
 public class ActivityDataImportDto {
     private Integer id;
-    private String GGID;
-    private String SAGA;
+    private String gGID;
+    private String sAGA;
     private String estado;
-    private Integer pathwayId;
+    private String pathwayId;
     private String pathwayTitle;
     private Integer totalPathwayContent;
     private Integer completedContent;
-    private String completionPercent;
+    private Double completionPercent;
     private Date enrollmentDate;
     private Date recentActivityDate;
     private Date completedDate;
+    private Integer typeActivity;
+    private String observaciones;
     public Integer getId() {
         return id;
     }
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getGGID() {
-        return GGID;
+
+    public String getgGID() {
+        return gGID;
     }
-    public void setGGID(String gGID) {
-        GGID = gGID;
+
+    public void setgGID(String gGID) {
+        this.gGID = gGID;
     }
-    public String getSAGA() {
-        return SAGA;
+
+    public String getsAGA() {
+        return sAGA;
     }
-    public void setSAGA(String sAGA) {
-        SAGA = sAGA;
+
+    public void setsAGA(String sAGA) {
+        this.sAGA = sAGA;
     }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     public String getEstado() {
         return estado;
     }
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    public Integer getPathwayId() {
+    public String getPathwayId() {
         return pathwayId;
     }
-    public void setPathwayId(Integer pathwayId) {
+    public void setPathwayId(String pathwayId) {
         this.pathwayId = pathwayId;
     }
     public String getPathwayTitle() {
@@ -63,10 +78,10 @@ public class ActivityDataImportDto {
     public void setCompletedContent(Integer completedContent) {
         this.completedContent = completedContent;
     }
-    public String getCompletionPercent() {
+    public Double getCompletionPercent() {
         return completionPercent;
     }
-    public void setCompletionPercent(String completionPercent) {
+    public void setCompletionPercent(Double completionPercent) {
         this.completionPercent = completionPercent;
     }
     public Date getEnrollmentDate() {
@@ -86,5 +101,13 @@ public class ActivityDataImportDto {
     }
     public void setCompletedDate(Date completedDate) {
         this.completedDate = completedDate;
+    }
+
+    public Integer getTypeActivity() {
+        return typeActivity;
+    }
+
+    public void setTypeActivity(Integer typeActivity) {
+        this.typeActivity = typeActivity;
     }
 }
