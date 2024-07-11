@@ -480,7 +480,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setNumImportCodeId(verCertificaciones.getId());
 			
 		
-			certificateActivity.setSAGA(vcSAGA);
+			certificateActivity.setsAGA(vcSAGA);
 			certificateActivity.setPathwayId(vcCode);
 			certificateActivity.setPathwayTitle(vcCertificado);
 			certificateActivity.setCompletionPercent(100.00); 
@@ -617,7 +617,7 @@ public class DataImportServiceImpl implements DataImportService {
 			String numericPercentage = vcCompletedPercent.replace("%", "");
 			Double numericValue = Double.parseDouble(numericPercentage);
 			
-			dataActivity.setGGID(vcGGID);
+			dataActivity.setgGID(vcGGID);
 			dataActivity.setPathwayId(vcPathwayId);
 			dataActivity.setPathwayTitle(vcPathwayTitle);
 			dataActivity.setCompletionPercent(numericValue); 
@@ -918,11 +918,11 @@ public class DataImportServiceImpl implements DataImportService {
 	}
 
 	@Transactional
-	public void saveActividad(ActivityDTO activityDto) {
-		Activity activity = new Activity();
+	public void saveActividad(ActivityDataImportDto activityDto) {
+		ActivityDataImport activity = new ActivityDataImport();
 		BeanUtils.copyProperties(activityDto, activity, "id");
 		try {
-			activityRepository.save(activity);
+			activityDataImportRepository.save(activity);
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())

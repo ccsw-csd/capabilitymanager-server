@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
 import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersionDto;
 import com.ccsw.capabilitymanager.dataimport.DataImportService;
 import org.dozer.DozerBeanMapper;
@@ -104,9 +106,8 @@ public class ActivityControllerTest {
     public void testGuardarActividad() {
         // Arrange
         Long id = 1L;
-        ActivityDTO dto = new ActivityDTO();
-        dto.setId(3L);
-        dto.setNombreActividad("Actividad 3");
+        ActivityDataImportDto dto = new ActivityDataImportDto();
+        dto.setId(3);
 
         // Act
         activityController.guardarActividad(dto);

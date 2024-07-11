@@ -18,10 +18,10 @@ public class ActivityDataImport  implements Comparable<ActivityDataImport> {
     private Integer id;
 
     @Column(name = "SAGA")
-    private String SAGA;
+    private String sAGA;
 
     @Column(name = "ggid")
-    private String GGID;
+    private String gGID;
 
     @Column(name = "codigo_actividad")
     private String pathwayId;
@@ -58,12 +58,12 @@ public class ActivityDataImport  implements Comparable<ActivityDataImport> {
         this.id = id;
     }
 
-    public String getGGID() {
-        return GGID;
+    public String getgGID() {
+        return gGID;
     }
 
-    public void setGGID(String gGID) {
-        GGID = gGID;
+    public void setgGID(String gGID) {
+        this.gGID = gGID;
     }
 
     public String getPathwayId() {
@@ -122,12 +122,12 @@ public class ActivityDataImport  implements Comparable<ActivityDataImport> {
         this.typeActivity = typeActivity;
     }
 
-    public String getSAGA() {
-        return SAGA;
+    public String getsAGA() {
+        return sAGA;
     }
 
-    public void setSAGA(String sAGA) {
-        SAGA = sAGA;
+    public void setsAGA(String sAGA) {
+        this.sAGA = sAGA;
     }
 
     public String getObservaciones() {
