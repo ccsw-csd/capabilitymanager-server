@@ -412,33 +412,5 @@ public class DataImportServiceImplTest {
         assertEquals(expectedResponse.getError(), actualResponse.getError());
     }
 
-    @Test
-    public void testSaveActividad_Success() {
-        // Arrange
-        ActivityDataImportDto activityDto = new ActivityDataImportDto();
-        ActivityDataImport activity = new ActivityDataImport();
-        BeanUtils.copyProperties(activityDto, activity, "id");
-
-        when(actividadDataImportRepository.save(activity)).thenReturn(activity);
-
-        // Act & Assert
-        dataImportService.saveActividad(activityDto);
-    }
-
-    @Test
-    public void testSaveActividad_Exception() {
-        // Arrange
-        ActivityDataImportDto activityDto = new ActivityDataImportDto();
-
-        // Mock para lanzar UnprocessableEntityException cuando se llama a activityRepository.save con la instancia específica de Activity
-        when(actividadDataImportRepository.save(any(ActivityDataImport.class))).thenThrow(new UnprocessableEntityException("Error añadiendo la actividad a la base de datos."));
-
-        // Act & Assert
-        assertThrows(UnprocessableEntityException.class, () -> {
-            dataImportService.saveActividad(activityDto);
-        });
-
-    }
-
 
 }

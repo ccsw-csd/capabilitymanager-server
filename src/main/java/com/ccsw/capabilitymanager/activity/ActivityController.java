@@ -44,7 +44,7 @@ public class ActivityController {
     }
 
     @PostMapping("/guardar")
-    public void guardarActividad(@RequestBody ActivityDataImportDto activityDto) {
-        this.dataImportService.saveActividad(activityDto);
+    public void guardarActividad(@RequestBody ActivityDTO activityDto) {
+        this.activityService.save(activityDto);
     }
 }

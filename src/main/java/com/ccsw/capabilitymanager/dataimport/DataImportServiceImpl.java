@@ -926,22 +926,6 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 	}
 
-	@Transactional
-	public void saveActividad(ActivityDataImportDto activityDto) {
-		ActivityDataImport activity = new ActivityDataImport();
-		BeanUtils.copyProperties(activityDto, activity, "id");
-		try {
-			activityDataImportRepository.save(activity);
-		} catch (Exception e) {
-			StringBuilder errorData = new StringBuilder();
-			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-					.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
-			String respuestaEr = "Error añadiendo la actividad a la base de datos.";
-			throw new UnprocessableEntityException(respuestaEr);
-		}
-	}
-	
 
 	private void setErrorToReturn(String function, ImportResponseDto importResponseDto, Exception e,
 			HttpStatus status) {

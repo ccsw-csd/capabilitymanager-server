@@ -8,6 +8,5 @@ public interface DataImportService {
 
 	ImportResponseDto processObject(ImportRequestDto dto);
 
-	void saveActividad(ActivityDataImportDto activityDto);
 
 }

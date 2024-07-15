@@ -29,9 +29,6 @@ public class ActivityControllerTest {
     private ActivityService activityService;
 
     @Mock
-    private DataImportService dataImportService;
-
-    @Mock
     private DozerBeanMapper mapper;
 
     private Activity activity1;
@@ -104,15 +101,15 @@ public class ActivityControllerTest {
 
     @Test
     public void testGuardarActividad() {
-        // Arrange
-        Long id = 1L;
-        ActivityDataImportDto dto = new ActivityDataImportDto();
-        dto.setId(3);
+
+        ActivityDTO dto = new ActivityDTO();
+        dto.setId(3L);
 
         // Act
         activityController.guardarActividad(dto);
 
         // Assert
-        verify(dataImportService, times(1)).saveActividad(dto);
+        verify(activityService, times(1)).save(dto);
+
     }
 }
