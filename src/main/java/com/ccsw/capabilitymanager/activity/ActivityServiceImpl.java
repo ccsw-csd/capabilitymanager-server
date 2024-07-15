@@ -1,7 +1,9 @@
 package com.ccsw.capabilitymanager.activity;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
+import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,13 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Override
+    public void save(ActivityDTO activityDTO) {
+        Activity activity = new Activity();
+        BeanUtils.copyProperties(activityDTO, activity, "id");
+        this.activityRepository.save(activity);
+    }
 
     @Override
     public List<Activity> findAll() {

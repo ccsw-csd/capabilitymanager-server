@@ -1,6 +1,7 @@
 package com.ccsw.capabilitymanager.activity;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
+import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface ActivityService {
     List<Activity> findByGgid(String ggid);
 
     List<Activity> findBySaga(String saga);
+
+    void save(ActivityDTO activityDto);
 }

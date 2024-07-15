@@ -15,7 +15,7 @@ public class Activity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo_actividad_id", nullable = false)
+    @JoinColumn(name = "tipo_actividad_id",insertable = false, updatable = false)
     private ActivityType tipoActividad;
 
     @Column(name = "codigo_actividad", nullable = false)
@@ -48,7 +48,7 @@ public class Activity {
     @Column(name = "ggid")
     private String ggid;
 
-    @Column(name = "tipo_actividad_id", insertable = false, updatable = false)
+    @Column(name = "tipo_actividad_id")
     private Long tipoActividadId;
 
     // Getters y setters
