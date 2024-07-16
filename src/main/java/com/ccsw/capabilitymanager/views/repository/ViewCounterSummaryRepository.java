@@ -9,4 +9,6 @@ public interface ViewCounterSummaryRepository {
 	public Collection<Profile> generateConutersSummaryByRole(int idVersionCapacidades, int idVersionStaffing, String profileId);
 	
 	public Collection<Profile> generateConutersSummaryByAll(int idVersionCapacidades, int idVersionStaffing);
+	
+	public void obtenerVersionCertificaciones(int idVersionCertificaciones);
 }

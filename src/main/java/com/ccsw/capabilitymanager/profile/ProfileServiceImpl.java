@@ -61,6 +61,11 @@ public class ProfileServiceImpl implements ProfileService {
 		return this.counterSummaryService.recoverCounterSummary(rv.getIdVersionCapacidades(), rv.getIdVersionStaffing(), actual).stream()
 				.toList();
 	}
+	
+	public void obtenerVersionCertificaciones(int idReport) {
+		ReportVersion rv = reportVersionService.findById(Long.valueOf(idReport));
+		counterSummaryService.obtenerVersionCertificaciones(rv.getIdVersionCertificaciones());
+	}
 
 	@Override
 	public InformeRoles findAllInformeRoles(int idReport) {
@@ -104,9 +109,11 @@ public class ProfileServiceImpl implements ProfileService {
 		List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
 		switch (id) {
 		case "Engagement Managers":
+			obtenerVersionCertificaciones(idReport);
 			listActual = findAllActual(id, idReport);
 			return engagementManagersTotal(findByTypeAndSubtype, listActual);
 		case "Architects":
+			obtenerVersionCertificaciones(idReport);
 			listActual = findAllActual(id, idReport);
 			return architectsTotal(findByTypeAndSubtype, listActual);
 		case "Business Analyst":
@@ -142,7 +149,7 @@ public class ProfileServiceImpl implements ProfileService {
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("SAFE")).toList().size()));
-		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM's Certification Level 1")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 1")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 2")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 3")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 4")).toList().size()));
@@ -159,7 +166,7 @@ public class ProfileServiceImpl implements ProfileService {
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Experiencia en soluciones complejas")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getExperiencia().contains("Agile")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("SAFE")).toList().size()));
-		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM's Certification Level 1")).toList().size()));
+		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 1")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 2")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 3")).toList().size()));
 		totals.add(Long.valueOf(listEM.stream().filter(p->p.getCertificaciones().contains("EM’s Certification Level 4")).toList().size()));
@@ -409,6 +416,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 		List<Profile> listAll = this.findAll(idReport);
 		List<Profile> listActual = findAllActual(id, idReport);
+		obtenerVersionCertificaciones(idReport);
 		List<Literal> findByTypeAndSubtype = literalService.findByTypeAndSubtype(id, "r");
 		switch (id) {
 		case "Engagement Managers":

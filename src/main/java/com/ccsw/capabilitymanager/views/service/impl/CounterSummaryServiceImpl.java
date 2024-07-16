@@ -27,6 +27,11 @@ public class CounterSummaryServiceImpl implements CounterSummaryService{
 	@Override
 	public Collection<Profile> recoverCounterSummaryAll(int idVersionCapacidades, int idVersionStaffing) {
 		return repository.generateConutersSummaryByAll(idVersionCapacidades, idVersionStaffing);
+	}
+
+	@Override
+	public void obtenerVersionCertificaciones(int idVersionCertificaciones) {
+		 repository.obtenerVersionCertificaciones(idVersionCertificaciones);
 	}		
 	
 }

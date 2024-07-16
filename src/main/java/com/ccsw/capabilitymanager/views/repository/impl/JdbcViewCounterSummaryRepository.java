@@ -3,10 +3,12 @@ package com.ccsw.capabilitymanager.views.repository.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ccsw.capabilitymanager.profile.ProfileService;
 import com.ccsw.capabilitymanager.profile.model.Profile;
 import com.ccsw.capabilitymanager.views.repository.ViewCounterSummaryRepository;
 
@@ -16,6 +18,7 @@ import io.micrometer.common.util.StringUtils;
 public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepository {
 
 	private final JdbcTemplate jdbcTemplate;
+	private int idVersionCertificaciones;
 
 	public JdbcViewCounterSummaryRepository(JdbcTemplate jdbcTemplate) {
 		super();
@@ -86,6 +89,14 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 	}
 	
 	
+	
+	public List<String> getCertificationsBySaga(String saga, int idVersionCertificados) {
+	    return jdbcTemplate.query(
+	        "select Certificado from certificaciones_modelo_capacidad where SAGA = ? and num_import_code_id = ?",
+	        (rs, rowNum) -> rs.getString("Certificado"),
+	        saga, idVersionCertificados
+	    );
+	}
 
 	private Profile mapRowToInformeRoles(ResultSet row,int rowNum) throws SQLException{
 		Profile profile = new Profile();
@@ -105,12 +116,21 @@ public class JdbcViewCounterSummaryRepository implements ViewCounterSummaryRepos
 		profile.setActual(row.getString("role_level_1"));
 		profile.setExperiencia(StringUtils.isNotBlank(row.getString("experience_ar"))? row.getString("experience_ar") : row.getString("experience_em"));
 		profile.setSectorExperiencia(row.getString("sector_experience"));
-		profile.setCertificaciones(("certifica"));
 		profile.setTecnicoSolution(row.getString("tecnicoL3"));
 		profile.setTecnicoIntegration(row.getString("tecnicoL4"));
 		profile.setSkillCloudNative(row.getString("cloud_native_experience"));
 		profile.setSkillLowCode(row.getString("low_code_experience"));
+		
+	
+		List<String> certificaciones = getCertificationsBySaga(row.getString("saga"), idVersionCertificaciones);
+	    profile.setCertificaciones(String.join(", ", certificaciones));
+	    
 		return profile;
+	}
+
+	@Override
+	public void obtenerVersionCertificaciones(int idVersionCertificacion) {
+		idVersionCertificaciones = idVersionCertificacion;
 	}
 
 }
