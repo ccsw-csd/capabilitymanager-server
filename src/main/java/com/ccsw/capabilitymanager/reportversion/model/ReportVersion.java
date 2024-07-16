@@ -23,6 +23,9 @@ public class ReportVersion  implements Comparable<ReportVersion>{
 	@Column(name="id_Version_staffing", nullable = false)
     private int idVersionStaffing;
 	
+	@Column(name="id_Version_certificaciones", nullable = false)
+    private int idVersionCertificaciones;
+	
 	@Column(name="screenshot", nullable = false)
     private int screenshot;
 	
@@ -111,6 +114,14 @@ public class ReportVersion  implements Comparable<ReportVersion>{
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
+	}
+	
+	public int getIdVersionCertificaciones() {
+		return idVersionCertificaciones;
+	}
+
+	public void setIdVersionCertificaciones(int idVersionCertificaciones) {
+		this.idVersionCertificaciones = idVersionCertificaciones;
 	}
 
 	@Override

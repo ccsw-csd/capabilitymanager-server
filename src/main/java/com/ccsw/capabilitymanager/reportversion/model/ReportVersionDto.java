@@ -2,6 +2,7 @@ package com.ccsw.capabilitymanager.reportversion.model;
 
 import java.time.LocalDateTime;
 
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersionDto;
 import com.ccsw.capabilitymanager.roleversion.model.RoleVersionDto;
 import com.ccsw.capabilitymanager.staffingversion.model.StaffingVersionDto;
 
@@ -12,6 +13,7 @@ public class ReportVersionDto {
 	private Long id;
     private RoleVersionDto roleVersion;
     private StaffingVersionDto staffingVersion;
+    private CertificatesVersionDto certificatesVersion;
     private int screenshot;
     private LocalDateTime fechaImportacion;
     private String descripcion;
@@ -74,4 +76,11 @@ public class ReportVersionDto {
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
 	}
+	public CertificatesVersionDto getCertificatesVersion() {
+		return certificatesVersion;
+	}
+	public void setCertificatesVersion(CertificatesVersionDto certificatesVersion) {
+		this.certificatesVersion = certificatesVersion;
+	}
+	
 }

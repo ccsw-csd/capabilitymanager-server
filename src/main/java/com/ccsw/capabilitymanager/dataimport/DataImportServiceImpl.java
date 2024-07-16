@@ -444,6 +444,8 @@ public class DataImportServiceImpl implements DataImportService {
 					Constants.CertificatesDatabasePos.COL_ANEXO.getPosition());
 			String vcComentarioAnexo = utilsServiceImpl.getStringValue(currentRow,
 					Constants.CertificatesDatabasePos.COL_COMENTARIO_ANEXO.getPosition());
+			String vcGgid = utilsServiceImpl.getStringValue(currentRow,
+					Constants.CertificatesDatabasePos.COL_GGID.getPosition());
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String vcFechaCertificadoStr = (vcFechaCertificado != null) ? dateFormat.format(vcFechaCertificado) : "";
@@ -480,6 +482,8 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setAnexo(vcAnexo);
 			data.setComentarioAnexo(vcComentarioAnexo);
 			data.setNumImportCodeId(verCertificaciones.getId());
+			data.setGgid(vcGgid);
+
 			
 		
 			certificateActivity.setsAGA(vcSAGA);

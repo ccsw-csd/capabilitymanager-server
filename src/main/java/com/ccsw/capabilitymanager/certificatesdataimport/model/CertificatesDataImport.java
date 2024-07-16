@@ -61,6 +61,11 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 	
 	@Column(name = "num_import_code_id")
     private int numImportCodeId;
+	
+	@Column(name = "ggid")
+	private String ggid;
+
+
 
 	public int getId() {
 		return id;
@@ -188,6 +193,23 @@ public class CertificatesDataImport  implements Comparable<CertificatesDataImpor
 
 	public void setNumImportCodeId(int num_import_code_id) {
 		this.numImportCodeId = num_import_code_id;
+	}
+	
+	public String getGgid() {
+		return ggid;
+	}
+
+	public void setGgid(String ggid) {
+		this.ggid = ggid;
+	}
+
+
+	public Date getFechaExpiracion() {
+		return fechaExpiracion;
+	}
+
+	public void setSector(String sector) {
+		this.sector = sector;
 	}
 
 	@Override

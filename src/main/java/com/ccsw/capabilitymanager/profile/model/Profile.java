@@ -18,6 +18,7 @@ public class Profile {
 	private String actual;
 	private String perfil;
 	private String experiencia;
+	private String certificaciones;
 	private String tecnicoSolution;
 	private String tecnicoIntegration;
 	private String skillCloudNative;
@@ -26,6 +27,7 @@ public class Profile {
 	private String sectorExperiencia;
 	private int idImportCapacidades;
 	private int idImportStaffing;
+	private int idVersionCertificaciones;
 
 	public Long getId() {
 		return id;
@@ -211,4 +213,21 @@ public class Profile {
 		this.idImportStaffing = idImportStaffing;
 	}
 
+	public int getIdVersionCertificaciones() {
+		return idVersionCertificaciones;
+	}
+
+	public void setIdVersionCertificaciones(int idVersionCertificaciones) {
+		this.idVersionCertificaciones = idVersionCertificaciones;
+	}
+
+	public String getCertificaciones() {
+		return certificaciones;
+	}
+
+	public void setCertificaciones(String certificaciones) {
+		this.certificaciones = certificaciones;
+	}
+
+	
 }

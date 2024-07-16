@@ -1,6 +1,7 @@
 package com.ccsw.capabilitymanager.reportversion;
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +15,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
+import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.exception.MyBadAdviceException;
+import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
+import com.ccsw.capabilitymanager.formdataimport.model.FormDataImport;
+import com.ccsw.capabilitymanager.reportversion.model.CertificatesRolesVersion;
 import com.ccsw.capabilitymanager.reportversion.model.GenerateReportVersionDto;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersion;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersionDto;
@@ -27,6 +33,15 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 
 	@Autowired
 	private ReportVersionRepository reportVersionRepository;
+	
+	@Autowired
+	private CertificatesRolesVersionRepository certificatesRolesVersionRepository;
+	
+	@Autowired
+	private CertificatesDataImportRepository certificatesDataImportRepository;
+	
+	@Autowired
+	private FormDataImportRepository formDataImportRepository;
 
 	@Override
 	public List<ReportVersion> findAll() {
@@ -104,7 +119,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 			reportVersion.setFechaModificacion(LocalDateTime.of(ld, lt));
 		}
 		BeanUtils.copyProperties(dto, reportVersion, "usuario", "fechaModificacion", "idVersionCapacidades",
-				"idVersionStaffing", "fechaImportacion", "descripcion");
+				"idVersionStaffing", "idVersionCertificaciones", "fechaImportacion", "descripcion");
 		// roleVersion.setFechaimportacion(dto.getFechaImportacion());
 		this.reportVersionRepository.save(reportVersion);
 	}
@@ -116,10 +131,54 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 
 	@Override
 	public ReportVersion generateReport(GenerateReportVersionDto dto) {
+		certificatesRoleSave(dto);
 		ReportVersion reportVersion = getReportVersion(dto);
 		return reportVersionRepository.save(reportVersion);
 	}
+	
+	
+	public void certificatesRoleSave(GenerateReportVersionDto dto) {
+		List<CertificatesDataImport> lista = certificatesDataImportRepository.findByNumImportCodeId((long) dto.getIdVersionCertificaciones());
+		List<CertificatesRolesVersion> certificatesRoles = getCertificatesRoles(lista,dto);
+		certificatesRolesVersionRepository.saveAll(certificatesRoles);
+	}
+	
+	private List<CertificatesRolesVersion> getCertificatesRoles(List<CertificatesDataImport> dto, GenerateReportVersionDto version) {
+	    List<CertificatesRolesVersion> certificatesRolesVersions = new ArrayList<>();
+	    LocalDateTime ldt = LocalDateTime.now();
 
+	    for (CertificatesDataImport dataImport : dto) {
+	    	
+	    	FormDataImport role = formDataImportRepository.findBySAGAAndNumImportCodeId(dataImport.getSAGA(),version.getIdRoleVersion());
+	    	
+	        CertificatesRolesVersion certificatesRolesVersion = new CertificatesRolesVersion();
+
+	    	if(role.getRolL1().equals("Architects")) {
+
+	        certificatesRolesVersion.setSAGA(dataImport.getSAGA());
+	        certificatesRolesVersion.setFechaCarga(dataImport.getFechaCertificado());
+	        certificatesRolesVersion.setRolFormulario(role.getRolL2AR());
+	        certificatesRolesVersion.setCertificado(dataImport.getCertificado());
+	        certificatesRolesVersion.setUsuario(version.getUser());
+	        certificatesRolesVersion.setNum_import_code_id(version.getIdVersionCertificaciones());
+	        
+	        certificatesRolesVersions.add(certificatesRolesVersion);
+	       }else if(role.getRolL1().equals("Engagement Managers")){
+		    certificatesRolesVersion.setSAGA(dataImport.getSAGA());
+		    certificatesRolesVersion.setFechaCarga(dataImport.getFechaCertificado());
+		    certificatesRolesVersion.setRolFormulario(role.getRolL2EM());
+		    certificatesRolesVersion.setCertificado(dataImport.getCertificado());
+		    certificatesRolesVersion.setUsuario(version.getUser());   
+		    certificatesRolesVersion.setNum_import_code_id(version.getIdVersionCertificaciones());
+		    
+		    certificatesRolesVersions.add(certificatesRolesVersion);
+		    
+	       }
+	    }
+
+	    return certificatesRolesVersions;
+	}
+	
 	private ReportVersion getReportVersion(GenerateReportVersionDto dto) {
 		LocalDateTime ldt = LocalDateTime.now();
 		ReportVersion reportVersion = new ReportVersion();
@@ -128,6 +187,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 
 		reportVersion.setIdVersionCapacidades(dto.getIdRoleVersion());
 		reportVersion.setIdVersionStaffing(dto.getIdStaffingVersion());
+		reportVersion.setIdVersionCertificaciones(dto.getIdVersionCertificaciones());
 
 		reportVersion.setDescripcion(dto.getDescription());
 		reportVersion.setComentarios(dto.getComments());

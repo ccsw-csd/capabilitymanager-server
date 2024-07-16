@@ -1,5 +1,7 @@
 package com.ccsw.capabilitymanager.reportversion;
 
+import com.ccsw.capabilitymanager.certificatesversion.CertificatesService;
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersion;
 import com.ccsw.capabilitymanager.reportversion.model.GenerateReportVersionDto;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersion;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersionDto;
@@ -36,6 +38,9 @@ public class ReportVersionControllerTest {
 
     @Mock
     private RoleVersionService roleVersionService;
+    
+    @Mock
+	private CertificatesService certificatesService;
 
 
     @BeforeEach
@@ -61,6 +66,7 @@ public class ReportVersionControllerTest {
         when(reportVersionService.findAll()).thenReturn(reportVersions);
         when(roleVersionService.findById(any(Long.class))).thenReturn(new RoleVersion());
         when(staffingVersionService.findById(any(Long.class))).thenReturn(new StaffingVersion());
+        when(certificatesService.findById(any(Long.class))).thenReturn(new CertificatesVersion());
 
         List<ReportVersionDto> result = reportVersionController.findAll();
 

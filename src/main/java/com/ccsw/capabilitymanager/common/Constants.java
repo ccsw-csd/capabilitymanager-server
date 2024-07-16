@@ -134,8 +134,12 @@ public class Constants {
 		COL_FECHA_CERTIFICADO(15),
 		COL_FECHA_EXPIRACION(16),
 		COL_ACTIVO(17),
+		COL_GGID(18),
 		COL_ANEXO(19),
-		COL_COMENTARIO_ANEXO(20);
+		COL_COMENTARIO_ANEXO(20),
+		COL_ROL_FORMULARIO_EM(21),
+		COL_ROL_FORMULARIO_ARCHITECT(22),
+		COL_ROL_FORMULARIO_BA(23);
 
 		private final int excelPosition;
 		CertificatesDatabasePos(int position) {
