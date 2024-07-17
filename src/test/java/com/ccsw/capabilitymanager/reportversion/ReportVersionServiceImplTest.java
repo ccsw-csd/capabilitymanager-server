@@ -1,6 +1,10 @@
 package com.ccsw.capabilitymanager.reportversion;
 
+import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
+import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.exception.MyBadAdviceException;
+import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
+import com.ccsw.capabilitymanager.formdataimport.model.FormDataImport;
 import com.ccsw.capabilitymanager.reportversion.model.GenerateReportVersionDto;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersion;
 import com.ccsw.capabilitymanager.reportversion.model.ReportVersionDto;
@@ -10,15 +14,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ReportVersionServiceImplTest {
@@ -27,7 +35,16 @@ public class ReportVersionServiceImplTest {
 
     @Mock
     private ReportVersionRepository reportVersionRepository;
+    
+    @Mock
+	private CertificatesDataImportRepository certificatesDataImportRepository;
+    
+    @Mock
+    private FormDataImportRepository formDataImportRepository;
 
+    @Mock
+	private CertificatesRolesVersionRepository certificatesRolesVersionRepository;
+    
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -185,8 +202,60 @@ public class ReportVersionServiceImplTest {
 
         ReportVersion generatedReportVersion = new ReportVersion();
         generatedReportVersion.setId(1L);
+        
+        List<CertificatesDataImport> lista = new ArrayList<>();
+        CertificatesDataImport certificate = new CertificatesDataImport();
 
+        // Setea los valores
+        certificate.setId(1);
+        certificate.setSAGA("SagaTest");
+        certificate.setPartner("PartnerTest");
+        certificate.setCertificado("CertificadoTest");
+        certificate.setNameGTD("NameGTDTest");
+        certificate.setCertificationGTD("CertificationGTDTest");
+        certificate.setCode("CodeTest");
+        certificate.setSector("SectorTest");
+        certificate.setModulo("ModuloTest");
+        certificate.setIdCandidato("IdCandidatoTest");
+        certificate.setFechaCertificado(new Date());
+        certificate.setFechaExpiracion(new Date());
+        certificate.setActivo("ActivoTest");
+        certificate.setAnexo("AnexoTest");
+        certificate.setComentarioAnexo("ComentarioAnexoTest");
+        certificate.setNumImportCodeId(1001);
+        certificate.setGgid("GgidTest");
+    
+    
+        lista.add(certificate);
+        
+        FormDataImport imp = new FormDataImport();
+        imp.setId(1);
+        imp.setNumImportCodeId(1001);
+        imp.setSAGA("SagaTest");
+        imp.setEmail("test@example.com");
+        imp.setName("John Doe");
+        imp.setVcProfileRolL1("Role L1");
+        imp.setRolL1Extendido("Role L1 Extended");
+        imp.setRolL2EM("Role L2 EM");
+        imp.setRolL2AR("Role L2 AR");
+        imp.setRolL2AN("Role L2 AN");
+        imp.setRolL2SE("Role L2 SE");
+        imp.setRolL3("Role L3");
+        imp.setRolL4("Role L4");
+        imp.setRolExperienceEM("Experience EM");
+        imp.setRolExperienceAR("Experience AR");
+        imp.setSkillCloudNativeExperience("Cloud Native Experience");
+        imp.setSkillLowCodeExperience("Low Code Experience");
+        imp.setSectorExperience("Sector Experience");
+        imp.setSkillCloudExp("Cloud Experience");
+        imp.setRolL1("architect");
+        
+        when(formDataImportRepository.findBySAGAAndNumImportCodeId(anyString(),anyInt())).thenReturn(imp);
+        
         when(reportVersionRepository.save(any(ReportVersion.class))).thenReturn(generatedReportVersion);
+    
+        when(certificatesDataImportRepository.findByNumImportCodeId(anyLong())).thenReturn(lista);
+        
 
         ReportVersion result = reportVersionService.generateReport(dto);
 

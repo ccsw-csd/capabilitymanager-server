@@ -220,6 +220,15 @@ public class FormDataImport implements Comparable<FormDataImport> {
 	public void setSkillCloudExp(String skillCloudExp) {
 		this.skillCloudExperience = skillCloudExp;
 	}
+	
+
+	public String getRolL1Extendido() {
+		return rolL1Extendido;
+	}
+
+	public void setRolL1(String rolL1) {
+		this.rolL1 = rolL1;
+	}
 
 	@Override
 	public int compareTo(FormDataImport o) {
