@@ -53,6 +53,7 @@ public class ResponseStatusException extends NestedRuntimeException {
     	ImportResponseDto reason = new ImportResponseDto();
     	reason.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     	reason.setError(reasonString);
+		reason.setMessage(reasonString);
 		this.status = status.value();
 		this.reason = reason;
 	}

@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.exception;
 
+import com.ccsw.capabilitymanager.common.exception.ResponseStatusException;
 import org.modelmapper.spi.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,11 @@ public class DefaultHandlerAdviceException extends ResponseEntityExceptionHandle
     public ResponseEntity<Object> handleItinerarioExistenteException(ItinerarioExistenteException ex) {
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ImportResponseDto> handleStatusException(ResponseStatusException ex) {
+        return new ResponseEntity<>(ex.getReason(), ex.getStatus());
     }
 
 }
