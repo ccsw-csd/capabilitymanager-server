@@ -55,6 +55,7 @@ public class ReportVersionControllerTest {
         reportVersion.setId(1L);
         reportVersion.setIdVersionCapacidades(1);
         reportVersion.setIdVersionStaffing(1);
+        reportVersion.setIdVersionCertificaciones(1);
         reportVersion.setUsuario("user");
         reportVersion.setDescripcion("description");
         reportVersion.setScreenshot(1);
@@ -88,6 +89,7 @@ public class ReportVersionControllerTest {
         reportVersion.setId(1L);
         reportVersion.setIdVersionCapacidades(1);
         reportVersion.setIdVersionStaffing(1);
+        reportVersion.setIdVersionCertificaciones(1);
         reportVersion.setUsuario("user");
         reportVersion.setDescripcion("description");
         reportVersion.setScreenshot(1);
@@ -99,6 +101,7 @@ public class ReportVersionControllerTest {
         when(reportVersionService.findAll()).thenReturn(reportVersions);
         when(roleVersionService.findById(any(Long.class))).thenReturn(new RoleVersion());
         when(staffingVersionService.findById(any(Long.class))).thenReturn(new StaffingVersion());
+        when(certificatesService.findById(any(Long.class))).thenReturn(new CertificatesVersion());
 
         List<ReportVersionDto> result = reportVersionController.findAllYear(year);
 
