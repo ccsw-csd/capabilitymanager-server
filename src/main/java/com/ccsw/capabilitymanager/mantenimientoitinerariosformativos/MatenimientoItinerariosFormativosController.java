@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.List;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,13 @@ import io.minio.errors.MinioException;
 @RequestMapping(value = "/mantenimiento/itinerariosFormativos")
 @RestController
 public class MatenimientoItinerariosFormativosController {
-	private static final Logger logger = LoggerFactory.getLogger(MatenimientoItinerariosFormativosController.class);
-
 	@Autowired
 	private MantenimientoItinerariosFormativosService mantenimientoIntinerariosFormativosService;
 
 
     @GetMapping(path = "/showAll")
     public List<ItinerariosFormativos> getAll() throws InvalidKeyException, java.security.InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
-    	logger.debug("Prueba");
+    	CapabilityLogger.logDebug("Prueba");
     	return this.mantenimientoIntinerariosFormativosService.findAll(); 
     	
     					
@@ -44,21 +43,21 @@ public class MatenimientoItinerariosFormativosController {
     
     @PostMapping(path = "/insert")
     public void setItinerarioFormativo(@RequestBody ItinerariosFormativosDto dto) throws ParseException{
-    	logger.debug("insert");
+        CapabilityLogger.logDebug("insert");
     
     	mantenimientoIntinerariosFormativosService.save(dto);
     }   
     
     @PutMapping(path = "/update")
     public void updateItinerarioFormativo(@RequestBody ItinerariosFormativosDto dto) throws ParseException{
-    	logger.debug("Update");
+        CapabilityLogger.logDebug("Update");
     
     	mantenimientoIntinerariosFormativosService.update(dto);
     }  
     
     @DeleteMapping(path = "delete/{id}")
     public void eliminarItinerarioFormativo(@PathVariable(name = "id", required = false) Long id) throws ParseException{
-    	logger.debug("Delete");
+        CapabilityLogger.logDebug("Delete");
     
     	mantenimientoIntinerariosFormativosService.delete(id);
     }  

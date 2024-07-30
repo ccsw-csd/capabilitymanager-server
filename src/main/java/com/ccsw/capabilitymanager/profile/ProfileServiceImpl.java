@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -137,6 +138,7 @@ public class ProfileServiceImpl implements ProfileService {
 			listAll = this.findAll(idReport);
 			return allTotal(findByTypeAndSubtype, listAll);
 		default:
+			CapabilityLogger.logError("Entrada no válida");
 			throw new MyBadAdviceException("entrada no válida");
 		}
 	}
@@ -438,6 +440,7 @@ public class ProfileServiceImpl implements ProfileService {
 		case "All Profiles":
 			return allProfiles(findByTypeAndSubtype, listAll);
 		default:
+			CapabilityLogger.logError("Entrada no válida.");
 			throw new MyBadAdviceException("entrada no válida");
 		}
 	}

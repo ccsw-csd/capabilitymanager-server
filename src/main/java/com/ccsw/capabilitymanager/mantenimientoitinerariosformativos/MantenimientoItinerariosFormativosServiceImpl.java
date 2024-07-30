@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +92,7 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 
 		if (existingItinerario != null) {
 			// Handle case where a record with the same codigo already exists
+			CapabilityLogger.logError("Existe un itinerario con el mismo código");
 			throw new ItinerarioExistenteException(codigo);
 		}
 

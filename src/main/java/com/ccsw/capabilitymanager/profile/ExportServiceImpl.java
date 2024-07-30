@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.poi.ss.usermodel.Cell;
@@ -121,6 +122,7 @@ public class ExportServiceImpl implements ExportService {
 		} catch (IOException e) {
 
 			// log.error("Error While writing CSV ", e);
+			CapabilityLogger.logError("Error mientras se escribía en el CSV");
 
 		}
 

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class VersionCapacidadesServiceImpl implements VersionCapacidadesService {
-	private static final Logger logger = LoggerFactory.getLogger(VersionCapacidadesServiceImpl.class);
 	private static final String ERROR_INIT = ">>> [ERROR][VersionStaffingServiceImpl] (";
 	
 	@Autowired
@@ -56,12 +56,12 @@ public class VersionCapacidadesServiceImpl implements VersionCapacidadesService 
 			String trace) {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append(function).append(Constants.ERROR_INIT2);
-		logger.error(errorData.toString() + " Status: " + status);
+		CapabilityLogger.logError(errorData.toString() + " Status: " + status);
 		if (errorMessage != null && !errorMessage.isBlank() && !errorMessage.isEmpty())
-			logger.error(errorData.toString() + " ERROR: " + errorMessage);
+			CapabilityLogger.logError(errorData.toString() + " ERROR: " + errorMessage);
 		if (message != null && !message.isBlank() && !message.isEmpty())
-			logger.error(errorData.toString() + " MESSAGE: " + message);
+			CapabilityLogger.logError(errorData.toString() + " MESSAGE: " + message);
 		if (trace != null && !trace.isBlank() && !trace.isEmpty())
-			logger.error(errorData.toString() + " TRACE: " + trace);
+			CapabilityLogger.logError(errorData.toString() + " TRACE: " + trace);
 	}
 }

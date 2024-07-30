@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.S3Service;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class s3ServiceImpl implements s3Service {
 
 			importResponseDto.setMessage("File uploaded to S3 successfully");
 		} catch (Exception e) {
+			CapabilityLogger.logError("Error subiendo el archivo al bucket de S3.");
 			importResponseDto.setError("Error uploading file to S3: " + e.getMessage());
 		}
 	}
