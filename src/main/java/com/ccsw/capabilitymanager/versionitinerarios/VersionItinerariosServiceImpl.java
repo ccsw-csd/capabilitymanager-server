@@ -6,6 +6,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class VersionItinerariosServiceImpl implements VersionItinerariosService {
-	private static final Logger logger = LoggerFactory.getLogger(VersionItinerariosServiceImpl.class);
 	private static final String ERROR_INIT = ">>> [ERROR][VersionItinerariosServiceImpl] (";
 	@Autowired
 	private VersionItinerariosRepository versionItinerariosRepository;
@@ -54,12 +54,12 @@ public class VersionItinerariosServiceImpl implements VersionItinerariosService 
 			String trace) {
 		StringBuilder errorData = new StringBuilder();
 		errorData.append(ERROR_INIT).append(function).append(Constants.ERROR_INIT2);
-		logger.error(errorData.toString() + " Status: " + status);
+		CapabilityLogger.logError(errorData.toString() + " Status: " + status);
 		if (errorMessage != null && !errorMessage.isBlank() && !errorMessage.isEmpty())
-			logger.error(errorData.toString() + " ERROR: " + errorMessage);
+			CapabilityLogger.logError(errorData.toString() + " ERROR: " + errorMessage);
 		if (message != null && !message.isBlank() && !message.isEmpty())
-			logger.error(errorData.toString() + " MESSAGE: " + message);
+			CapabilityLogger.logError(errorData.toString() + " MESSAGE: " + message);
 		if (trace != null && !trace.isBlank() && !trace.isEmpty())
-			logger.error(errorData.toString() + " TRACE: " + trace);
+			CapabilityLogger.logError(errorData.toString() + " TRACE: " + trace);
 	}
 }

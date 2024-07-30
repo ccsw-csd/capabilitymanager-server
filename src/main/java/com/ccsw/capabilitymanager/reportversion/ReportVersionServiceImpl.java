@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,9 +110,10 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 	public void save(Long id, ReportVersionDto dto) {
 		ReportVersion reportVersion;
 		reportVersion = this.findById(id);
-		if (reportVersion == null && id != 0)
+		if (reportVersion == null && id != 0) {
+			CapabilityLogger.logError("Error al guardar ReportVersion el id no existe.");
 			throw new MyBadAdviceException("reportVersion id doesn't exist");
-
+		}
 		if (reportVersion.getScreenshot() != dto.getScreenshot()) {
 			reportVersion.setUsuario(dto.getUsuario());
 			LocalDate ld = LocalDate.now();

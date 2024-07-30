@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -36,8 +37,6 @@ import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 @Service
 public class UtilsServiceImpl implements UtilsService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(UtilsServiceImpl.class);
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -48,7 +47,7 @@ public class UtilsServiceImpl implements UtilsService {
 			return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes()
 					.get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
 		} catch (Exception e) {
-			LOG.error("Error al extraer la version");
+			CapabilityLogger.logError("Error al extraer la versión.");
 		}
 
 		return "?";
@@ -65,6 +64,7 @@ public class UtilsServiceImpl implements UtilsService {
 		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
 			return workbook.getSheetAt(Constants.FIRST_SHEET);
 		} catch (Exception e) {
+			CapabilityLogger.logError("Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
 			throw new BadRequestException(
 					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
@@ -78,22 +78,22 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @throws UnsupportedMediaTypeException or UnprocessableEntityException
 	 */
 	public void checkInputObject(ImportRequestDto dto) {
-		LOG.debug(" >>>> checkInputObject ");
+		CapabilityLogger.logDebug(" >>>> checkInputObject ");
 		if (dto.getFileData().getOriginalFilename() == Constants.EMPTY) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 					.append(Constants.ERROR_INIT2).append(" FileData is empty");
-			LOG.error(errorData.toString());
+			CapabilityLogger.logError("El archivo de datos está vacío.");
 			throw new UnsupportedMediaTypeException("FileData is empty");
 		}
 		if (!Constants.ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 					.append(Constants.ERROR_INIT2).append("FileData dont has valid format");
-			LOG.error(errorData.toString());
+			CapabilityLogger.logError("El archivo de datos no tiene un formato válido.");
 			throw new UnprocessableEntityException("FileData dont has valid format");
 		}
-		LOG.debug("      checkInputObject >>>>");
+		CapabilityLogger.logDebug("      checkInputObject >>>>");
 	}
 
 	/**
@@ -157,6 +157,7 @@ public class UtilsServiceImpl implements UtilsService {
 	                result = Double.parseDouble(col.getStringCellValue());
 	            } catch (NumberFormatException e) {
 	                // Manejar errores de conversión
+					CapabilityLogger.logError("Error al convertir la cadena de string a double.");
 	                System.err.println("Error al convertir la cadena a double: " + e.getMessage());
 	            }
 	        } else if (col.getCellType() == CellType.BOOLEAN) {

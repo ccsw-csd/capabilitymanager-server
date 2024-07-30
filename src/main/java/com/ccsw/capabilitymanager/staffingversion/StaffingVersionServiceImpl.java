@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,9 +55,10 @@ public class StaffingVersionServiceImpl implements StaffingVersionService{
 	public void save(Long id, StaffingVersionDto dto) {
 		StaffingVersion staffingVersion;      
         staffingVersion = this.findById(id);       
-        if (staffingVersion == null)
-            throw new MyBadAdviceException("roleVersion id doesn't exist");
-
+        if (staffingVersion == null) {
+			CapabilityLogger.logError("Error al guardar StaffingVersion el id:"+ id +" no existe.");
+			throw new MyBadAdviceException("staffingVersion id doesn't exist");
+		}
         BeanUtils.copyProperties(dto, staffingVersion, "id");
         //roleVersion.setFechaimportacion(dto.getFechaImportacion());
         this.StaffingVersionRepository.save(staffingVersion);

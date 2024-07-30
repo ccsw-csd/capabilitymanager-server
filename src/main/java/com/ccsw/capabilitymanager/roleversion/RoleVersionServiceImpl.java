@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.roleversion;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -54,9 +55,10 @@ public class RoleVersionServiceImpl implements RoleVersionService{
 	public void save(Long id, RoleVersionDto dto) {
 		RoleVersion roleVersion;      
         roleVersion = this.findById(id);       
-        if (roleVersion == null)
-            throw new MyBadAdviceException("roleVersion id doesn't exist");
-
+        if (roleVersion == null) {
+			CapabilityLogger.logError("Error al guardar RoleVersion el id no existe.");
+			throw new MyBadAdviceException("roleVersion id doesn't exist");
+		}
         BeanUtils.copyProperties(dto, roleVersion, "id");
         //roleVersion.setFechaimportacion(dto.getFechaImportacion());
         this.RoleVersionRepository.save(roleVersion);

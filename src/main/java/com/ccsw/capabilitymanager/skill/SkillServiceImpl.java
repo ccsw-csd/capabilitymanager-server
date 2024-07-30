@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.skill;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,10 @@ public class SkillServiceImpl implements SkillService{
 
 
     public Skill findById(Long id) throws EntityNotFoundException {
-        return this.skillRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return this.skillRepository.findById(id).orElseThrow(() -> {
+            CapabilityLogger.logError("Entidad con id: " + id + " no encontrada.");
+            return new EntityNotFoundException();
+        });
     }
 
     @Override

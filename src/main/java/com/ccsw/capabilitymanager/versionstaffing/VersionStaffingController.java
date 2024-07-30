@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +26,17 @@ import io.minio.errors.MinioException;
 @RequestMapping(value = "/version-staffing")
 @RestController
 public class VersionStaffingController {
-	private static final Logger logger = LoggerFactory.getLogger(VersionStaffingController.class);
-	
     @Autowired
     private VersionStaffingService versionStaffingService;
 
     @GetMapping(path = "/download-file/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id,String fileName) throws InvalidKeyException, java.security.InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
-    	logger.debug(" >>>> getFile " + id);
+    	CapabilityLogger.logDebug(" >>>> getFile " + id);
     	
     	InputStream inputStream = (InputStream) versionStaffingService.recoverFileById(id, fileName);  
     	InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
     	
-    	logger.debug("      getFile >>>>");
+    	CapabilityLogger.logDebug("      getFile >>>>");
     	return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_OCTET_STREAM)
 				.header(HttpHeaders.CONTENT_DISPOSITION,
 						"attachment; filename=\"" + inputStreamResource.getFilename() + "\"")
