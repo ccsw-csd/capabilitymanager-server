@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -61,7 +60,6 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class DataImportServiceImpl implements DataImportService {
-	private static final Logger logger = LoggerFactory.getLogger(DataImportServiceImpl.class);
 
 	@Autowired
 	private FormDataImportRepository formDataImportRepository;
@@ -114,7 +112,7 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
-		logger.debug("[DataImportServiceImpl]  >>>> processObject ");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processObject ");
 		dataservice.getMinioClient();
 		s3service.uploadFile(dto);
 
@@ -140,7 +138,7 @@ public class DataImportServiceImpl implements DataImportService {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		logger.debug("[DataImportServiceImpl] processObject >>>>");
+		CapabilityLogger.logDebug("[DataImportServiceImpl] processObject >>>>");
 		return importResponseDto;
 
 	}
@@ -153,7 +151,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 */
 	@Transactional
 	private ImportResponseDto processRolsDoc(ImportRequestDto dto) {
-		logger.debug(" >>>> processRolsDoc ");
+		CapabilityLogger.logDebug(" >>>> processRolsDoc ");
 		var importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(dataservice.getBucketName());
 		importResponseDto.setPath(dataservice.getS3Endpoint());
@@ -253,11 +251,11 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
-			logger.error(errorData.toString());
+			CapabilityLogger.logError(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
 		}
 
-		logger.debug("      processRolsDoc >>>>");
+		CapabilityLogger.logDebug("      processRolsDoc >>>>");
 		return importResponseDto;
 
 	}
@@ -270,7 +268,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 */
 	@Transactional
 	private ImportResponseDto processStaffingDoc(ImportRequestDto dto) {
-		logger.debug("[DataImportServiceImpl]  >>>> processStaffingDoc ");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processStaffingDoc ");
 
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(dataservice.getBucketName());
@@ -377,11 +375,11 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
-			logger.error(errorData.toString());
+			CapabilityLogger.logError(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
 
-		logger.debug(" [DataImportServiceImpl]      processStaffingDoc >>>>");
+		CapabilityLogger.logDebug(" [DataImportServiceImpl]      processStaffingDoc >>>>");
 		return importResponseDto;
 
 	}
@@ -393,7 +391,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return ImportResponseDto Object
 	 */
 	private ImportResponseDto processCertificatesDoc(ImportRequestDto dto) {
-		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(dataservice.getBucketName());
 		importResponseDto.setPath(dataservice.getS3Endpoint());
@@ -512,11 +510,11 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
-			logger.error(errorData.toString());
+			CapabilityLogger.logError(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
 
-		logger.debug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
 		return importResponseDto;
 	}
 	
@@ -527,7 +525,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return ImportResponseDto Object
 	 */
 	private ImportResponseDto processItinerariosDoc(ImportRequestDto dto) {
-		logger.debug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(dataservice.getBucketName());
 		importResponseDto.setPath(dataservice.getS3Endpoint());
@@ -654,11 +652,11 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
-			logger.error(errorData.toString());
+			CapabilityLogger.logError(errorData.toString());
 			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
 		}
 
-		logger.debug("[DataImportServiceImpl]       processItinerariosDoc >>>>");
+		CapabilityLogger.logDebug("[DataImportServiceImpl]       processItinerariosDoc >>>>");
 		return importResponseDto;
 	}
 	
@@ -789,7 +787,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEx = e.getMessage();
 			String  respuesta = respuestaEx.substring(respuestaEx.indexOf('[')+1, respuestaEx.indexOf(']'));
 			String respuestaEr = respuesta + ". Error procesando el excel. Comprueba los datos correctos";
@@ -813,7 +811,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEx = e.getMessage();
 			String  respuesta = respuestaEx.substring(respuestaEx.indexOf('[')+1, respuestaEx.indexOf(']'));
 			String respuestaEr = respuesta + ". Error procesando el excel. Comprueba los datos correctos";
@@ -837,7 +835,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -858,7 +856,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -880,7 +878,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -903,7 +901,7 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 			.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
 			throw new UnprocessableEntityException(respuestaEr);
 		}
@@ -924,8 +922,9 @@ public class DataImportServiceImpl implements DataImportService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 					.append(Constants.ERROR_INIT2);
-			logger.error(errorData.toString() + e.getMessage());
+			CapabilityLogger.logError(errorData.toString() + e.getMessage());
 			String respuestaEr = "Error procesando el excel.Comprueba los datos correctos";
+			CapabilityLogger.logError(respuestaEr);
 			throw new UnprocessableEntityException(respuestaEr);
 		}
 	}
@@ -946,13 +945,13 @@ public class DataImportServiceImpl implements DataImportService {
 		errorData.append(Constants.ERROR_INIT).append(function).append(Constants.ERROR_INIT2);
 
 		importResponseDto.setTimestamp(LocalDateTime.now());
-		logger.error(errorData.toString() + " Status: " + status);
+		CapabilityLogger.logError(errorData.toString() + " Status: " + status);
 		importResponseDto.setStatus(status);
-		logger.error(errorData.toString() + " ERROR: " + errorMessage);
+		CapabilityLogger.logError(errorData.toString() + " ERROR: " + errorMessage);
 		importResponseDto.setError(errorMessage);
-		logger.error(errorData.toString() + " MESSAGE: " + message);
+		CapabilityLogger.logError(errorData.toString() + " MESSAGE: " + message);
 		importResponseDto.setMessage(message);
-		logger.error(errorData.toString() + " TRACE: " + trace);
+		CapabilityLogger.logError(errorData.toString() + " TRACE: " + trace);
 		importResponseDto.setTrace(trace);
 	}
 
