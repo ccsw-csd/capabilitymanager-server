@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,11 @@ public class CertificatesServiceImpl implements CertificatesService {
 	public void save(Long id, CertificatesVersionDto dto) {
 		CertificatesVersion certiVersion;
 		certiVersion = this.findById(id);
-		if (certiVersion == null)
-			throw new MyBadAdviceException("certiVersion id doesn't exist");
+		if (certiVersion == null){
+			String respuestaEr = "Error al guardar la versión del certificado. El id no existe";
+			CapabilityLogger.logError(respuestaEr);
+			throw new MyBadAdviceException(respuestaEr);
+		}
 
 		BeanUtils.copyProperties(dto, certiVersion, "id");
 		this.certificatesVersionRepository.save(certiVersion);
