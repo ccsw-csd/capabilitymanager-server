@@ -31,7 +31,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class ReportVersionServiceImpl implements ReportVersionService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][ReportVersionServiceImpl] (";
 	@Autowired
 	private ReportVersionRepository reportVersionRepository;
 	
@@ -111,7 +111,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 		ReportVersion reportVersion;
 		reportVersion = this.findById(id);
 		if (reportVersion == null && id != 0) {
-			CapabilityLogger.logError("Error al guardar ReportVersion el id no existe.");
+			CapabilityLogger.logError(ERROR_INIT + "save) : Error al guardar ReportVersion el id no existe.");
 			throw new MyBadAdviceException("reportVersion id doesn't exist");
 		}
 		if (reportVersion.getScreenshot() != dto.getScreenshot()) {

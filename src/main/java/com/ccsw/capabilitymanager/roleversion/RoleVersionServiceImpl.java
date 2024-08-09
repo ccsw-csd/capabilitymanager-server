@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 @Service
 @Transactional
 public class RoleVersionServiceImpl implements RoleVersionService{
-
+	private static final String ERROR_INIT = ">>> [ERROR][RoleVersionServiceImpl] (";
     @Autowired
     private RoleVersionRepository RoleVersionRepository;
     
@@ -56,7 +56,7 @@ public class RoleVersionServiceImpl implements RoleVersionService{
 		RoleVersion roleVersion;      
         roleVersion = this.findById(id);       
         if (roleVersion == null) {
-			CapabilityLogger.logError("Error al guardar RoleVersion el id no existe.");
+			CapabilityLogger.logError(ERROR_INIT + "save) : Error al guardar RoleVersion el id no existe.");
 			throw new MyBadAdviceException("roleVersion id doesn't exist");
 		}
         BeanUtils.copyProperties(dto, roleVersion, "id");

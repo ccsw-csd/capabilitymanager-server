@@ -20,7 +20,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class StaffingVersionServiceImpl implements StaffingVersionService{
-
+	private static final String ERROR_INIT = ">>> [ERROR][StaffingVersionServiceImpl] (";
     @Autowired
     private StaffingVersionRepository StaffingVersionRepository;
     
@@ -56,7 +56,7 @@ public class StaffingVersionServiceImpl implements StaffingVersionService{
 		StaffingVersion staffingVersion;      
         staffingVersion = this.findById(id);       
         if (staffingVersion == null) {
-			CapabilityLogger.logError("Error al guardar StaffingVersion el id:"+ id +" no existe.");
+			CapabilityLogger.logError(ERROR_INIT + "save) : Error al guardar StaffingVersion el id:"+ id +" no existe.");
 			throw new MyBadAdviceException("staffingVersion id doesn't exist");
 		}
         BeanUtils.copyProperties(dto, staffingVersion, "id");

@@ -2,16 +2,13 @@ package com.ccsw.capabilitymanager.mantenimientoitinerariosformativos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.List;
 
-import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.capabilitymanager.certificatesversion.CertificatesVersionRepository;
-import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersion;
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.exception.ItinerarioExistenteException;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativosDto;
@@ -21,7 +18,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class MantenimientoItinerariosFormativosServiceImpl implements MantenimientoItinerariosFormativosService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][MantenimientoItinerariosFormativosServiceImpl] (";
 	@Autowired
 	private MantenimientoItinerariosFormativosRepository mantenimientoItinerariosFormativosRepository;
 
@@ -92,7 +89,7 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 
 		if (existingItinerario != null) {
 			// Handle case where a record with the same codigo already exists
-			CapabilityLogger.logError("Existe un itinerario con el mismo código");
+			CapabilityLogger.logError(ERROR_INIT + "comprobarExistenciaCodigo):Existe un itinerario con el mismo código");
 			throw new ItinerarioExistenteException(codigo);
 		}
 

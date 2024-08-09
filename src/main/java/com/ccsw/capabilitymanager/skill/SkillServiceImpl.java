@@ -13,14 +13,14 @@ import java.util.List;
 @Service
 @Transactional
 public class SkillServiceImpl implements SkillService{
-
+	private static final String ERROR_INIT = ">>> [ERROR][SkillServiceImpl] (";
     @Autowired
     private SkillRepository skillRepository;
 
 
     public Skill findById(Long id) throws EntityNotFoundException {
         return this.skillRepository.findById(id).orElseThrow(() -> {
-            CapabilityLogger.logError("Entidad con id: " + id + " no encontrada.");
+            CapabilityLogger.logError(ERROR_INIT+ "findById) : Entidad con id: " + id + " no encontrada.");
             return new EntityNotFoundException();
         });
     }

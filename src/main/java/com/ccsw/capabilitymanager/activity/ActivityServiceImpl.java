@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ActivityServiceImpl implements ActivityService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][ActivityServiceImpl] (";
     @Autowired
     private ActivityRepository activityRepository;
 
@@ -23,7 +23,7 @@ public class ActivityServiceImpl implements ActivityService {
             Activity activity = new Activity();
             BeanUtils.copyProperties(activityDTO, activity, "id");
             if (activity.getFechaFinalizacion().before(activity.getFechaInicio())) {
-                String respuestaEr = "Error al guardar la actividad. La fecha de finalización tiene que ser mayor o igual a la de inicio";
+                String respuestaEr = ERROR_INIT +"save): Error al guardar la actividad. La fecha de finalización tiene que ser mayor o igual a la de inicio";
                 CapabilityLogger.logError(respuestaEr);
                 throw new UnprocessableEntityException(respuestaEr);
             }
