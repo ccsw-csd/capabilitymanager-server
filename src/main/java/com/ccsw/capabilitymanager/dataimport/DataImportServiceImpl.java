@@ -1,7 +1,6 @@
 package com.ccsw.capabilitymanager.dataimport;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,31 +10,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ccsw.capabilitymanager.activity.model.Activity;
-import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
-import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesActividadDataImportRepository;
+import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
+import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
-import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesActividadDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
 import com.ccsw.capabilitymanager.formdataimport.model.FormDataImport;
-import com.ccsw.capabilitymanager.itinerariosdataimport.ItinerariosActividadDataImportRepository;
 import com.ccsw.capabilitymanager.itinerariosdataimport.ItinerariosDataImportRepository;
-import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosActividadDataImport;
 import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosDataImport;
 import com.ccsw.capabilitymanager.staffingdataimport.StaffingDataImportRepository;
 import com.ccsw.capabilitymanager.staffingdataimport.model.StaffingDataImport;
@@ -48,12 +42,6 @@ import com.ccsw.capabilitymanager.versionitinerarios.VersionItinerariosRepositor
 import com.ccsw.capabilitymanager.versionitinerarios.model.VersionItinerarios;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
-import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
-import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
-import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
-import com.ccsw.capabilitymanager.activity.model.Activity;
-import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
-import com.ccsw.capabilitymanager.activity.ActivityRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -69,16 +57,10 @@ public class DataImportServiceImpl implements DataImportService {
 
 	@Autowired
 	private CertificatesDataImportRepository certificatesDataImportRepository;
-	
-	@Autowired
-	private CertificatesActividadDataImportRepository certificatesActividadDataImportRepository;
-	
+		
 	@Autowired
 	private ItinerariosDataImportRepository itinerariosDataImportRepository;
 	
-	@Autowired
-	private ItinerariosActividadDataImportRepository itinerariosActividadDataImportRepository;
-
 	@Autowired
 	private VersionCapatidadesRepository versionCapatidadesRepository;
 
@@ -106,8 +88,6 @@ public class DataImportServiceImpl implements DataImportService {
 	@Autowired
 	private ActivityDataImportRepository activityDataImportRepository;
 
-	@Autowired
-	private ActivityRepository activityRepository;
 
 
 	@Override
@@ -216,6 +196,7 @@ public class DataImportServiceImpl implements DataImportService {
                 	error.setStatus(HttpStatus.BAD_REQUEST);
                 	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
                 	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                	rollBackRoles(verCap.getId());
                     return error;
                 }
             }
@@ -333,6 +314,7 @@ public class DataImportServiceImpl implements DataImportService {
                 	error.setStatus(HttpStatus.BAD_REQUEST);
                 	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
                 	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                	rollBackStaffing(verStaf.getId());
                     return error;
                 }
             }
@@ -461,6 +443,7 @@ public class DataImportServiceImpl implements DataImportService {
                 	error.setStatus(HttpStatus.BAD_REQUEST);
                 	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
                 	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                	rollBackCertificates(verCertificaciones.getId());
                     return error;
                 }
             }
@@ -597,6 +580,7 @@ public class DataImportServiceImpl implements DataImportService {
                 	error.setStatus(HttpStatus.BAD_REQUEST);
                 	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
                 	error.setError("Row " + i + " is missing required field: " + entry.getValue());
+                	rollBackItinerarios(verItinerarios.getId());
                     return error;
                 }
             }
@@ -660,7 +644,25 @@ public class DataImportServiceImpl implements DataImportService {
 		return importResponseDto;
 	}
 	
+	private void rollBackStaffing(int id) {
 
+		versionStaffingRepository.deleteById((long) id);
+	}
+	
+	private void rollBackCertificates(int id) {
+
+		versionCertificacionesRepository.deleteById((long) id);
+	}
+	
+	private void rollBackRoles(int id) {
+
+		versionCapatidadesRepository.deleteById((long) id);
+	}
+	
+	private void rollBackItinerarios(int id) {
+
+		versionItinerariosRepository.deleteById((long) id);
+	}
 	/**
 	 * Create an save on database CapacityVersion Object
 	 *

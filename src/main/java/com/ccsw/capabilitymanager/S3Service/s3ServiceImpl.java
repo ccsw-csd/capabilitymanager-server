@@ -15,7 +15,7 @@ import io.minio.PutObjectArgs;
 
 @Service
 public class s3ServiceImpl implements s3Service {
-
+	private static final String ERROR_INIT = ">>> [ERROR][s3ServiceImpl] (";
 	@Autowired
 	private DataserviceS3 dataservice;
 
@@ -38,7 +38,7 @@ public class s3ServiceImpl implements s3Service {
 
 			importResponseDto.setMessage("File uploaded to S3 successfully");
 		} catch (Exception e) {
-			CapabilityLogger.logError("Error subiendo el archivo al bucket de S3.");
+			CapabilityLogger.logError(ERROR_INIT + "uploadFile) : Error subiendo el archivo al bucket de S3.");
 			importResponseDto.setError("Error uploading file to S3: " + e.getMessage());
 		}
 	}

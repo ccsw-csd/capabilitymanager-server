@@ -54,7 +54,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class ExportServiceImpl implements ExportService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][ExportServiceImpl] (";
 	@Autowired
 	private LiteralService literalService;
 
@@ -122,7 +122,7 @@ public class ExportServiceImpl implements ExportService {
 		} catch (IOException e) {
 
 			// log.error("Error While writing CSV ", e);
-			CapabilityLogger.logError("Error mientras se escribía en el CSV");
+			CapabilityLogger.logError(ERROR_INIT + "writeProfileTotalsToCsv) :Error mientras se escribía en el CSV");
 
 		}
 

@@ -20,7 +20,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class CertificatesServiceImpl implements CertificatesService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][CertificatesServiceImpl] (";
 	@Autowired
 	private CertificatesVersionRepository certificatesVersionRepository;
 
@@ -56,7 +56,7 @@ public class CertificatesServiceImpl implements CertificatesService {
 		CertificatesVersion certiVersion;
 		certiVersion = this.findById(id);
 		if (certiVersion == null){
-			String respuestaEr = "Error al guardar la versión del certificado. El id no existe";
+			String respuestaEr = ERROR_INIT + "save): Error al guardar la versión del certificado. El id no existe";
 			CapabilityLogger.logError(respuestaEr);
 			throw new MyBadAdviceException(respuestaEr);
 		}

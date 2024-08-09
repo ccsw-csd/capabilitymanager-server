@@ -31,6 +31,7 @@ public class Constants {
 
 	public static final String ERROR_INIT  = ">>> [ERROR][DataImportServiceImpl] (";
 	public static final String ERROR_INIT2  = ") ERROR: ";
+	public static final String ERROR_INIT_UTIL = ">>> [ERROR][UtilsServiceImpl] (";
 	public static final String ERROR_EMPTY_ROL_FILE = " Rols List File is null or empty";
 	public static final String ERROR_EMPTY_STAFFING_FILE = " Staffing List File is null or empty";
 	public static final String ERROR_DOCUMENT_TYPE = "ERROR: 'documentType' param is not valid (select value 1, 2 or 3)";

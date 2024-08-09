@@ -32,7 +32,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
-
+	private static final String ERROR_INIT = ">>> [ERROR][ProfileServiceImpl] (";
 	@Autowired
 	private LiteralService literalService;
 
@@ -138,7 +138,7 @@ public class ProfileServiceImpl implements ProfileService {
 			listAll = this.findAll(idReport);
 			return allTotal(findByTypeAndSubtype, listAll);
 		default:
-			CapabilityLogger.logError("Entrada no válida");
+			CapabilityLogger.logError(ERROR_INIT + "findAllProfileTotals) : Entrada no válida");
 			throw new MyBadAdviceException("entrada no válida");
 		}
 	}
@@ -440,7 +440,7 @@ public class ProfileServiceImpl implements ProfileService {
 		case "All Profiles":
 			return allProfiles(findByTypeAndSubtype, listAll);
 		default:
-			CapabilityLogger.logError("Entrada no válida.");
+			CapabilityLogger.logError(ERROR_INIT + "findAllProfileTotals): Entrada no válida.");
 			throw new MyBadAdviceException("entrada no válida");
 		}
 	}

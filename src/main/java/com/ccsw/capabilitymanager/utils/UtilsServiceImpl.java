@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -19,8 +18,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +25,7 @@ import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.BadRequestException;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.common.exception.UnsupportedMediaTypeException;
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 
 /**
@@ -47,7 +45,7 @@ public class UtilsServiceImpl implements UtilsService {
 			return new Manifest(UtilsServiceImpl.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes()
 					.get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
 		} catch (Exception e) {
-			CapabilityLogger.logError("Error al extraer la versión.");
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "getVersion) : Error al extraer la versión.");
 		}
 
 		return "?";
@@ -64,7 +62,7 @@ public class UtilsServiceImpl implements UtilsService {
 		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
 			return workbook.getSheetAt(Constants.FIRST_SHEET);
 		} catch (Exception e) {
-			CapabilityLogger.logError("Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "obtainSheet) : Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
 			throw new BadRequestException(
 					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
@@ -83,14 +81,14 @@ public class UtilsServiceImpl implements UtilsService {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 					.append(Constants.ERROR_INIT2).append(" FileData is empty");
-			CapabilityLogger.logError("El archivo de datos está vacío.");
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "checkInputObject) : El archivo de datos está vacío.");
 			throw new UnsupportedMediaTypeException("FileData is empty");
 		}
 		if (!Constants.ALLOWED_FORMATS.contains(dto.getFileData().getContentType())) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
 					.append(Constants.ERROR_INIT2).append("FileData dont has valid format");
-			CapabilityLogger.logError("El archivo de datos no tiene un formato válido.");
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "checkInputObject) : El archivo de datos no tiene un formato válido.");
 			throw new UnprocessableEntityException("FileData dont has valid format");
 		}
 		CapabilityLogger.logDebug("      checkInputObject >>>>");
@@ -157,7 +155,7 @@ public class UtilsServiceImpl implements UtilsService {
 	                result = Double.parseDouble(col.getStringCellValue());
 	            } catch (NumberFormatException e) {
 	                // Manejar errores de conversión
-					CapabilityLogger.logError("Error al convertir la cadena de string a double.");
+					CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "getDecialValue): Error al convertir la cadena de string a double.");
 	                System.err.println("Error al convertir la cadena a double: " + e.getMessage());
 	            }
 	        } else if (col.getCellType() == CellType.BOOLEAN) {
