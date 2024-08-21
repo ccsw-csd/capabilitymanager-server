@@ -683,7 +683,10 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCap.setNombreFichero(fileName);
 		versionCap.setDescripcion(description);
 		versionCap.setUsuario(user);
-		versionCap.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
+		if (idTipointerfaz.equals("2")) {
+			idTipointerfaz = "Roles";
+		}
+		versionCap.setIdTipointerfaz(idTipointerfaz);
 		versionCap.setFichero(dataservice.getS3Endpoint());
 
 		return versionCapatidadesRepository.save(versionCap);
@@ -708,7 +711,10 @@ public class DataImportServiceImpl implements DataImportService {
 		versionStaf.setNombreFichero(fileName);
 		versionStaf.setDescripcion(description);
 		versionStaf.setUsuario(user);
-		versionStaf.setIdTipointerfaz(Integer.valueOf(idTipointerfaz));
+		if (idTipointerfaz.equals("1")) {
+			idTipointerfaz = "Staffing";
+		}
+		versionStaf.setIdTipointerfaz(idTipointerfaz);
 		versionStaf.setFichero(dataservice.getS3Endpoint());
 
 		return versionStaffingRepository.save(versionStaf);
@@ -732,7 +738,11 @@ public class DataImportServiceImpl implements DataImportService {
 		int numReg = sheet.getPhysicalNumberOfRows() - 1;
 
 		VersionCertificaciones versionCer = new VersionCertificaciones();
-		versionCer.setIdTipointerfaz(Integer.valueOf(dto.getDocumentType()));
+		String idTipointerfaz = dto.getDocumentType();
+		if (idTipointerfaz.equals("3")) {
+			idTipointerfaz = "Certifications";
+		}
+		versionCer.setIdTipointerfaz(idTipointerfaz);
 		versionCer.setFechaImportacion(LocalDateTime.now());
 		versionCer.setNumRegistros(numReg);
 		versionCer.setNombreFichero(dto.getFileData().getOriginalFilename());

@@ -18,7 +18,7 @@ public class VersionStaffing {
 	private int id;
 
 	@Column(name = "id_Tipo_interfaz", nullable = false)
-	private int idTipointerfaz;
+	private String idTipointerfaz;
 
 	@Column(name = "fecha_Importacion", nullable = false)
 	private LocalDateTime fechaImportacion;
@@ -48,11 +48,11 @@ public class VersionStaffing {
 		this.id = id;
 	}
 
-	public int getIdTipointerfaz() {
+	public String getIdTipointerfaz() {
 		return idTipointerfaz;
 	}
 
-	public void setIdTipointerfaz(int idTipointerfaz) {
+	public void setIdTipointerfaz(String idTipointerfaz) {
 		this.idTipointerfaz = idTipointerfaz;
 	}
 
