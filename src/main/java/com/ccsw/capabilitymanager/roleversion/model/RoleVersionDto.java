@@ -6,7 +6,7 @@ public class RoleVersionDto {
 	
 
 	private Long id;
-    private int idTipoInterfaz;
+    private String idTipoInterfaz;
     private LocalDateTime fechaImportacion;
     private int numRegistros;
     private String nombreFichero;
@@ -15,7 +15,7 @@ public class RoleVersionDto {
     
     
    
-	public RoleVersionDto(Long id, int idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
+	public RoleVersionDto(Long id, String idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
 			String nombreFichero, String descripcion, String usuario) {
 		super();
 		this.id = id;
@@ -84,11 +84,11 @@ public class RoleVersionDto {
 		this.usuario = comentarios;
 	}
 
-	public int getIdTipoInterfaz() {
+	public String getIdTipoInterfaz() {
 		return idTipoInterfaz;
 	}
 
-	public void setIdTipoInterfaz(int idTipoInterfaz) {
+	public void setIdTipoInterfaz(String idTipoInterfaz) {
 		this.idTipoInterfaz = idTipoInterfaz;
 	}
 

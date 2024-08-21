@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class CertificatesVersionDto {
 
 	private Long id;
-    private int idTipoInterfaz;
+    private String idTipoInterfaz;
     private LocalDateTime fechaImportacion;
     private int numRegistros;
     private String nombreFichero;
@@ -13,7 +13,7 @@ public class CertificatesVersionDto {
     private String usuario;
     
     
-	public CertificatesVersionDto(Long id, int idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
+	public CertificatesVersionDto(Long id, String idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
 			String nombreFichero, String descripcion, String usuario) {
 		super();
 		this.id = id;
@@ -35,10 +35,10 @@ public class CertificatesVersionDto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public int getIdTipoInterfaz() {
+	public String getIdTipoInterfaz() {
 		return idTipoInterfaz;
 	}
-	public void setIdTipoInterfaz(int idTipoInterfaz) {
+	public void setIdTipoInterfaz(String idTipoInterfaz) {
 		this.idTipoInterfaz = idTipoInterfaz;
 	}
 	public LocalDateTime getFechaImportacion() {

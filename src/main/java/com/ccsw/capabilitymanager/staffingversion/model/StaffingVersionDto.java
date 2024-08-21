@@ -7,7 +7,7 @@ public class StaffingVersionDto {
 	
 
 	private Long id;
-	private int idTipoInterfaz;
+	private String idTipoInterfaz;
     private LocalDateTime fechaImportacion;
     private int numRegistros;
     private String nombreFichero;
@@ -16,7 +16,7 @@ public class StaffingVersionDto {
 
     
     
-	public StaffingVersionDto(Long id, int idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
+	public StaffingVersionDto(Long id, String idTipoInterfaz, LocalDateTime fechaImportacion, int numRegistros,
 			String nombreFichero, String descripcion, String usuario) {
 		super();
 		this.id = id;
@@ -77,11 +77,11 @@ public class StaffingVersionDto {
 		this.usuario = usuario;
 	}	
 
-	public int getIdTipoInterfaz() {
+	public String getIdTipoInterfaz() {
 		return idTipoInterfaz;
 	}
 
-	public void setIdTipoInterfaz(int idTipoInterfaz) {
+	public void setIdTipoInterfaz(String idTipoInterfaz) {
 		this.idTipoInterfaz = idTipoInterfaz;
 	}
 

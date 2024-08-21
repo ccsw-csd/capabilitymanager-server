@@ -19,7 +19,7 @@ public class CertificatesVersion implements Comparable<CertificatesVersion> {
 	private Long id;
 	
 	@Column(name="id_Tipo_interfaz", nullable = false)
-    private int idTipoInterfaz;	
+    private String idTipoInterfaz;	
 
     @Column(name="fecha_Importacion", nullable = false)
     private LocalDateTime fechaImportacion;
@@ -84,11 +84,11 @@ public class CertificatesVersion implements Comparable<CertificatesVersion> {
 		this.usuario = usuario;
 	}
 
-	public int getIdTipoInterfaz() {
+	public String getIdTipoInterfaz() {
 		return idTipoInterfaz;
 	}
 
-	public void setIdTipoInterfaz(int idTipoInterfaz) {
+	public void setIdTipoInterfaz(String idTipoInterfaz) {
 		this.idTipoInterfaz = idTipoInterfaz;
 	}
 
