@@ -29,7 +29,27 @@ public class VersionCertificacionesController {
     @Autowired
     private VersionCertificacionesService versionCertificacionesService;
     
-
+    /**
+     * Handles the file download request by retrieving the file from the service and returning it as a downloadable resource.
+     * 
+     * @param id The ID of the file to retrieve.
+     * @param fileName The name of the file to retrieve.
+     * @return A {@link ResponseEntity} containing the file as a {@link Resource} for download.
+     * 
+     * @throws InvalidKeyException If the key used for accessing the file is invalid.
+     * @throws NoSuchAlgorithmException If the algorithm required for accessing the file is not found.
+     * @throws IllegalArgumentException If an illegal argument is provided to the file retrieval method.
+     * @throws IOException If an I/O error occurs while retrieving or processing the file.
+     * @throws MinioException If an error occurs while interacting with the MinIO server.
+     * 
+     * <p>This method processes a GET request to download a file. It retrieves the file using the provided 
+     * ID and file name from the {@link VersionCertificacionesService}. The file is then wrapped in an 
+     * {@link InputStreamResource} and returned in the HTTP response with an `application/octet-stream` 
+     * content type, allowing the file to be downloaded by the client. The `Content-Disposition` header is 
+     * set to indicate that the file should be treated as an attachment with the given file name.</p>
+     * 
+     * <p>The method also logs debugging information before and after file retrieval for tracking purposes.</p>
+     */
     @GetMapping(path = "/download-file/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id, String fileName) throws InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
     	CapabilityLogger.logDebug(" >>>> getFile " + id);

@@ -10,6 +10,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CachingConfig {
 
+	/**
+	 * Configures a {@link CacheManager} for managing application caches.
+	 *
+	 * <p>This configuration creates a {@link ConcurrentMapCacheManager} that manages a cache named 
+	 * "findByTypeAndSubtype".</p>
+	 *
+	 * @return A {@link CacheManager} instance that uses a concurrent map to manage caches.
+	 */
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("findByTypeAndSubtype");

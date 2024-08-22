@@ -22,6 +22,20 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 	@Autowired
 	private MantenimientoItinerariosFormativosRepository mantenimientoItinerariosFormativosRepository;
 
+	/**
+	 * Saves a new {@link ItinerariosFormativos} entity based on the provided DTO.
+	 *
+	 * <p>This method performs the following actions:</p>
+	 * <ul>
+	 *   <li>Checks if an entry with the given code already exists by calling {@link #comprobarExistenciaCodigo(String)}.</li>
+	 *   <li>Creates a new {@link ItinerariosFormativos} entity and sets its properties based on the provided {@link ItinerariosFormativosDto}.</li>
+	 *   <li>Sets the current date as the 'fecha de alta' and a maximum future date ("9999-12-31") as the 'fecha de baja'.</li>
+	 *   <li>Persists the new entity in the repository using {@link mantenimientoItinerariosFormativosRepository#save(ItinerariosFormativos)}.</li>
+	 * </ul>
+	 *
+	 * @param dto The {@link ItinerariosFormativosDto} containing the data to be saved.
+	 * @throws ParseException If an error occurs while parsing the date.
+	 */
 	@Override
 	public void save(ItinerariosFormativosDto dto) throws ParseException {
 
@@ -44,12 +58,28 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 		mantenimientoItinerariosFormativosRepository.save(itinerariosFormativo);
 	}
 
+	/**
+	 * Updates an existing {@link ItinerariosFormativos} entity with the data from the provided DTO.
+	 *
+	 * <p>This method performs the following actions:</p>
+	 * <ul>
+	 *   <li>Finds the existing {@link ItinerariosFormativos} entity by its ID.</li>
+	 *   <li>If the code in the DTO is different from the existing entity's code, it checks for the existence of the new code by calling {@link #comprobarExistenciaCodigo(String)}.</li>
+	 *   <li>Updates the fields of the existing entity with the values from the DTO.</li>
+	 *   <li>Sets the current date as the 'fecha de modificación'.</li>
+	 *   <li>Saves the updated entity back to the repository using {@link mantenimientoItinerariosFormativosRepository#save(ItinerariosFormativos)}.</li>
+	 * </ul>
+	 *
+	 * @param dto The {@link ItinerariosFormativosDto} containing the updated data.
+	 * @throws ParseException If an error occurs while formatting the date (although formatting is not required here as the current date is used directly).
+	 */
 	@Override
 	public void update(ItinerariosFormativosDto dto) throws ParseException {
 		// Find the existing entity by codigo
 		ItinerariosFormativos existingItinerario = mantenimientoItinerariosFormativosRepository.findByid(dto.getId());
 		
 		if(!dto.getCodigo().equals(existingItinerario.getCodigo())) {
+	   //Comprobar existencia de codigo
 		comprobarExistenciaCodigo(dto.getCodigo());
 		}
 		// Update the fields
@@ -67,12 +97,31 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 
 	}
 
+	/**
+	 * Retrieves all {@link ItinerariosFormativos} entities from the repository.
+	 *
+	 * <p>This method fetches all entities from the repository and sorts them in their natural order.</p>
+	 *
+	 * @return A {@link List} of {@link ItinerariosFormativos} entities, sorted in natural order.
+	 */
 	@Override
 	public List<ItinerariosFormativos> findAll() {
 		return (List<ItinerariosFormativos>) this.mantenimientoItinerariosFormativosRepository.findAll().stream()
 				.sorted().toList();
 	}
 
+	/**
+	 * Deletes an {@link ItinerariosFormativos} entity by its ID.
+	 *
+	 * <p>This method performs the following actions:</p>
+	 * <ul>
+	 *   <li>Finds the {@link ItinerariosFormativos} entity with the specified ID using {@link mantenimientoItinerariosFormativosRepository#findByid(Long)}.</li>
+	 *   <li>Deletes the found entity from the repository using {@link mantenimientoItinerariosFormativosRepository#delete(ItinerariosFormativos)}.</li>
+	 * </ul>
+	 *
+	 * @param id The ID of the {@link ItinerariosFormativos} entity to be deleted.
+	 * @throws EntityNotFoundException If no entity with the specified ID is found.
+	 */
 	@Override
 	public void delete(Long id) {
 
@@ -82,6 +131,15 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 
 	}
 
+	/**
+	 * Checks if an {@link ItinerariosFormativos} entity with the specified code already exists.
+	 *
+	 * <p>This method queries the repository to determine if an entity with the provided code exists. If an entity with
+	 * the same code is found, an {@link ItinerarioExistenteException} is thrown to indicate a conflict.</p>
+	 *
+	 * @param codigo The code to check for existence.
+	 * @throws ItinerarioExistenteException If an entity with the specified code already exists.
+	 */
 	@Override
 	public void comprobarExistenciaCodigo(String codigo) {
 

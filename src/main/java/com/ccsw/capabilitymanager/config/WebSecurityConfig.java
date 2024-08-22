@@ -29,12 +29,31 @@ public class WebSecurityConfig {
     @Autowired
     private JsonWebTokenAuthenticationFilter jwtAuthFilter;
 
+    /**
+     * Configures the {@link AuthenticationManager} bean used for authentication.
+     *
+     * @param config The {@link AuthenticationConfiguration} used to obtain the {@link AuthenticationManager}.
+     * @return An instance of {@link AuthenticationManager} configured according to the provided {@link AuthenticationConfiguration}.
+     * @throws Exception If an error occurs while creating the {@link AuthenticationManager}.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 
         return config.getAuthenticationManager();
     }
-
+    
+    /**
+     * Configures the {@link SecurityFilterChain} for securing HTTP requests.
+     *
+     * <p>This configuration disables CSRF protection, CORS, HTTP basic authentication, and form login.
+     * It permits all requests to specified unsecured resources and OPTIONS requests.
+     * All other requests require authentication. Sessions are managed statelessly,
+     * and a custom authentication provider and filter are added to handle JWT-based authentication.</p>
+     *
+     * @param http The {@link HttpSecurity} object used to configure the security settings.
+     * @return The configured {@link SecurityFilterChain} instance.
+     * @throws Exception If an error occurs while configuring the security settings.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -56,6 +75,14 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configures CORS (Cross-Origin Resource Sharing) for the application.
+     *
+     * <p>This configuration allows cross-origin requests from any origin and permits the HTTP methods 
+     * GET, POST, PUT, and DELETE for all endpoints.</p>
+     *
+     * @return A {@link WebMvcConfigurer} instance that provides CORS configuration.
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
 

@@ -33,6 +33,28 @@ public class VersionCapacidadesServiceImpl implements VersionCapacidadesService 
 	@Autowired
 	private DataserviceS3 dataservice;
 
+	/**
+	 * Retrieves a file from MinIO storage based on the provided ID and file name.
+	 * 
+	 * @param id The ID of the file to retrieve.
+	 * @param fileName The name of the file to retrieve.
+	 * @return An {@link InputStream} for the file retrieved from MinIO.
+	 * 
+	 * @throws IOException If an I/O error occurs while retrieving the file.
+	 * @throws MinioException If an error occurs while interacting with the MinIO server.
+	 * @throws InvalidKeyException If the key used for accessing MinIO is invalid.
+	 * @throws NoSuchAlgorithmException If the algorithm required for the file retrieval is not found.
+	 * @throws IllegalArgumentException If an illegal argument is provided to the file retrieval method.
+	 * @throws java.security.InvalidKeyException If the key used for accessing MinIO is invalid (security-specific).
+	 * 
+	 * <p>This method attempts to retrieve a file from MinIO storage based on the provided ID and file name. 
+	 * It first checks if the file exists in the local database using the provided ID. If the file is found, 
+	 * it uses the file name from the database record to retrieve the file from MinIO. If the file is not found 
+	 * in the database, it sets an error indicating that the file was not found.</p>
+	 * 
+	 * <p>The method returns an {@link InputStream} for the requested file if it exists. Otherwise, it sets 
+	 * an appropriate error response.</p>
+	 */
 	@Override
 	public InputStream recoverFileById(Long id, String fileName) throws IOException, MinioException,
 			InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, java.security.InvalidKeyException {
@@ -52,6 +74,19 @@ public class VersionCapacidadesServiceImpl implements VersionCapacidadesService 
 		return minioClient.getObject(GetObjectArgs.builder().bucket(dataservice.getBucketName()).object(fileName).build());
 	}
 
+	/**
+	 * Logs an error message and sets an appropriate error response.
+	 * 
+	 * @param function The name of the function where the error occurred.
+	 * @param status The HTTP status to be used in the error response.
+	 * @param errorMessage A detailed error message to be logged.
+	 * @param message A message to be included in the error log.
+	 * @param trace A stack trace or additional details to be included in the error log.
+	 * 
+	 * <p>This method constructs a detailed error message and logs it using {@link CapabilityLogger}. 
+	 * It includes information about the function where the error occurred, the HTTP status, and any 
+	 * additional error details or stack traces provided.</p>
+	 */
 	private void setErrorToReturn(String function, HttpStatus status, String errorMessage, String message,
 			String trace) {
 		StringBuilder errorData = new StringBuilder();

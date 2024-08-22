@@ -89,7 +89,16 @@ public class DataImportServiceImpl implements DataImportService {
 	private ActivityDataImportRepository activityDataImportRepository;
 
 
-
+	/**
+	 * Processes the given import request based on the document type specified.
+	 *
+	 * <p>This method handles different types of documents specified by the `documentType` field in the
+	 * {@link ImportRequestDto}. It uploads the file to S3, checks the input object, and processes it based
+	 * on the document type. It returns an {@link ImportResponseDto} with the result of the processing.</p>
+	 *
+	 * @param dto The {@link ImportRequestDto} containing the file and document type to process.
+	 * @return An {@link ImportResponseDto} with the result of the processing, including any errors or success messages.
+	 */
 	@Override
 	public ImportResponseDto processObject(ImportRequestDto dto) {
 		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processObject ");
@@ -643,26 +652,59 @@ public class DataImportServiceImpl implements DataImportService {
 		CapabilityLogger.logDebug("[DataImportServiceImpl]       processItinerariosDoc >>>>");
 		return importResponseDto;
 	}
-	
+
+	/**
+	 * Rolls back or reverts the staffing record with the given ID.
+	 *
+	 * <p>This method deletes the staffing record from the repository using the provided ID. The ID is
+	 * cast to a {@code Long} before performing the delete operation.</p>
+	 *
+	 * @param id The ID of the staffing record to be deleted. This is an integer that is cast to a {@code Long}.
+	 */
 	private void rollBackStaffing(int id) {
 
 		versionStaffingRepository.deleteById((long) id);
 	}
 	
+	/**
+	 * Rolls back or reverts the certificate record with the given ID.
+	 *
+	 * <p>This method deletes the certificate record from the repository using the provided ID. The ID is
+	 * cast to a {@code Long} before performing the delete operation.</p>
+	 *
+	 * @param id The ID of the certificate record to be deleted. This is an integer that is cast to a {@code Long}.
+	 */
 	private void rollBackCertificates(int id) {
 
 		versionCertificacionesRepository.deleteById((long) id);
 	}
 	
+	/**
+	 * Rolls back or reverts the roles record with the given ID.
+	 *
+	 * <p>This method deletes the role record from the repository using the provided ID. The ID is
+	 * cast to a {@code Long} before performing the delete operation.</p>
+	 *
+	 * @param id The ID of the role record to be deleted. This is an integer that is cast to a {@code Long}.
+	 */
 	private void rollBackRoles(int id) {
 
 		versionCapatidadesRepository.deleteById((long) id);
 	}
 	
+	/**
+	 * Rolls back or reverts the itinerario record with the given ID.
+	 *
+	 * <p>This method deletes the itinerario record from the repository using the provided ID. The ID is
+	 * cast to a {@code Long} before performing the delete operation.</p>
+	 *
+	 * @param id The ID of the itinerario record to be deleted. This is an integer that is cast to a {@code Long}.
+	 */
 	private void rollBackItinerarios(int id) {
 
 		versionItinerariosRepository.deleteById((long) id);
 	}
+	
 	/**
 	 * Create an save on database CapacityVersion Object
 	 *
@@ -941,7 +983,18 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 	}
 
-
+	/**
+	 * Sets an error message on the {@link ImportResponseDto} and logs the error details.
+	 *
+	 * <p>This method constructs an error message including the function name and details from the given exception.
+	 * It then calls another overload of {@code setErrorToReturn} to set the error message on the 
+	 * {@link ImportResponseDto} and log the error details.</p>
+	 *
+	 * @param function The name of the function where the error occurred. Used for constructing the error message.
+	 * @param importResponseDto The {@link ImportResponseDto} to which the error message will be set.
+	 * @param e The {@link Exception} that contains the error details.
+	 * @param status The {@link HttpStatus} to be associated with the error.
+	 */
 	private void setErrorToReturn(String function, ImportResponseDto importResponseDto, Exception e,
 			HttpStatus status) {
 		StringBuilder errorData = new StringBuilder();
@@ -950,7 +1003,21 @@ public class DataImportServiceImpl implements DataImportService {
 		setErrorToReturn(function, importResponseDto, e.getMessage(), e.getLocalizedMessage(),
 				Arrays.toString(e.getStackTrace()), status);
 	}
-
+	
+	
+	/**
+	 * Sets an error message and additional details on the {@link ImportResponseDto} and logs the error.
+	 *
+	 * <p>This method constructs an error message and sets various details on the {@link ImportResponseDto} including
+	 * the error message, a custom message, a stack trace, and the HTTP status. It also logs these details for debugging purposes.</p>
+	 *
+	 * @param function The name of the function where the error occurred. Used to construct the error message.
+	 * @param importResponseDto The {@link ImportResponseDto} to which the error details will be set.
+	 * @param errorMessage The main error message to be set in the response.
+	 * @param message A custom message providing additional context about the error.
+	 * @param trace The stack trace of the exception, converted to a string for debugging purposes.
+	 * @param status The {@link HttpStatus} to be associated with the error response.
+	 */
 	private void setErrorToReturn(String function, ImportResponseDto importResponseDto, String errorMessage,
 			String message, String trace, HttpStatus status) {
 		StringBuilder errorData = new StringBuilder();
@@ -986,6 +1053,17 @@ public class DataImportServiceImpl implements DataImportService {
 		}
 	}*/
 	
+	/**
+	 * Sets the RolL1 profile value in the {@link FormDataImport} object based on the extended role description.
+	 *
+	 * <p>This method evaluates the extended role description from the {@link FormDataImport} object and sets
+	 * the appropriate RolL1 profile value based on the role description. If the description starts with a specific
+	 * role title, it sets the corresponding RolL1 profile constant. If the role title does not match any predefined
+	 * roles, it sets an empty value.</p>
+	 *
+	 * @param formDataImport The {@link FormDataImport} object containing the role description and where the RolL1
+	 *                       profile value will be set.
+	 */
 	private void setRolL1(FormDataImport formDataImport) {
 	    String rolL1extendido = formDataImport.getRolL1extendido();
 

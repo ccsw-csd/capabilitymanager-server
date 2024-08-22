@@ -19,6 +19,21 @@ public class s3ServiceImpl implements s3Service {
 	@Autowired
 	private DataserviceS3 dataservice;
 
+	/**
+	 * Uploads a file to an S3 bucket using MinIO client.
+	 * 
+	 * <p>This method checks if the specified S3 bucket exists. If the bucket does not exist, it creates a new bucket. Then, it uploads the provided file to the bucket.</p>
+	 * 
+	 * @param dto The {@link ImportRequestDto} containing the file to be uploaded and additional metadata.
+	 * 
+	 * <p>The method initializes the MinIO client and performs the following actions:</p>
+	 * <ol>
+	 *   <li>Checks if the specified bucket exists and creates it if it does not.</li>
+	 *   <li>Uploads the file to the specified bucket.</li>
+	 * </ol>
+	 * 
+	 * <p>In case of an error during the process, the method logs the error and sets an appropriate error message in the {@link ImportResponseDto} object.</p>
+	 */
 	public void uploadFile(ImportRequestDto dto) {
 
 		ImportResponseDto importResponseDto = new ImportResponseDto();

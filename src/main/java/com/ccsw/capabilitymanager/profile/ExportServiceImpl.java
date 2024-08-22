@@ -101,6 +101,17 @@ public class ExportServiceImpl implements ExportService {
 		this.profileGroup = profileGroup;
 	}
 
+	/**
+	 * Writes profile totals data to a CSV file and sends it in the HTTP response.
+	 *
+	 * <p>This method generates a CSV file containing profile totals based on the provided ID. The file is attached
+	 * to the HTTP response with a filename that includes the current date. The method sets appropriate HTTP headers for
+	 * content type and attachment disposition.</p>
+	 *
+	 * @param id The identifier used to name the CSV file and filter the profile totals data.
+	 * @param servletResponse The {@link HttpServletResponse} object used to send the CSV file to the client.
+	 * @throws IOException If an error occurs while writing the CSV file to the response.
+	 */
 	@Override
 	public void writeProfileTotalsToCsv(String id, HttpServletResponse servletResponse) {
 
@@ -128,6 +139,17 @@ public class ExportServiceImpl implements ExportService {
 
 	}
 
+	/**
+	 * Writes profile totals data to an Excel file and sends it in the HTTP response.
+	 *
+	 * <p>This method generates an Excel file (XLSX format) containing profile totals based on the provided ID. The file is attached
+	 * to the HTTP response with a filename that includes the current date. The method sets appropriate HTTP headers for
+	 * content type and attachment disposition.</p>
+	 *
+	 * @param id The identifier used to name the Excel file and filter the profile totals data.
+	 * @param servletResponse The {@link HttpServletResponse} object used to send the Excel file to the client.
+	 * @throws IOException If an error occurs while writing the Excel file to the response or if the output stream cannot be closed.
+	 */
 	@Override
 	public void writeProfileTotalsToExcel(String id, HttpServletResponse servletResponse) throws IOException {
 
@@ -193,6 +215,16 @@ public class ExportServiceImpl implements ExportService {
 		outputStream.close();
 	}
 
+	/**
+	 * Retrieves a {@link ReportVersionDto} for the specified report ID.
+	 *
+	 * <p>This method fetches a {@link ReportVersion} entity by its ID and maps its properties to a {@link ReportVersionDto}.
+	 * It also retrieves related entities such as {@link RoleVersion}, {@link StaffingVersion}, and {@link CertificatesVersion},
+	 * and populates the DTO with their respective data if they exist.</p>
+	 *
+	 * @param idReport The ID of the report version to retrieve.
+	 * @return A {@link ReportVersionDto} containing the details of the report version and its associated entities.
+	 */
 	public ReportVersionDto findVersion(Long idReport) {
 		ReportVersion rv = this.reportversionservice.findById(idReport);
 		ReportVersionDto rvdto = new ReportVersionDto();
@@ -395,6 +427,19 @@ public class ExportServiceImpl implements ExportService {
 		outputStream.close();
 	}
 
+	
+	/**
+	 * Writes profile data to an Excel file and sends it as an attachment in the HTTP response.
+	 *
+	 * <p>This method generates an Excel file containing profile data based on the provided ID.
+	 * It sets the appropriate HTTP headers for file download and uses a {@link Report} object
+	 * to create the Excel file from a template. The generated file is then sent as a response
+	 * to the client.</p>
+	 *
+	 * @param id The identifier used to fetch and include profile data in the generated Excel file.
+	 * @param servletResponse The {@link HttpServletResponse} object used to set the response headers and output stream.
+	 * @throws IOException If an I/O error occurs during file writing or while handling the HTTP response.
+	 */
 	@Override
 	public void writeProfileToTemplateExcel(String id, HttpServletResponse servletResponse) throws IOException {
 

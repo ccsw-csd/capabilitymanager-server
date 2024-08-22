@@ -29,6 +29,24 @@ public class VersionCapacidadesController {
     @Autowired
     private VersionCapacidadesService versionCapacidadesService;
 
+    /**
+     * Downloads a file from the server based on the provided ID and file name.
+     * 
+     * @param id The ID of the file to download.
+     * @param fileName The name of the file to download.
+     * @return A {@link ResponseEntity} containing the file as a {@link Resource}, with HTTP status OK.
+     * 
+     * <p>This method retrieves a file from the server using the provided ID and file name. It streams the file
+     * to the client in the response. The response has a content type of application/octet-stream and includes
+     * a Content-Disposition header to prompt a file download with the provided file name.</p>
+     * 
+     * @throws InvalidKeyException If the key used for accessing the file is invalid.
+     * @throws java.security.InvalidKeyException If the key used for accessing the file is invalid (security-specific).
+     * @throws NoSuchAlgorithmException If the algorithm required for accessing the file is not found.
+     * @throws IllegalArgumentException If an illegal argument is provided to the file retrieval method.
+     * @throws IOException If an I/O error occurs while retrieving the file.
+     * @throws MinioException If an error occurs while interacting with the MinIO server.
+     */
     @GetMapping(path = "/download-file/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id,String fileName) throws InvalidKeyException, java.security.InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
     	CapabilityLogger.logDebug(" >>>> getFile " + id);

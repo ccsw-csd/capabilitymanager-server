@@ -31,6 +31,16 @@ public class DataImportController {
 	@Autowired
 	DozerBeanMapper mapper;
 
+	/**
+	 * Handles HTTP POST requests for importing data.
+	 *
+	 * <p>This endpoint processes a file upload request. It expects the request to contain a multipart form-data payload.
+	 * The file is uploaded to an S3 bucket, and then the data is processed and stored in the database.</p>
+	 *
+	 * @param dto The {@link ImportRequestDto} object, which is extracted from the multipart form-data request.
+	 * @return A {@link ResponseEntity} containing an {@link ImportResponseDto} with the result of the import process.
+	 * @throws ImportException If an error occurs during the processing of the file.
+	 */
 	@PostMapping(path = "/data", consumes = { "multipart/form-data" })
 	public ResponseEntity<ImportResponseDto> importData(
 			@RequestPart("importRequestDto") @ModelAttribute ImportRequestDto dto) {
