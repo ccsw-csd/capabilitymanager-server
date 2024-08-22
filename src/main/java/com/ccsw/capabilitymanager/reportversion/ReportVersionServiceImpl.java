@@ -213,6 +213,7 @@ public class ReportVersionServiceImpl implements ReportVersionService {
 	 * @param dto The {@link GenerateReportVersionDto} containing data used to filter and create {@link CertificatesRolesVersion} entities.
 	 */
 	public void certificatesRoleSave(GenerateReportVersionDto dto) {
+		
 		List<CertificatesDataImport> lista = certificatesDataImportRepository.findByNumImportCodeId((long) dto.getIdVersionCertificaciones());
 		List<CertificatesRolesVersion> certificatesRoles = getCertificatesRoles(lista,dto);
 		certificatesRolesVersionRepository.saveAll(certificatesRoles);
