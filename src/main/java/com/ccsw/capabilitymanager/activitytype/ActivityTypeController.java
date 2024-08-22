@@ -22,12 +22,23 @@ public class ActivityTypeController {
     @Autowired
     private ActivityTypeService activityTypeService;
 
+    /**
+     * Handles HTTP GET requests to retrieve a list of all activity types.
+     *
+     * @return A list of {@link ActivityTypeDTO} objects representing all activity types.
+     */
     @GetMapping("")
     public List<ActivityTypeDTO> findAll() {
         List<ActivityType> activitiesTypes = activityTypeService.getAllActivityTypes();
         return activitiesTypes.stream().map(activityType -> mapper.map(activityType, ActivityTypeDTO.class)).collect(Collectors.toList());
     }
-
+    
+    /**
+     * Handles HTTP GET requests to retrieve a specific activity type by its ID.
+     *
+     * @param id The ID of the activity type to retrieve.
+     * @return An {@link Optional} containing the {@link ActivityType} if found, or {@link Optional#empty()} if not.
+     */
     @GetMapping("/{id}")
     public Optional<ActivityType> getActivityTypeById(@PathVariable Long id) {
         return activityTypeService.getActivityTypeById(id);

@@ -24,16 +24,40 @@ public class StaffingVersionServiceImpl implements StaffingVersionService{
     @Autowired
     private StaffingVersionRepository StaffingVersionRepository;
     
+    
+    /**
+     * Retrieves all staffing versions.
+     * 
+     * @return A list of {@link StaffingVersion} objects.
+     * 
+     * <p>This method fetches all staffing versions from the repository, sorts them, and returns them as a list.</p>
+     */
     @Override
     public List<StaffingVersion> findAll() {
         return (List<StaffingVersion>) this.StaffingVersionRepository.findAll().stream().sorted().toList();
     }
-        
+  
+    /**
+     * Retrieves a staffing version by its ID.
+     * 
+     * @param id The ID of the staffing version to retrieve.
+     * @return The {@link StaffingVersion} object with the specified ID, or null if not found.
+     * 
+     * <p>This method fetches a staffing version based on the provided ID. If the ID is not found, 
+     * it returns null.</p>
+     */
     @Override
     public StaffingVersion findById(Long id) {
         return this.StaffingVersionRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves a list of years for which staffing versions are available.
+     * 
+     * @return A list of years as strings.
+     * 
+     * <p>This method collects all unique years from the available staffing versions and returns them.</p>
+     */
 	@Override
 	public List<String> findYears() {
 		List<String> rvList = new ArrayList<String>();
@@ -51,6 +75,18 @@ public class StaffingVersionServiceImpl implements StaffingVersionService{
 		return rvList;
 	}
 
+	   /**
+     * Saves or updates a staffing version based on the provided ID.
+     * 
+     * @param id The ID of the staffing version to save. If the ID is null or zero, 
+     *           a new entity will be created.
+     * @param dto The {@link StaffingVersionDto} object containing the details to be saved.
+     * 
+     * <p>This method updates an existing staffing version if the ID is valid; otherwise, it throws an exception. 
+     * It copies properties from the DTO to the entity and saves it to the repository.</p>
+     * 
+     * @throws MyBadAdviceException if the staffing version with the provided ID does not exist.
+     */
 	@Override
 	public void save(Long id, StaffingVersionDto dto) {
 		StaffingVersion staffingVersion;      

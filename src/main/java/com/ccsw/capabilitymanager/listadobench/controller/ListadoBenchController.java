@@ -18,11 +18,30 @@ public class ListadoBenchController {
     @Autowired
     private ListadoBenchService service;
 
+    /**
+     * Retrieves a list of all staffing entries.
+     *
+     * <p>This method handles HTTP GET requests to the root path of the controller. It returns a list of {@link ListadoBench}
+     * objects representing the staffing entries obtained from the service layer.</p>
+     *
+     * @return A {@link List} of {@link ListadoBench} objects containing all staffing entries.
+     */
     @GetMapping
     public List<ListadoBench> getAllStaffing() {
         return service.getListadoPersonasBench();
     }
 
+    /**
+     * Retrieves a list of staffing entries filtered by a specific saga.
+     *
+     * <p>This method handles HTTP GET requests to the path with a saga parameter. It returns an {@link Optional} containing
+     * a list of {@link ListadoBench} objects that match the specified saga. If no entries are found for the given saga, the
+     * {@link Optional} will be empty.</p>
+     *
+     * @param saga The saga identifier used to filter the staffing entries.
+     * @return An {@link Optional} containing a {@link List} of {@link ListadoBench} objects matching the specified saga,
+     *         or an empty {@link Optional} if no entries are found.
+     */
     @GetMapping("/{saga}")
     public Optional<List<ListadoBench>> getEmpleadoPorSaga(@PathVariable String saga) {
         return service.getEmpleadoPorSaga(saga);

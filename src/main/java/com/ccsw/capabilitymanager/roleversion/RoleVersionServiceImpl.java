@@ -24,16 +24,34 @@ public class RoleVersionServiceImpl implements RoleVersionService{
     @Autowired
     private RoleVersionRepository RoleVersionRepository;
     
+    /**
+     * Retrieves a list of all {@link RoleVersion} entities, sorted by their natural ordering.
+     * 
+     * @return A list of all {@link RoleVersion} entities.
+     */
     @Override
     public List<RoleVersion> findAll() {
         return (List<RoleVersion>) this.RoleVersionRepository.findAll().stream().sorted().toList();
     }
-        
+      
+    /**
+     * Retrieves a {@link RoleVersion} entity by its ID.
+     * 
+     * @param id The ID of the {@link RoleVersion} entity to be retrieved.
+     * @return The {@link RoleVersion} entity with the specified ID, or {@code null} if no such entity exists.
+     */
     @Override
     public RoleVersion findById(Long id) {
         return this.RoleVersionRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves a list of unique years based on the {@link FechaImportacion} of {@link RoleVersion} entities.
+     * 
+     * <p>This method collects years from the {@link FechaImportacion} field of all {@link RoleVersion} entities and returns them as a list of unique year strings.</p>
+     * 
+     * @return A list of unique years extracted from the {@link FechaImportacion} field of {@link RoleVersion} entities.
+     */
 	@Override
 	public List<String> findYears() {
 		List<String> rvList = new ArrayList<String>();
@@ -51,6 +69,15 @@ public class RoleVersionServiceImpl implements RoleVersionService{
 		return rvList;
 	}
 
+	/**
+	 * Updates an existing {@link RoleVersion} entity with data from the provided DTO.
+	 * 
+	 * <p>Updates the {@link RoleVersion} entity identified by the specified ID with values from the {@link RoleVersionDto} object. If the entity with the given ID does not exist, an exception is thrown.</p>
+	 * 
+	 * @param id The ID of the {@link RoleVersion} entity to be updated.
+	 * @param dto The {@link RoleVersionDto} containing the data to update the entity.
+	 * @throws MyBadAdviceException if the {@link RoleVersion} entity with the given ID does not exist.
+	 */
 	@Override
 	public void save(Long id, RoleVersionDto dto) {
 		RoleVersion roleVersion;      

@@ -30,6 +30,27 @@ public class VersionItinerariosController {
     private VersionItinerariosService versionItinerariosService;
     
 
+    /**
+     * Handles the retrieval and download of a file from MinIO storage.
+     * 
+     * @param id The ID of the file to retrieve.
+     * @param fileName The name of the file to retrieve. This parameter is optional and can be null if the filename is 
+     *                 retrieved from the database based on the provided ID.
+     * @return A {@link ResponseEntity} containing the file as a {@link Resource} for download.
+     * 
+     * @throws InvalidKeyException If the key used for accessing the MinIO bucket is invalid.
+     * @throws NoSuchAlgorithmException If the algorithm used for accessing the MinIO bucket is not found.
+     * @throws IllegalArgumentException If an illegal argument is provided to the file retrieval method.
+     * @throws IOException If an I/O error occurs while retrieving the file from MinIO.
+     * @throws MinioException If an error occurs while interacting with the MinIO server.
+     * 
+     * <p>This method handles HTTP GET requests to download a file. It uses the provided ID to retrieve the file 
+     * details from the service. The file name can be provided directly or retrieved from the database based on the 
+     * file ID. The method then uses MinIO client to fetch the file and returns it as a downloadable {@link Resource}. 
+     * If any errors occur during file retrieval or while interacting with MinIO, they are thrown as appropriate 
+     * exceptions.</p>
+     * 
+     */
     @GetMapping(path = "/download-file/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id, String fileName) throws InvalidKeyException, NoSuchAlgorithmException, IllegalArgumentException, IOException, MinioException{
     	CapabilityLogger.logDebug(" >>>> getFile " + id);

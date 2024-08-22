@@ -22,7 +22,13 @@ public class JdbcViewGradosRolesRepositoryImpl implements ViewGradosRolesReposit
 	}
 
 
-
+	/**
+	 * Retrieves a collection of GradeRole objects based on the provided version IDs.
+	 * 
+	 * @param idVersionCapacidades the ID of the version from the capacidades table.
+	 * @param idVersionStaffing the ID of the version from the staffing table.
+	 * @return a collection of GradeRole objects matching the provided IDs.
+	 */
 	@Override
 	public Collection<GradeRole> findAll(int idVersionCapacidades, int idVersionStaffing) {
 		return jdbcTemplate.query("select\r\n"

@@ -22,12 +22,24 @@ public class GradeController {
     
     @Autowired
     DozerBeanMapper mapper;
-
+    
+    /**
+     * Handles HTTP GET requests to retrieve a list of all grades.
+     *
+     * @return A list of {@link GradeDto} objects representing all grades.
+     */
     @GetMapping("/config")
     public List<GradeDto> findAll(){
         return this.gradeService.findAll().stream().map(g->mapper.map(g,GradeDto.class)).toList();
     }  
     
+    /**
+     * Handles HTTP GET requests to retrieve a grade by its ID.
+     *
+     * @param id The ID of the grade to retrieve.
+     * @return The {@link Grade} object with the specified ID.
+     * @throws NumberFormatException If the ID cannot be converted to a {@code Long}.
+     */   
     @GetMapping("/{id}")
     public Grade findById(@PathVariable String id){
         return this.gradeService.findById(Long.valueOf(id));     
