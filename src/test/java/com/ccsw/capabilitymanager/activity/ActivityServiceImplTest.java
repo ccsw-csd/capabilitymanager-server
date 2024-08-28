@@ -1,13 +1,16 @@
 package com.ccsw.capabilitymanager.activity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.ActivityRepository;
+import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
+import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +26,7 @@ public class ActivityServiceImplTest {
 
     private Activity activity1;
     private Activity activity2;
+    private ActivityDTO activity3;
 
     @BeforeEach
     public void setUp() {
@@ -34,6 +38,10 @@ public class ActivityServiceImplTest {
         activity2 = new Activity();
         activity2.setId(2L);
         activity2.setNombreActividad("Activity 2");
+
+        activity3 = new ActivityDTO();
+        activity3.setId(3L);
+
     }
 
     @Test
@@ -74,4 +82,29 @@ public class ActivityServiceImplTest {
         assertEquals(1, result.size());
         assertEquals(activity2, result.get(0));
     }
+
+    @Test
+    public void testSaveWhenEndDateBeforeStartDate() {
+        Date startDate = new Date();
+        Date endDate = new Date(startDate.getTime() - 1000); // End date before start date
+
+        activity3.setFechaInicio(startDate);
+        activity3.setFechaFinalizacion(endDate);
+
+        assertThrows(UnprocessableEntityException.class, () -> {
+            activityService.save(activity3);
+        });
+    }
+
+    @Test
+    public void testSaveWhenDatesAreValid() {
+        Date startDate = new Date();
+        Date endDate = new Date(startDate.getTime() + 1000); // End date after start date
+
+        activity3.setFechaInicio(startDate);
+        activity3.setFechaFinalizacion(endDate);
+
+        assertDoesNotThrow(() -> activityService.save(activity3));
+    }
 }
+
