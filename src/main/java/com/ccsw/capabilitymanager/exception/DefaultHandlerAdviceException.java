@@ -73,6 +73,21 @@ public class DefaultHandlerAdviceException extends ResponseEntityExceptionHandle
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
+    
+    /**
+     * Handles exceptions of type {@link ItinerarioVacioException} and returns a response with a BAD_REQUEST status.
+     *
+     * <p>This method is invoked when an {@link ItinerarioVacioException} is thrown. It creates an {@link ErrorMessage}
+     * object with the exception's message and returns it in the response body with an HTTP status of 400 Bad Request.</p>
+     *
+     * @param ex The {@link ItinerarioVacioException} instance that was thrown, containing the error details.
+     * @return A {@link ResponseEntity} containing the {@link ErrorMessage} with the error details and an HTTP status of 400 Bad Request.
+     */
+    @ExceptionHandler(ItinerarioVacioException.class)
+    public ResponseEntity<Object> handleItinerarioVacioException(ItinerarioVacioException ex) {
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * Handles exceptions of type {@link ResponseStatusException} and returns a response with the appropriate status.

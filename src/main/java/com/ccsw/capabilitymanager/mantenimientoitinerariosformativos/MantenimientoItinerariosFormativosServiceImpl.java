@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.exception.ItinerarioExistenteException;
+import com.ccsw.capabilitymanager.exception.ItinerarioVacioException;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativosDto;
 
@@ -39,6 +40,7 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 	@Override
 	public void save(ItinerariosFormativosDto dto) throws ParseException {
 
+		comprobarNoVacios(dto.getCodigo(), dto.getName());
 		comprobarExistenciaCodigo(dto.getCodigo());
 
 		ItinerariosFormativos itinerariosFormativo = new ItinerariosFormativos();
@@ -75,6 +77,10 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 	 */
 	@Override
 	public void update(ItinerariosFormativosDto dto) throws ParseException {
+		
+		//Comprobar que el codigo o nombre no sean vacios
+		comprobarNoVacios(dto.getCodigo(), dto.getName());
+		
 		// Find the existing entity by codigo
 		ItinerariosFormativos existingItinerario = mantenimientoItinerariosFormativosRepository.findByid(dto.getId());
 		
@@ -151,6 +157,15 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 			throw new ItinerarioExistenteException(codigo);
 		}
 
+	}
+	
+	private void comprobarNoVacios(String codigo, String name) {
+		if (codigo == "" || name == "") {
+			// Handle case where a record with codigo or name are blank
+			CapabilityLogger.logError(ERROR_INIT + "comprobarNoVacios): codigo o name estan vacios");
+			throw new ItinerarioVacioException();
+		}
+		
 	}
 
 }
