@@ -8,9 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
-import com.ccsw.capabilitymanager.exception.ItinerarioExistenteException;
-import com.ccsw.capabilitymanager.exception.ItinerarioVacioException;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativosDto;
 
@@ -153,8 +152,8 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 
 		if (existingItinerario != null) {
 			// Handle case where a record with the same codigo already exists
-			CapabilityLogger.logError(ERROR_INIT + "comprobarExistenciaCodigo):Existe un itinerario con el mismo código");
-			throw new ItinerarioExistenteException(codigo);
+			CapabilityLogger.logError(ERROR_INIT + "comprobarExistenciaCodigo): Existe un itinerario con el mismo código");
+			throw new UnprocessableEntityException("Ya existe un itinerario con el código: " + codigo);
 		}
 
 	}
@@ -163,7 +162,7 @@ public class MantenimientoItinerariosFormativosServiceImpl implements Mantenimie
 		if (codigo == "" || name == "") {
 			// Handle case where a record with codigo or name are blank
 			CapabilityLogger.logError(ERROR_INIT + "comprobarNoVacios): codigo o name estan vacios");
-			throw new ItinerarioVacioException();
+			throw new UnprocessableEntityException("codigo o name están vacios");
 		}
 		
 	}

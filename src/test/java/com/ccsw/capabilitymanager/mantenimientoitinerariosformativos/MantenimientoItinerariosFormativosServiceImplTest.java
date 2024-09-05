@@ -20,7 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.ccsw.capabilitymanager.exception.ItinerarioExistenteException;
+import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativosDto;
 
@@ -81,7 +81,7 @@ public class MantenimientoItinerariosFormativosServiceImplTest {
         
         when(mantenimientoItinerariosFormativosRepository.findByCodigo(anyString())).thenReturn(itinerariosFormativos);
 
-        assertThrows(ItinerarioExistenteException.class, () -> {
+        assertThrows(UnprocessableEntityException.class, () -> {
             mantenimientoItinerariosFormativosService.save(dto);
         });
     }
