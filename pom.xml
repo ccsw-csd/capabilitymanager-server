@@ -4,12 +4,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.ccsw</groupId>
-	<artifactId>capabilitymanager-server</artifactId>
-	<version>1.0.0</version>
-	<name>capabilitymanager</name>
-	<description>CapabilityManager Server</description>
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -17,8 +11,16 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
+	<groupId>com.ccsw</groupId>
+	<artifactId>capabilitymanager-server</artifactId>
+	<version>1.0.0</version>
+	<name>capabilitymanager</name>
+	<description>CapabilityManager Server</description>
+	<packaging>${packaging.type}</packaging>
+
 	<properties>
 		<java.version>18</java.version>
+		<packaging.type>jar</packaging.type>
 	</properties>
 
 	<dependencies>
@@ -85,6 +87,12 @@
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 			<version>5.5.1</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.codehaus.janino</groupId>
+			<artifactId>janino</artifactId>
 		</dependency>
 
 		<!-- Testing -->
@@ -160,5 +168,32 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>tomcat</id>
+
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<properties>
+				<packaging.type>war</packaging.type>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+
+			<build>
+				<finalName>capabilitymanager</finalName>
+			</build>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 </project>
