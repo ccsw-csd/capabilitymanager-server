@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <property name="log.file" value="fruittrucks" />
+    <property name="log.file" value="capabilitymanager" />
     <property name="log.folder" value="./target/logs"/>
     <if condition='isDefined("CATALINA_HOME")'>
         <then>
@@ -38,7 +36,9 @@
         </triggeringPolicy>
     </appender>
 
-    <root level="info">
+
+
+    <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
