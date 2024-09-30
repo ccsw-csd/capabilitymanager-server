@@ -14,4 +14,6 @@ public interface ActivityService {
     List<Activity> findBySaga(String saga);
 
     void save(ActivityDTO activityDto);
+
+	void delete(Long id);
 }

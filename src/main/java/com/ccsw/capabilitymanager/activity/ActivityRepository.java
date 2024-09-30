@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
+	
+	Activity findByid(Long id);
 
     List<Activity> findByGgid(String ggid);
 

@@ -4,12 +4,15 @@ import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
+
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 @Transactional
@@ -67,5 +70,24 @@ public class ActivityServiceImpl implements ActivityService {
     public List<Activity> findBySaga(String saga) {
         return activityRepository.findBySaga(saga).stream().toList();
     }
+
+    /**
+	 * Deletes an {@link Activity} entity by its ID.
+	 *
+	 * <p>This method performs the following actions:</p>
+	 * <ul>
+	 *   <li>Finds the {@link Activity} entity with the specified ID using {@link activityRepository#findByid(Long)}.</li>
+	 *   <li>Deletes the found entity from the repository using {@link activityRepository#delete(activity)}.</li>
+	 * </ul>
+	 *
+	 * @param id The ID of the {@link Activity} entity to be deleted.
+	 * @throws EntityNotFoundException If no entity with the specified ID is found.
+	 */
+	@Override
+	public void delete(Long id) {
+		Activity activity = activityRepository.findByid(id);
+		
+		activityRepository.delete(activity);
+	}
 
 }

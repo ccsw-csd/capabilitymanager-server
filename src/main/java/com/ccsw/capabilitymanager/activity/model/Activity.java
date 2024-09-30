@@ -12,6 +12,7 @@ public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
