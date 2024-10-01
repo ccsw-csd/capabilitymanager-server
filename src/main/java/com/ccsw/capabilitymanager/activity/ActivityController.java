@@ -4,11 +4,15 @@ import com.ccsw.capabilitymanager.activity.model.Activity;
 import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
+import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.dataimport.DataImportService;
+import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
+
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,4 +72,20 @@ public class ActivityController {
     public void guardarActividad(@RequestBody ActivityDTO activityDto) {
         this.activityService.save(activityDto);
     }
+    
+    /**
+     * Deletes an {@link Activity} entity by its ID.
+     *
+     * <p>This method receives an ID as a path variable, logs a debug message, and then deletes the corresponding
+     * {@link Activity} entity using the service layer.</p>
+     *
+     * @param id The ID of the {@link Activity} entity to be deleted.
+     * @throws ParseException If there is an error related to parsing during the deletion process.
+     */
+    @DeleteMapping(path = "delete/{id}")
+    public void eliminarActividad(@PathVariable(name = "id", required = false) Long id) throws ParseException{
+        CapabilityLogger.logDebug("Delete activity with id:" + id);
+    
+    	this.activityService.delete(id);
+    }  
 }
