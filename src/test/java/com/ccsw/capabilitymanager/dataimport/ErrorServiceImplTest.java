@@ -1,7 +1,5 @@
 package com.ccsw.capabilitymanager.dataimport;
 
-import static org.mockito.Mockito.*;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -12,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ccsw.capabilitymanager.versioncapacidades.VersionCapatidadesRepository;
+import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepository;
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
@@ -21,7 +19,7 @@ import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
 public class ErrorServiceImplTest {
 
     @Mock
-    private VersionCapatidadesRepository versionCapatidadesRepository;
+    private VersionCapacidadesRepository versionCapacidadesRepository;
 
     @Mock
     private VersionStaffingRepository versionStaffingRepository;
@@ -53,6 +51,6 @@ public class ErrorServiceImplTest {
         errorService.formError(versionCapacidades);
 
         // Assert
-        verify(versionCapatidadesRepository, times(1)).save(versionCapacidades);
+        verify(versionCapacidadesRepository, times(1)).save(versionCapacidades);
     }
 }

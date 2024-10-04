@@ -8,5 +8,5 @@ import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 
 @Repository
 @Transactional
-public interface VersionCapatidadesRepository extends JpaRepository<VersionCapacidades, Long> {
+public interface VersionCapacidadesRepository extends JpaRepository<VersionCapacidades, Long> {
 }

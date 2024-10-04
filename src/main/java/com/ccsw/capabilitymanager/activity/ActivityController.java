@@ -25,9 +25,6 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @Autowired
-    private DataImportService dataImportService;
-
     /**
      * Handles HTTP GET requests to retrieve a list of all activities.
      *

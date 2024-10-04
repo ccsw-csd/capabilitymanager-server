@@ -11,16 +11,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
-import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesRepository;
-import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesServiceImpl;
-import com.ccsw.capabilitymanager.versioncertificados.model.VersionCertificaciones;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 
 import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
@@ -28,7 +25,7 @@ import io.minio.errors.MinioException;
 
 public class VersionCapacidadesServiceImplTest {
     @Mock
-    private VersionCapatidadesRepository versionCapacidadesRepository;
+    private VersionCapacidadesRepository versionCapacidadesRepository;
 
     @Mock
     private DataserviceS3 dataservice;

@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 
 import io.minio.GetObjectResponse;
 import io.minio.MinioClient;

@@ -1,5 +1,6 @@
 package com.ccsw.capabilitymanager.utils;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -58,9 +59,27 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @return selected Excel tab
 	 * @throws BadRequestException It is not possible to read the provided file
 	 */
+	@Override
 	public Sheet obtainSheet(MultipartFile file) throws BadRequestException {
 		try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
-			return workbook.getSheetAt(Constants.FIRST_SHEET);
+			Sheet sheet = workbook.getSheetAt(Constants.FIRST_SHEET);
+			workbook.close();
+
+			return sheet;
+		} catch (Exception e) {
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "obtainSheet) : Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
+			throw new BadRequestException(
+					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
+		}
+	}
+
+	@Override
+	public Sheet obtainSheetFromInputStream(InputStream inputStream) throws BadRequestException {
+		try (Workbook workbook = WorkbookFactory.create(inputStream)) {
+			Sheet sheet = workbook.getSheetAt(Constants.FIRST_SHEET);
+			workbook.close();
+
+			return sheet;
 		} catch (Exception e) {
 			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "obtainSheet) : Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
 			throw new BadRequestException(
@@ -75,6 +94,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param dto ImportRequestDto Object
 	 * @throws UnsupportedMediaTypeException or UnprocessableEntityException
 	 */
+	@Override
 	public void checkInputObject(ImportRequestDto dto) {
 		CapabilityLogger.logDebug(" >>>> checkInputObject ");
 		if (dto.getFileData().getOriginalFilename() == Constants.EMPTY) {
@@ -101,6 +121,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param column value to recover
 	 * @return column value in string format
 	 */
+	@Override
 	public String getStringValue(Row row, int column) {
 		String result = Constants.EMPTY;
 		Cell col = row.getCell(column);
@@ -122,6 +143,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param column value to recover
 	 * @return column value in string format
 	 */
+	@Override
 	public Integer getIntValue(Row row, int column) {
 		String result = "0";
 		Cell col = row.getCell(column);
@@ -144,6 +166,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param column value to recover
 	 * @return column value as double
 	 */
+	@Override
 	public double getDecimalValue(Row row, int column) {
 	    double result = 0.0; // Valor predeterminado en caso de que la celda esté vacía
 	    Cell col = row.getCell(column);
@@ -172,6 +195,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param colum Colum
 	 * @return String caracter
 	 */
+	@Override
 	public String getGradeValue(Row row, int colum) {
 		return getStringValue(row, colum).substring(0, 1);
 	}
@@ -183,6 +207,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param column value to recover
 	 * @return column value in Date format
 	 */
+	@Override
 	public Date getDateValue(Row row, int column) {
 		Date result = null; // Constants.FUNDATIONDAYLESSONE;
 		Cell col = row.getCell(column);
@@ -205,6 +230,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param valueStyle
 	 * @return
 	 */
+	@Override
 	public int writeParametro(Sheet sheet, int rowNum, String key, Object value, CellStyle keyStyle,
 			CellStyle valueStyle) {
 		Row row = sheet.createRow(rowNum++);
@@ -229,6 +255,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param color
 	 * @return
 	 */
+	@Override
 	public CellStyle createCellStyle(Workbook workbook, boolean bold, IndexedColors color) {
 		CellStyle style = workbook.createCellStyle();
 		style.setWrapText(true);
@@ -253,6 +280,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param workbook
 	 * @return
 	 */
+	@Override
 	public CellStyle createDateCellStyle(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		CreationHelper createHelper = workbook.getCreationHelper();
@@ -272,6 +300,7 @@ public class UtilsServiceImpl implements UtilsService {
 	 * @param color
 	 * @return
 	 */
+	@Override
 	public CellStyle createTitleStyle(Workbook workbook, boolean bold, IndexedColors color) {
 		CellStyle style = workbook.createCellStyle();
 		style.setAlignment(HorizontalAlignment.CENTER);

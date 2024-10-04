@@ -9,15 +9,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
+import com.ccsw.capabilitymanager.websocket.WebSocketService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.capabilitymanager.S3Service.s3Service;
-import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.fileprocess.S3Service;
+import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
@@ -34,7 +37,7 @@ import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosDataImp
 import com.ccsw.capabilitymanager.staffingdataimport.StaffingDataImportRepository;
 import com.ccsw.capabilitymanager.staffingdataimport.model.StaffingDataImport;
 import com.ccsw.capabilitymanager.utils.UtilsServiceImpl;
-import com.ccsw.capabilitymanager.versioncapacidades.VersionCapatidadesRepository;
+import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepository;
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesRepository;
 import com.ccsw.capabilitymanager.versioncertificados.model.VersionCertificaciones;
@@ -62,7 +65,7 @@ public class DataImportServiceImpl implements DataImportService {
 	private ItinerariosDataImportRepository itinerariosDataImportRepository;
 	
 	@Autowired
-	private VersionCapatidadesRepository versionCapatidadesRepository;
+	private VersionCapacidadesRepository versionCapacidadesRepository;
 
 	@Autowired
 	private VersionStaffingRepository versionStaffingRepository;
@@ -74,20 +77,21 @@ public class DataImportServiceImpl implements DataImportService {
 	private VersionCertificacionesRepository versionCertificacionesRepository;
 
 	@Autowired
-	DataImportService service;
-
-	@Autowired
 	private UtilsServiceImpl utilsServiceImpl;
 
 	@Autowired
 	private DataserviceS3 dataservice;
 
 	@Autowired
-	private s3Service s3service;
+	private S3Service s3service;
 
 	@Autowired
 	private ActivityDataImportRepository activityDataImportRepository;
 
+	@Autowired
+	private WebSocketService webSocketService;
+
+	private static final int BATCH_SIZE = 700;
 
 	/**
 	 * Processes the given import request based on the document type specified.
@@ -100,6 +104,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return An {@link ImportResponseDto} with the result of the processing, including any errors or success messages.
 	 */
 	@Override
+	@Async
 	public ImportResponseDto processObject(ImportRequestDto dto) {
 		CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processObject ");
 		dataservice.getMinioClient();
@@ -127,6 +132,8 @@ public class DataImportServiceImpl implements DataImportService {
 					HttpStatus.BAD_REQUEST);
 		}
 
+		webSocketService.notifyClient("Procesado completo.");
+
 		CapabilityLogger.logDebug("[DataImportServiceImpl] processObject >>>>");
 		return importResponseDto;
 
@@ -141,12 +148,13 @@ public class DataImportServiceImpl implements DataImportService {
 	@Transactional
 	private ImportResponseDto processRolsDoc(ImportRequestDto dto) {
 		CapabilityLogger.logDebug(" >>>> processRolsDoc ");
-		var importResponseDto = new ImportResponseDto();
+		ImportResponseDto importResponseDto = new ImportResponseDto();
 		importResponseDto.setBucketName(dataservice.getBucketName());
 		importResponseDto.setPath(dataservice.getS3Endpoint());
 
 		Sheet sheet = utilsServiceImpl.obtainSheet(dto.getFileData());
 		int sizeSheet = sheet.getPhysicalNumberOfRows() - 1;
+
 		VersionCapacidades verCap = null;
 		try {
 			verCap = createCapacityVersion(sizeSheet, dto.getFileData().getOriginalFilename(), dto.getDescription(),
@@ -156,61 +164,71 @@ public class DataImportServiceImpl implements DataImportService {
 					HttpStatus.UNPROCESSABLE_ENTITY);
 			return importResponseDto;
 		}
-		List<FormDataImport> formDataImportList = new ArrayList<>();
+
+		Map<String, Object> roleData = generateRoleDataList(sheet, verCap);
+		ImportResponseDto error = (ImportResponseDto) roleData.get("error");
+
+		if(error != null) {
+			rollBackRoles(verCap.getId());
+
+			return error;
+		}
+
+		List<FormDataImport> formDataImportList = (List<FormDataImport>) roleData.get("data");
+
+		if (formDataImportList != null && !formDataImportList.isEmpty()) {
+			saveAllFormDataImport(formDataImportList);
+		} else {
+			StringBuilder errorData = new StringBuilder();
+			errorData.append(Constants.ERROR_INIT)
+					.append(Thread.currentThread().getStackTrace()[1].getMethodName())
+					.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
+
+			CapabilityLogger.logError(errorData.toString());
+
+			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
+		}
+
+		CapabilityLogger.logDebug("      processRolsDoc >>>>");
+		return importResponseDto;
+
+	}
+
+	private Map<String, Object> generateRoleDataList(Sheet sheet, VersionCapacidades version) {
+		Map<String, Object> result = new HashMap<>();
+		List<FormDataImport> rolDataList = new ArrayList<>();
 		Row currentRow = sheet.getRow(Constants.ROW_EVIDENCE_LIST_START);
-		FormDataImport data = new FormDataImport();
+
 		for (int i = Constants.ROW_EVIDENCE_LIST_NEXT; currentRow != null; i++) {
-			data = new FormDataImport();
-			String vcProfileSAGA = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_SAGA.getPosition());
-			String vcProfileEmail = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_EMAIL.getPosition());
-			String vcProfileName = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_NAME.getPosition());
-			String vcProfileRoll1Extendido = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL1_EXTENDIDO.getPosition());
-			String vcProfileRoll2EM = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL2_EM.getPosition());
-			String vcProfileRoll2AR = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL2_AR.getPosition());
-			String vcProfileRoll2AN = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL2_AN.getPosition());
-			String vcProfileRoll2SE = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL2_SE.getPosition());
-			String vcProfileRolExperienceEM = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROL_EXPERIENCE_EM.getPosition());
-			String vcProfileRolExperienceAR = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROL_EXPERIENCE_AR.getPosition());
-			String vcProfileRoll3 = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL3.getPosition());
-			String vcProfileSkillCloudNativeExperience = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_SKILL_CLOUD_NATIVE_EXPERIENCE.getPosition());
-			String vcProfileSkillLowCodeExperience = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_SKILLL_OWCODE_EXPERIENCE.getPosition());
-			String vcProfileRoll4 = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_ROLL4.getPosition());
-			String vcProfileSectorExperience = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_SECTOR_EXPERIENCE.getPosition());
-			String vcProfileSkillCloudExp = utilsServiceImpl.getStringValue(currentRow,
-					Constants.RolsDatabasePos.COL_SKILL_CLOUD_EXPERIENCE.getPosition());
+			FormDataImport data = new FormDataImport();
+
+			String vcProfileSAGA = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_SAGA.getPosition());
+			String vcProfileEmail = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_EMAIL.getPosition());
+			String vcProfileName = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_NAME.getPosition());
+			String vcProfileRoll1Extendido = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL1_EXTENDIDO.getPosition());
+			String vcProfileRoll2EM = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL2_EM.getPosition());
+			String vcProfileRoll2AR = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL2_AR.getPosition());
+			String vcProfileRoll2AN = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL2_AN.getPosition());
+			String vcProfileRoll2SE = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL2_SE.getPosition());
+			String vcProfileRolExperienceEM = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROL_EXPERIENCE_EM.getPosition());
+			String vcProfileRolExperienceAR = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROL_EXPERIENCE_AR.getPosition());
+			String vcProfileRoll3 = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_ROLL3.getPosition());
+			String vcProfileSkillCloudNativeExperience = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_SKILL_CLOUD_NATIVE_EXPERIENCE.getPosition());
+			String vcProfileSkillLowCodeExperience = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_SKILL_LOWCODE_EXPERIENCE.getPosition());
+			String vcProfileRoll4 = utilsServiceImpl.getStringValue(currentRow,	Constants.RolsDatabasePos.COL_ROLL4.getPosition());
+			String vcProfileSectorExperience = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_SECTOR_EXPERIENCE.getPosition());
+			String vcProfileSkillCloudExp = utilsServiceImpl.getStringValue(currentRow, Constants.RolsDatabasePos.COL_SKILL_CLOUD_EXPERIENCE.getPosition());
 
 			Map<String, String> noNulables = new HashMap<>();
-	        noNulables.put(vcProfileSAGA, "Saga");
+			noNulables.put("Saga", vcProfileSAGA);
 
+			ImportResponseDto error = checkNullFields(noNulables, i);
+			if(error != null) {
+				result.put("error", error);
 
-		       // Verificar si alguno de los campos es nulo o está vacío
-            for (Map.Entry<String, String> entry : noNulables.entrySet()) {
-                if (entry.getKey() == null || entry.getKey().isEmpty()) {
-                	ImportResponseDto error = new ImportResponseDto();
-                	error.setStatus(HttpStatus.BAD_REQUEST);
-                	error.setMessage("Row " + i + " is missing required field: " + entry.getValue());
-                	error.setError("Row " + i + " is missing required field: " + entry.getValue());
-                	rollBackRoles(verCap.getId());
-                    return error;
-                }
-            }
-			
-			
+				return result;
+			}
+
 			data.setSAGA(vcProfileSAGA);
 			data.setEmail(vcProfileEmail);
 			data.setName(vcProfileName);
@@ -227,27 +245,37 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setSkillLowCodeExperience(vcProfileSkillLowCodeExperience);
 			data.setSectorExperience(vcProfileSectorExperience);
 			data.setSkillCloudExp(vcProfileSkillCloudExp);
-			data.setNumImportCodeId(verCap.getId());
+			data.setNumImportCodeId(version.getId());
 			setRolL1(data);
 
-			formDataImportList.add(data);
+			rolDataList.add(data);
 			currentRow = sheet.getRow(i);
-			data = new FormDataImport();
 		}
 
-		if (formDataImportList != null && !formDataImportList.isEmpty()) {
-			saveAllFormDataImport(formDataImportList);
-		} else {
-			StringBuilder errorData = new StringBuilder();
-			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_ROL_FILE);
-			CapabilityLogger.logError(errorData.toString());
-			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_ROL_FILE);
+		result.put("data", rolDataList);
+
+		return result;
+	}
+
+	/**
+	 * Este metodo comprobara si alguno los campos que son obligatorios es nulo
+	 *
+	 * @param fields
+	 * @return
+	 */
+	private ImportResponseDto checkNullFields(Map<String, String> fields, int rowNum) {
+		Map.Entry<String, String> nullField = fields.entrySet().stream().filter(entry -> entry.getValue() == null || entry.getValue().isEmpty()).findFirst().orElse(null);
+
+		ImportResponseDto error = null;
+		if(nullField != null) {
+			error = new ImportResponseDto();
+
+			error.setStatus(HttpStatus.BAD_REQUEST);
+			error.setMessage("Row " + rowNum + " is missing required field: " + nullField.getKey());
+			error.setError("Row " + rowNum + " is missing required field: " + nullField.getKey());
 		}
 
-		CapabilityLogger.logDebug("      processRolsDoc >>>>");
-		return importResponseDto;
-
+		return error;
 	}
 
 	/**
@@ -689,7 +717,7 @@ public class DataImportServiceImpl implements DataImportService {
 	 */
 	private void rollBackRoles(int id) {
 
-		versionCapatidadesRepository.deleteById((long) id);
+		versionCapacidadesRepository.deleteById((long) id);
 	}
 	
 	/**
@@ -731,7 +759,7 @@ public class DataImportServiceImpl implements DataImportService {
 		versionCap.setIdTipointerfaz(idTipointerfaz);
 		versionCap.setFichero(dataservice.getS3Endpoint());
 
-		return versionCapatidadesRepository.save(versionCap);
+		return versionCapacidadesRepository.save(versionCap);
 	}
 
 	/**
@@ -833,10 +861,16 @@ public class DataImportServiceImpl implements DataImportService {
 	 * @return List<FormDataImport>
 	 */
 	@Transactional
-	private List<FormDataImport> saveAllFormDataImport(List<FormDataImport> formDataImportList) {
-//			VersionCapacidades verCap) {
+	private void saveAllFormDataImport(List<FormDataImport> formDataImportList) {
 		try {
-			return formDataImportRepository.saveAll(formDataImportList);
+			//return formDataImportRepository.saveAll(formDataImportList);
+			IntStream.range(0, (formDataImportList.size() + BATCH_SIZE - 1) / BATCH_SIZE)
+					.mapToObj(i -> formDataImportList.subList(i * BATCH_SIZE, Math.min((i+1) * BATCH_SIZE, formDataImportList.size())))
+					.forEach(subList -> {
+						CapabilityLogger.logInfo("Guardando " + subList.size() + " registros del fichero de roles.");
+						formDataImportRepository.saveAll(subList);
+						formDataImportRepository.flush();
+					});
 		} catch (Exception e) {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
