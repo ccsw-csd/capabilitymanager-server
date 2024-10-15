@@ -35,14 +35,19 @@ public class FileProcessScheduler {
 
                     future.thenRun(() -> {
                         CapabilityLogger.logInfo("ASYNC OK");
-                        webSocketService.notifyClient("Fichero guardado correctamente.");
+                        // Enviar un mensaje al frontend cuando el procesamiento haya finalizado
+                        String message = "El fichero " + file.getNombreFichero() + " ha sido procesado correctamente.";
+                        webSocketService.notifyClient(message);
                     }).exceptionally(ex -> {
                         CapabilityLogger.logError(ex.getMessage());
+                        webSocketService.notifyClient(ex.getMessage());
 
                         return null;
                     });
                 } catch (Exception e) {
-                    CapabilityLogger.logError("Ha ocurrido un error procesando el fichero " + file.getNombreFichero());
+                	String message = "Ha ocurrido un error procesando el fichero " + file.getNombreFichero();
+                    CapabilityLogger.logError(message);
+                    webSocketService.notifyClient(message);
                 }
             }
         }

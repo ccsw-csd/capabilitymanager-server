@@ -34,6 +34,7 @@ public class Constants {
 	public static final String ERROR_INIT_UTIL = ">>> [ERROR][UtilsServiceImpl] (";
 	public static final String ERROR_EMPTY_ROL_FILE = " Rols List File is null or empty";
 	public static final String ERROR_EMPTY_STAFFING_FILE = " Staffing List File is null or empty";
+	public static final String ERROR_EMPTY_CERTIFICATION_FILE = " Certification List File is null or empty";
 	public static final String ERROR_DOCUMENT_TYPE = "ERROR: 'documentType' param is not valid (select value 1, 2 or 3)";
 	public static final String ERROR_FILE_NOT_FOUND  = ">>> [ERROR] Not Found(";
 

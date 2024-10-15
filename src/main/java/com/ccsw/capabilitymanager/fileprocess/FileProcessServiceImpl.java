@@ -19,6 +19,7 @@ import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepositor
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesRepository;
 import com.ccsw.capabilitymanager.versioncertificados.model.VersionCertificaciones;
+import com.ccsw.capabilitymanager.websocket.WebSocketService;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
@@ -77,6 +78,9 @@ public class FileProcessServiceImpl implements FileProcessService{
 
     @Autowired
     private UtilsService utilsService;
+    
+    @Autowired
+    private WebSocketService webSocketService;
 
     @Override
     @Async
@@ -116,12 +120,11 @@ public class FileProcessServiceImpl implements FileProcessService{
     			//		HttpStatus.BAD_REQUEST);
     		}
 
-            
         });
     }
 
     private void processCertificatesDoc(FileProcess file, InputStream fileDownloaded) {
-    	CapabilityLogger.logDebug("[DataImportServiceImpl]  >>>> processCertificatesDoc ");
+    	CapabilityLogger.logDebug("[FileProcessServiceImpl]  >>>> processCertificatesDoc ");
 		
 		Sheet sheet = utilsService.obtainSheetFromInputStream(fileDownloaded);
         int numRegistros = sheet.getPhysicalNumberOfRows() - 1;
@@ -183,7 +186,7 @@ public class FileProcessServiceImpl implements FileProcessService{
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
                 if (entry.getKey() == null || entry.getKey().isEmpty()) {
                 	rollBackCertificates(verCertificaciones.getId());
-                	throw new FileProcessException("La fila " + i + " no contiene el campo obligatorio: " + entry.getKey());
+                	throw new FileProcessException("La fila " + i + " no contiene el campo obligatorio: " + entry.getValue());
                 }
             }
 			
@@ -217,7 +220,9 @@ public class FileProcessServiceImpl implements FileProcessService{
 			certificateActivity.setEstado("Finalizado");
 			certificateActivity.setTypeActivity(7);
 			
-			if (!data.getSAGA().isEmpty()) {
+			if (!data.getSAGA().isEmpty() &&
+				!(data.getCertificado().startsWith(".") || data.getCertificado().startsWith("*"))
+				) {
 				listCertificacionesDataImport.add(data);
 				listActividadDataImport.add(certificateActivity);
 			}
@@ -235,12 +240,12 @@ public class FileProcessServiceImpl implements FileProcessService{
 		} else {
 			StringBuilder errorData = new StringBuilder();
 			errorData.append(Constants.ERROR_INIT).append(Thread.currentThread().getStackTrace()[1].getMethodName())
-			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_STAFFING_FILE);
+			.append(Constants.ERROR_INIT2).append(Constants.ERROR_EMPTY_CERTIFICATION_FILE);
 			CapabilityLogger.logError(errorData.toString());
-			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_STAFFING_FILE);
+			throw new UnprocessableEntityException(Constants.ERROR_EMPTY_CERTIFICATION_FILE);
 		}
 
-		CapabilityLogger.logDebug("[DataImportServiceImpl]       processCertificatesDoc >>>>");
+		CapabilityLogger.logDebug("[FileProcessServiceImpl]       processCertificatesDoc >>>>");
 		
 	}
 
