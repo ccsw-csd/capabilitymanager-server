@@ -19,6 +19,8 @@ public class Constants {
 	public static final int ROW_EVIDENCE_LIST_START = 1;
 	public static final int ROW_EVIDENCE_LIST_NEXT = ROW_EVIDENCE_LIST_START + 1;
 
+	public static final int ROW_EVIDENCE_LIST_NEXT_CERT_ENCURSO = ROW_EVIDENCE_LIST_START + 16;
+
 	public static final String ROLL1_SE  = "Software Engineer";
 	public static final String ROLL1EX_SE  = "Software Engineer (Developers, Tech Leads, Team Leads, QA Tester, Consultor Técnico, DevOps, HOST)";
 	public static final String ROLL1_BA  = "Business Analyst";
@@ -51,9 +53,67 @@ public class Constants {
 	public static final String COMENTS  = "Comentarios";
 	public static final String YES ="SI";
 	public static final String NO ="NO";
-	
-	
-	
+
+	public static enum CertificatesDataEnCursoPos {
+		COL_ID(0),
+		COL_FECHA_SOLICITUD(1),
+		COL_ANO_SOLICITUD(2),
+		COL_Q_SOLICITUD(3),
+		COL_PROVEEDOR(4),
+		COL_FACTURA(5),
+		COL_FECHA_FACTURA(6),
+		COL_IMPORTE(7),
+		COL_MONEDA(8),
+		COL_FECHA_CONTABILIDAD(9),
+		COL_VOUCHER(10),
+		COL_CADUCIDAD_VOUCHER(11),
+		COL_ENVIADO_AL_PROVEEDOR(12),
+		COL_BU(13),
+		COL_BLA(14),
+		COL_UNE(15),
+		COL_GRADO(16),
+		COL_COD_PROYECTO(17),
+		COL_COORDINADOR(18),
+		COL_RESPONSABLE(19),
+		COL_AUTORIZADO_POR_EL_RESPONSABLE(20),
+		COL_GESTION(21),
+		COL_CONOCIMIENTO(22),
+		COL_OWNER(23),
+		COL_ACCION_Y_DETALLE(24),
+		COL_SAGA(25),
+		COL_FECHA_SC(26),
+		COL_SC(27),
+		COL_PO(28),
+		COL_SOLICITANTE(29),
+		COL_APELLIDOS(30),
+		COL_NOMBRE(31),
+		COL_EMAIL(32),
+		COL_TELEFONO_CONTACTO(33),
+		COL_PARTNER(34),
+		COL_CODIGO_Y_DESCRIPCION_DEL_EXAMEN(35),
+		COL_MODALIDAD(36),
+		COL_FECHA_EXAMEN(37),
+		COL_HORA(38),
+		COL_IDIOMA(39),
+		COL_CENTRO_DE_TRABAJO(40),
+		COL_NUM_OPORTUNIDADES_MISMO_CODIGO_DE_EXAMEN(41),
+		COL_REQUEST_STATE(42),
+		COL_OBSERVACIONES(43),
+		COL_FECHA_BAJA_CIA(44),
+		COL_LINK_RENOVACION(45),
+		COL_LINK_OFERTA(46);
+
+		private final int excelPosition;
+
+		CertificatesDataEnCursoPos(int position) {
+			this.excelPosition = position;
+		}
+
+		public int getPosition() {
+			return excelPosition;
+		}
+	}
+
 	public static enum RolsDatabasePos {
 		COL_SAGA(5),
 		COL_EMAIL(3),
