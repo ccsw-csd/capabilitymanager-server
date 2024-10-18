@@ -8,6 +8,7 @@ import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.dataimport.DataImportService;
 import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativos;
 
+import com.ccsw.capabilitymanager.mantenimientoitinerariosformativos.model.ItinerariosFormativosDto;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -84,5 +85,21 @@ public class ActivityController {
         CapabilityLogger.logDebug("Delete activity with id:" + id);
     
     	this.activityService.delete(id);
-    }  
+    }
+
+    /**
+     * Updates an {@link Activity} entity based on the provided {@link ActivityDTO}.
+     *
+     * <p>This method receives an {@link ActivityDTO} object as a request body, logs a debug message,
+     * and updates the corresponding {@link Activity} entity using the service layer.</p>
+     *
+     * @param activityDto The {@link ActivityDTO} object containing the updated information for the activity.
+     * @throws ParseException If there is an error related to parsing during the update process.
+     */
+    @PutMapping(path = "/update")
+    public void updateActividad(@RequestBody ActivityDTO activityDto) throws ParseException{
+        CapabilityLogger.logDebug("Update activity");
+
+        activityService.update(activityDto);
+    }
 }

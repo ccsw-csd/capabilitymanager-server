@@ -11,8 +11,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -89,5 +91,53 @@ public class ActivityServiceImpl implements ActivityService {
 		
 		activityRepository.delete(activity);
 	}
+
+    /**
+     * Updates an existing {@link Activity} entity using the provided {@link ActivityDTO}.
+     *
+     * This method performs the following actions:
+     * Finds the existing {@link Activity} entity by its ID using {@link activityRepository#findById(Long)}.
+     * Updates the fields of the existing activity with values from the provided {@link ActivityDTO}:
+     * Updates the activity code, name, state, start date, end date, progress percentage, observations, saga, and ggid.
+     * If the activity type ID has changed, updates the activity type ID as well.
+     * Sets the last activity date to the current date.
+     * Saves the updated entity back to the repository using {@link activityRepository#save(activity)}.
+     *
+     *
+     * @param dto The {@link ActivityDTO} containing the updated values for the {@link Activity} entity.
+     * @throws ParseException If there is an error parsing dates during the update process.
+     */
+    @Override
+    public void update(ActivityDTO dto) throws ParseException{
+
+        // Buscar la actividad existente por el ID (devuelve un Optional)
+        Optional<Activity> optionalActivity = activityRepository.findById(dto.getId());
+
+        // Obtener la actividad existente
+        Activity existingActivity = optionalActivity.get();
+
+        // Actualizar los campos de la actividad
+        existingActivity.setCodigoActividad(dto.getCodigoActividad());
+        existingActivity.setNombreActividad(dto.getNombreActividad());
+        existingActivity.setEstado(dto.getEstado());
+        existingActivity.setFechaInicio(dto.getFechaInicio());
+        existingActivity.setFechaFinalizacion(dto.getFechaFinalizacion());
+        existingActivity.setPorcentajeAvance(dto.getPorcentajeAvance());
+        existingActivity.setObservaciones(dto.getObservaciones());
+        existingActivity.setSaga(dto.getSaga());
+        existingActivity.setGgid(dto.getGgid());
+
+        // Si se cambió el tipo de actividad, actualizamos también
+        if (!dto.getTipoActividadId().equals(existingActivity.getTipoActividadId())) {
+            existingActivity.setTipoActividadId(dto.getTipoActividadId());
+        }
+
+        // Actualizamos la fecha de la última modificación a la fecha actual
+        Date fechaActual = new Date();
+        existingActivity.setFechaUltimaActividad(fechaActual);
+
+        // Guardar la actividad actualizada
+        activityRepository.save(existingActivity);
+    }
 
 }
