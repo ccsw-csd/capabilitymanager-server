@@ -224,7 +224,7 @@ public class FileProcessServiceImpl implements FileProcessService{
 			data.setGgid(vcGgid);
 
 			
-		
+			certificateActivity.setgGID(vcGgid);
 			certificateActivity.setsAGA(vcSAGA);
 			certificateActivity.setPathwayId(vcCode);
 			certificateActivity.setPathwayTitle(vcCertificado);
@@ -268,7 +268,7 @@ public class FileProcessServiceImpl implements FileProcessService{
 	private void borrarAntiguos() {
 		List<CertificatesVersion> certificacionesVersion = (List<CertificatesVersion>) certificatesVersionRepository
 				.findAll().stream().sorted().toList();
-		int antiguos = 1, i = 0;
+		int antiguos = 0, i = 0;
 		
 		while (i < certificacionesVersion.size() && antiguos <= Constants.KEEP_HISTORICAL) {
 			CertificatesVersion vc = certificacionesVersion.get(i);
@@ -300,16 +300,16 @@ public class FileProcessServiceImpl implements FileProcessService{
 		//eliminar fichero de S3
 		// TODO: eliminar una version, sino borra todo el fichero?
 		// TODO: informar que cuando se suben fichero no se guardan versiones sino que machaca el fichero que hay
-		MinioClient minioClient = dataserviceS3.getMinioClient();
-		try {
-            minioClient.removeObject(RemoveObjectArgs.builder()
-                    .bucket(dataserviceS3.getBucketName())
-                    .object(cv.getNombreFichero())
-                    .build());
-        } catch (Exception e) {
-            CapabilityLogger.logError("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
-            throw new FileProcessException("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
-        }
+//		MinioClient minioClient = dataserviceS3.getMinioClient();
+//		try {
+//            minioClient.removeObject(RemoveObjectArgs.builder()
+//                    .bucket(dataserviceS3.getBucketName())
+//                    .object(cv.getNombreFichero())
+//                    .build());
+//        } catch (Exception e) {
+//            CapabilityLogger.logError("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
+//            throw new FileProcessException("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
+//        }
 		
 		//eliminar Certificaciones
 		List<CertificatesDataImport> certificacionesBorrar =
@@ -582,11 +582,20 @@ public class FileProcessServiceImpl implements FileProcessService{
 	@Transactional
 	private void saveActividadDataImport(List<ActivityDataImport> actividadDataImportList) {
 		try {
-			//return activityDataImportRepository.saveAll(ActividadDataImportList);
 			IntStream.range(0, (actividadDataImportList.size() + BATCH_SIZE - 1) / BATCH_SIZE)
             .mapToObj(i -> actividadDataImportList.subList(i * BATCH_SIZE, Math.min((i+1) * BATCH_SIZE, actividadDataImportList.size())))
             .forEach(subList -> {
                 CapabilityLogger.logInfo("Guardando " + subList.size() + " registros del fichero de roles.");
+                
+                // nueva forma de procesado: si ya existe una actividad igual (ggid y nombre certificacion)
+                // se actualiza (update) la actividad y no se añade duplicada.
+                for (ActivityDataImport activity : subList) {
+                	List<ActivityDataImport> encontradas = activityDataImportRepository.findIgual(activity.getgGID(), activity.getPathwayTitle());
+                	if (!encontradas.isEmpty()) {
+                		// ponemos el id de la encontrada en la nueva actividad para forzar un update en bbdd
+                		activity.setId(encontradas.get(0).getId());
+                	}	
+                }
                 activityDataImportRepository.saveAll(subList);
                 activityDataImportRepository.flush();
             });
