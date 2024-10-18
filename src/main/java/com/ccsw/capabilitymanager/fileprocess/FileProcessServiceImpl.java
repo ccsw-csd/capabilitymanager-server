@@ -4,6 +4,8 @@ import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepositor
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
+import com.ccsw.capabilitymanager.certificatesversion.CertificatesVersionRepository;
+import com.ccsw.capabilitymanager.certificatesversion.model.CertificatesVersion;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
 import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
@@ -14,6 +16,8 @@ import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 import com.ccsw.capabilitymanager.fileprocess.model.FileProcess;
 import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
 import com.ccsw.capabilitymanager.formdataimport.model.FormDataImport;
+import com.ccsw.capabilitymanager.reportversion.ReportVersionRepository;
+import com.ccsw.capabilitymanager.reportversion.model.ReportVersion;
 import com.ccsw.capabilitymanager.utils.UtilsService;
 import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepository;
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
@@ -23,6 +27,7 @@ import com.ccsw.capabilitymanager.websocket.WebSocketService;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -65,6 +70,9 @@ public class FileProcessServiceImpl implements FileProcessService{
     private VersionCertificacionesRepository versionCertificacionesRepository;
     
     @Autowired
+    private CertificatesVersionRepository certificatesVersionRepository;
+    
+    @Autowired
 	private CertificatesDataImportRepository certificatesDataImportRepository;
     
     @Autowired
@@ -72,6 +80,12 @@ public class FileProcessServiceImpl implements FileProcessService{
 
     @Autowired
     private FormDataImportRepository formDataImportRepository;
+    
+    @Autowired
+    private ReportVersionRepository reportVersionRepository;
+    
+    @Autowired
+    private CertificatesDataImportRepository certificateDataImportRepository;
 
     @Autowired
     private DataserviceS3 dataserviceS3;
@@ -135,6 +149,8 @@ public class FileProcessServiceImpl implements FileProcessService{
 		} catch (Exception e) {
 			CapabilityLogger.logError("Error creando la version del fichero de certificaciones . Error -> " + e.getMessage());
 		}
+		
+		borrarAntiguos();
 		
 		List<CertificatesDataImport> listCertificacionesDataImport = new ArrayList<>();
 		List<ActivityDataImport> listActividadDataImport = new ArrayList<>();
@@ -246,6 +262,65 @@ public class FileProcessServiceImpl implements FileProcessService{
 		}
 
 		CapabilityLogger.logDebug("[FileProcessServiceImpl]       processCertificatesDoc >>>>");
+		
+	}
+
+	private void borrarAntiguos() {
+		List<CertificatesVersion> certificacionesVersion = (List<CertificatesVersion>) certificatesVersionRepository
+				.findAll().stream().sorted().toList();
+		int antiguos = 1, i = 0;
+		
+		while (i < certificacionesVersion.size() && antiguos <= Constants.KEEP_HISTORICAL) {
+			CertificatesVersion vc = certificacionesVersion.get(i);
+			if (!utilizadaModeloCapacidad(vc)) {
+				antiguos++;
+				if (antiguos == Constants.KEEP_HISTORICAL + 1) {
+					eliminarCertificacion(vc);
+				}
+			}
+			i++;
+		}		
+	}
+
+	private boolean utilizadaModeloCapacidad(CertificatesVersion cv) {
+		List<ReportVersion> reportVersions = reportVersionRepository.findAll().stream()
+				.filter(reportVersion -> reportVersion.getIdVersionCertificaciones() == cv.getId())
+				.toList();
+
+		if (reportVersions.isEmpty()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	private void eliminarCertificacion(CertificatesVersion cv) {
+		CapabilityLogger.logInfo("eliminado version certificacion: " + cv.getId());
+		//eliminar fichero de S3
+		// TODO: eliminar una version, sino borra todo el fichero?
+		// TODO: informar que cuando se suben fichero no se guardan versiones sino que machaca el fichero que hay
+		MinioClient minioClient = dataserviceS3.getMinioClient();
+		try {
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(dataserviceS3.getBucketName())
+                    .object(cv.getNombreFichero())
+                    .build());
+        } catch (Exception e) {
+            CapabilityLogger.logError("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
+            throw new FileProcessException("Error borrando el fichero " + cv.getNombreFichero() + " de S3.");
+        }
+		
+		//eliminar Certificaciones
+		List<CertificatesDataImport> certificacionesBorrar =
+				certificatesDataImportRepository.findByNumImportCodeId(cv.getId());
+		
+		for (CertificatesDataImport cdi : certificacionesBorrar) {
+			certificateDataImportRepository.delete(cdi);
+		}
+		
+		//eliminar Certificacion
+		certificatesVersionRepository.delete(cv);
 		
 	}
 

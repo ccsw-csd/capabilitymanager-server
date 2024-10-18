@@ -53,6 +53,8 @@ public class Constants {
 	public static final String YES ="SI";
 	public static final String NO ="NO";
 	
+	public static final int KEEP_HISTORICAL = 10;
+	
 	
 	
 	public static enum RolsDatabasePos {

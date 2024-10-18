@@ -98,6 +98,7 @@ public class S3ServiceImpl implements S3Service {
 			}
 			// Subir el archivo al bucket de S3
 			String fileName = dto.getFileData().getOriginalFilename();
+			// TODO: subir una version, no machacar el fichero que hay?
 			minioClient.putObject(PutObjectArgs.builder().bucket(dataservice.getBucketName()).object(fileName)
 					.stream(dto.getFileData().getInputStream(), dto.getFileData().getSize(), -1).build());
 
