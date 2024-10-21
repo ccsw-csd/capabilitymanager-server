@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 @Transactional
 public interface CertificatesDataEnCursoImportRepository extends JpaRepository<CertificatesDataEnCursoImport, Long> {
-
-	 @Query("SELECT c FROM CertificatesDataEnCursoImport c WHERE c.numImportCodeId = :numImportCodeId")
-	    List<CertificatesDataEnCursoImport> findByNumImportCodeId(@Param("numImportCodeId") Long numImportCodeId);
+	
+	//TODO: implementar este campo en la clase del modelo y en bbdd para que luego se puedan eliminar los certificados
+	 //@Query("SELECT c FROM CertificatesDataEnCursoImport c WHERE c.numImportCodeId = :numImportCodeId")
+	 //   List<CertificatesDataEnCursoImport> findByNumImportCodeId(@Param("numImportCodeId") Long numImportCodeId);
 }
