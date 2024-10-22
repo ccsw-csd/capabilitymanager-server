@@ -1,4 +1,4 @@
-package com.ccsw.capabilitymanager.S3Service.model;
+package com.ccsw.capabilitymanager.fileprocess.model;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

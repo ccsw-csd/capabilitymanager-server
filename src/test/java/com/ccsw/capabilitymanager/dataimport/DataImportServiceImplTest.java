@@ -7,14 +7,13 @@ import static org.mockito.Mockito.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import com.ccsw.capabilitymanager.activity.ActivityRepository;
 import com.ccsw.capabilitymanager.activitydataimport.ActivityDataImportRepository;
 import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImport;
-import com.ccsw.capabilitymanager.activitydataimport.model.ActivityDataImportDto;
+import com.ccsw.capabilitymanager.websocket.WebSocketService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,16 +22,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ccsw.capabilitymanager.S3Service.s3Service;
-import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.fileprocess.S3Service;
+import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesActividadDataImportRepository;
 import com.ccsw.capabilitymanager.certificatesdataimport.CertificatesDataImportRepository;
-import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesActividadDataImport;
 import com.ccsw.capabilitymanager.certificatesdataimport.model.CertificatesDataImport;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.exception.UnprocessableEntityException;
@@ -41,12 +37,11 @@ import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 import com.ccsw.capabilitymanager.formdataimport.FormDataImportRepository;
 import com.ccsw.capabilitymanager.itinerariosdataimport.ItinerariosActividadDataImportRepository;
 import com.ccsw.capabilitymanager.itinerariosdataimport.ItinerariosDataImportRepository;
-import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosActividadDataImport;
 import com.ccsw.capabilitymanager.itinerariosdataimport.model.ItinerariosDataImport;
 import com.ccsw.capabilitymanager.staffingdataimport.StaffingDataImportRepository;
 import com.ccsw.capabilitymanager.staffingdataimport.model.StaffingDataImport;
 import com.ccsw.capabilitymanager.utils.UtilsServiceImpl;
-import com.ccsw.capabilitymanager.versioncapacidades.VersionCapatidadesRepository;
+import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepository;
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versioncertificados.VersionCertificacionesRepository;
 import com.ccsw.capabilitymanager.versioncertificados.model.VersionCertificaciones;
@@ -54,8 +49,6 @@ import com.ccsw.capabilitymanager.versionitinerarios.VersionItinerariosRepositor
 import com.ccsw.capabilitymanager.versionitinerarios.model.VersionItinerarios;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
-import com.ccsw.capabilitymanager.activity.model.ActivityDTO;
-import com.ccsw.capabilitymanager.activity.model.Activity;
 
 public class DataImportServiceImplTest {
 
@@ -69,13 +62,13 @@ public class DataImportServiceImplTest {
     private DataserviceS3 dataservice;
 
     @Mock
-    private s3Service s3service;
+    private S3Service s3service;
 
     @Mock
     private UtilsServiceImpl utilsServiceImpl;
 
     @Mock
-    private VersionCapatidadesRepository versionCapatidadesRepository;
+    private VersionCapacidadesRepository versionCapacidadesRepository;
 
     @Mock
     private VersionStaffingRepository versionStaffingRepository;
@@ -107,7 +100,8 @@ public class DataImportServiceImplTest {
     @Mock
     private ActivityDataImportRepository actividadDataImportRepository;
 
-
+    @Mock
+    private WebSocketService webSocketService;
 
 
     @BeforeEach
@@ -184,7 +178,7 @@ public class DataImportServiceImplTest {
         
         when(utilsServiceImpl.obtainSheet(any())).thenReturn(mockSheet);
         when(mockSheet.getPhysicalNumberOfRows()).thenReturn(3); // Simulando 2 filas de datos más la fila de encabezado
-        when(versionCapatidadesRepository.save(Mockito.any())).thenReturn(versionCap);
+        when(versionCapacidadesRepository.save(Mockito.any())).thenReturn(versionCap);
         // Mockear las filas retornadas
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_START)).thenReturn(mockRow1);
         when(mockSheet.getRow(Constants.ROW_EVIDENCE_LIST_NEXT)).thenReturn(mockRow2);

@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.ccsw.capabilitymanager.S3Service.s3Service;
+import com.ccsw.capabilitymanager.fileprocess.S3Service;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 import com.ccsw.capabilitymanager.exception.ImportException;
@@ -29,7 +29,7 @@ public class DataImportControllerTest {
     private DataImportService formDataImportService;
 
     @Mock
-    private s3Service s3service;
+    private S3Service s3service;
 
     @BeforeEach
     public void setUp() {

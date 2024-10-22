@@ -3,7 +3,7 @@ package com.ccsw.capabilitymanager.dataimport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.capabilitymanager.versioncapacidades.VersionCapatidadesRepository;
+import com.ccsw.capabilitymanager.versioncapacidades.VersionCapacidadesRepository;
 import com.ccsw.capabilitymanager.versioncapacidades.model.VersionCapacidades;
 import com.ccsw.capabilitymanager.versionstaffing.VersionStaffingRepository;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 public class ErrorServiceImpl implements ErrorService {
 
 	@Autowired
-	private VersionCapatidadesRepository versionCapatidadesRepository;
+	private VersionCapacidadesRepository versionCapacidadesRepository;
 	
 	@Autowired
 	private VersionStaffingRepository versionStaffingRepository;
@@ -44,7 +44,7 @@ public class ErrorServiceImpl implements ErrorService {
 	 */
 	@Override
 	public void formError(VersionCapacidades verCap) {
-		versionCapatidadesRepository.save(verCap);
+		versionCapacidadesRepository.save(verCap);
 		
 	}
 

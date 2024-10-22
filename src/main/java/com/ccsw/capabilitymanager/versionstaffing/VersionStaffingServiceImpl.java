@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.capabilitymanager.S3Service.model.DataserviceS3;
+import com.ccsw.capabilitymanager.fileprocess.model.DataserviceS3;
 import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.versionstaffing.model.VersionStaffing;
 

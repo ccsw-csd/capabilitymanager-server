@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.capabilitymanager.S3Service.s3Service;
 import com.ccsw.capabilitymanager.dataimport.model.ImportRequestDto;
 import com.ccsw.capabilitymanager.dataimport.model.ImportResponseDto;
 import com.ccsw.capabilitymanager.exception.ImportException;
@@ -24,9 +23,6 @@ public class DataImportController {
 
 	@Autowired
 	private DataImportService formDataImportService;
-
-	@Autowired
-	private s3Service s3service;
 
 	@Autowired
 	DozerBeanMapper mapper;
@@ -47,8 +43,7 @@ public class DataImportController {
 		logger.debug(" >>>> importData ");
 		ImportResponseDto importResponseDto = new ImportResponseDto();
 		try {
-			// Subir el archivo al bucket de S3
-			s3service.uploadFile(dto);
+
 			// Procesar el objeto en la base de datos
 			if (importResponseDto.getError() == null) {
 				importResponseDto = formDataImportService.processObject(dto);
