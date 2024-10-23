@@ -171,7 +171,7 @@ public class Constants {
 		COL_INGLES_HABLADO(44),
 		COL_JORNADA (46),
 		COL_MESES_BENCH(54),
-		COL_PRACTICE_AREA(68);
+		COL_PRACTICE_AREA(7);
 
 
 		private final int excelPosition;

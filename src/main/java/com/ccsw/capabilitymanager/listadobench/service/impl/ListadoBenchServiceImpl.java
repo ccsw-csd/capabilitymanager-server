@@ -43,6 +43,9 @@ public class ListadoBenchServiceImpl implements ListadoBenchService {
     public Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga) {
         return listadoBenchRepository.getEmpleadoPorSaga(saga);
     }
+
+    @Override
+    public List<ListadoBench> getStaffingByDepartment(String ggid) { return (List<ListadoBench>) listadoBenchRepository.getStaffingByDepartment(ggid); }
 }
 
 
