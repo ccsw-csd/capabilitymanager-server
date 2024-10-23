@@ -43,4 +43,6 @@ public interface UtilsService {
 
   public CellStyle createTitleStyle(Workbook workbook, boolean bold, IndexedColors color);
 
+  public Sheet obtainSheetAtFromInputStream(InputStream inputStream, int position) throws BadRequestException;
+
 }

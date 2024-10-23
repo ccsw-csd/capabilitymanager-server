@@ -162,6 +162,8 @@ public class FileProcessServiceImpl implements FileProcessService{
 
         VersionCertificaciones verCertificaciones = createVersionCertificaciones(file, numRegistros);
 
+        borrarAntiguos();
+        
         IntStream.range(Constants.ROW_EVIDENCE_LIST_NEXT_CERT_ENCURSO, sheet.getPhysicalNumberOfRows())
                 .mapToObj(sheet::getRow)
                 .filter(this::shouldProcessRow)
@@ -206,7 +208,7 @@ private void processRow(Row currentRow, int versionId, List<CertificatesDataEnCu
   //Obtiene el nombre de la columna  para comprobar si existe
   private boolean shouldProcessRow(Row currentRow) {
     String requestState = utilsService.getStringValue(currentRow, Constants.CertificatesDataEnCursoPos.COL_REQUEST_STATE.getPosition());
-    return "En curso".equals(requestState);
+    return "En Curso".equals(requestState);
   }
 
 
@@ -632,11 +634,21 @@ private void processRow(Row currentRow, int versionId, List<CertificatesDataEnCu
 //        }
 		
 		//eliminar Certificaciones
-		List<CertificatesDataImport> certificacionesBorrar =
-				certificatesDataImportRepository.findByNumImportCodeId(cv.getId());
-		
-		for (CertificatesDataImport cdi : certificacionesBorrar) {
-			certificateDataImportRepository.delete(cdi);
+		if (cv.getIdTipoInterfaz().equals(Constants.CERTIFICATIONS_FINALIZADAS)) {
+			List<CertificatesDataImport> certificacionesBorrar =
+					certificatesDataImportRepository.findByNumImportCodeId(cv.getId());
+			
+			for (CertificatesDataImport cdi : certificacionesBorrar) {
+				certificateDataImportRepository.delete(cdi);
+			}
+		}
+		else if (cv.getIdTipoInterfaz().equals(Constants.CERTIFICATIONS_CURSO)) {
+			List<CertificatesDataEnCursoImport> certificacionesBorrar =
+					certificatesDataEnCursoImportRepository.findByNumImportCodeId(cv.getId());
+			
+			for (CertificatesDataEnCursoImport cdi : certificacionesBorrar) {
+				certificatesDataEnCursoImportRepository.delete(cdi);
+			}
 		}
 		
 		//eliminar Certificacion
@@ -839,10 +851,13 @@ private void processRow(Row currentRow, int versionId, List<CertificatesDataEnCu
 	 */
 	private VersionCertificaciones createCertificationesVersion(int numReg, String idTipointerfaz, String fileName, String description, String user) throws IOException {
 
-
+		//TODO: substituir con constantes
 		VersionCertificaciones versionCer = new VersionCertificaciones();
 		if (idTipointerfaz.equals("3")) {
 			idTipointerfaz = "Certifications";
+		}
+		else if (idTipointerfaz.equals("5")) {
+			idTipointerfaz = "CertificationsCurso";
 		}
 		versionCer.setIdTipointerfaz(idTipointerfaz);
 		versionCer.setFechaImportacion(LocalDateTime.now());

@@ -1,9 +1,14 @@
 package com.ccsw.capabilitymanager.fileprocess;
 
 import com.ccsw.capabilitymanager.fileprocess.model.FileProcess;
+import com.ccsw.capabilitymanager.utils.UtilsService;
 import com.ccsw.capabilitymanager.fileprocess.dto.FileProcessDto;
+import com.ccsw.capabilitymanager.common.Constants;
 import com.ccsw.capabilitymanager.common.logs.CapabilityLogger;
 import com.ccsw.capabilitymanager.exception.FileProcessException;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,9 @@ public class S3ServiceImpl implements S3Service {
 
 	@Autowired
 	private FileProcessRepository fileUploadRepository;
+	
+    @Autowired
+    private UtilsService utilsService;
 
 	private static final String ESTADO_CARGADO = "CARGADO";
 
@@ -109,8 +117,29 @@ public class S3ServiceImpl implements S3Service {
 
 	private void guardarFichero(FileProcessDto dto) throws FileProcessException {
 		try {
+			
+			String tipoFichero = dto.getTipoFichero();
+			if (tipoFichero.equals("3")) {
+				// Comprobamos el tipo de fichero para las certificaciones (tipoFichero = 3)
+				// que puede ser de Certificaciones en curso (si la cabecera empieza a partir de la fila 16
+				// y la primera columna de la cabeceraes "ID")
+				// o de Certificaciones finalizadas sino
+				Sheet sheet = utilsService.obtainSheetAtFromInputStream(dto.getFileData().getInputStream(), 1);
+				int numRegistros = sheet.getPhysicalNumberOfRows();
+				
+				if (numRegistros >= 16) {
+					Row currentRow = sheet.getRow(15);
+					String celda = utilsService.getStringValue(currentRow, 0);
+					if (celda.equals("ID")) {
+						tipoFichero = "5";
+					}
+				}
+				
+				
+			}
+			
 			FileProcess file = new FileProcess();
-			file.setTipoFichero(dto.getTipoFichero());
+			file.setTipoFichero(tipoFichero);
 			file.setEstado(ESTADO_CARGADO);
 			file.setNombreFichero(dto.getFileData().getOriginalFilename());
 			file.setUsuario(dto.getUsuario());

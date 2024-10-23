@@ -86,6 +86,20 @@ public class UtilsServiceImpl implements UtilsService {
 					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
 		}
 	}
+	
+	@Override
+	public Sheet obtainSheetAtFromInputStream(InputStream inputStream, int position) throws BadRequestException {
+		try (Workbook workbook = WorkbookFactory.create(inputStream)) {
+			Sheet sheet = workbook.getSheetAt(position);
+			workbook.close();
+
+			return sheet;
+		} catch (Exception e) {
+			CapabilityLogger.logError(Constants.ERROR_INIT_UTIL + "obtainSheet) : Ha ocurrido un error leyendo el fichero. Comprueba la validación de los datos y si no estan encriptados.");
+			throw new BadRequestException(
+					"An error occurred reading the file. Check the validity of the data and that it is not encrypted.");
+		}
+	}
 
 	/**
 	 * Check Input Object if ContentType is not valid or fileData is empty or null

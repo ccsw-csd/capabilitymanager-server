@@ -56,6 +56,9 @@ public class Constants {
 	public static final String NO ="NO";
 	
 	public static final int KEEP_HISTORICAL = 10;
+	
+	public static final String CERTIFICATIONS_FINALIZADAS = "Certifications";
+	public static final String CERTIFICATIONS_CURSO = "CertificationsCurso";
 
 	public static enum CertificatesDataEnCursoPos {
 		COL_ID(0),

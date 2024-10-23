@@ -18,6 +18,9 @@ public class CertificatesDataEnCursoImport implements Comparable<CertificatesDat
 
   @Column(name = "ggid", nullable = false)
   private int ggid;
+  
+  @Column(name = "num_import_code_id")
+  private int numImportCodeId;
 
   @Column(name = "fechaSolicitud", nullable = true)
   private Date fechaSolicitud;
@@ -156,6 +159,8 @@ public class CertificatesDataEnCursoImport implements Comparable<CertificatesDat
 
   @Column(name = "linkOferta", nullable = true)
   private String linkOferta;
+  
+  
 
   // Getters and setters
 

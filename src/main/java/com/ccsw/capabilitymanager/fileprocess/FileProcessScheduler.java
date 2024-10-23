@@ -24,7 +24,8 @@ public class FileProcessScheduler {
     @Autowired
     private WebSocketService webSocketService;
 
-    @Scheduled(fixedRate = 60000)
+    //@Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 6000)
     public void processPendingFiles() {
         List<FileProcess> filesPending = fileProcessRepository.findByEstado(ESTADO_CARGADO);
 
