@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ViewListadoBenchRepository {
 	Collection<ListadoBench> getListadoPersonasBench();
 	Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga); // Nuevo método
+	Collection<ListadoBench> getStaffingByDepartment(String ggid);
 }

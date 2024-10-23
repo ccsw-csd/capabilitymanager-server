@@ -46,4 +46,18 @@ public class ListadoBenchController {
     public Optional<List<ListadoBench>> getEmpleadoPorSaga(@PathVariable String saga) {
         return service.getEmpleadoPorSaga(saga);
     }
+
+    /**
+     * Retrieves a list of staffing entries that belong to the same department as the person with the specified ggid.
+     *
+     * <p>This method handles HTTP GET requests to the path with a ggid parameter. It returns a list of {@link ListadoBench}
+     * objects representing all the staff that belong to the same department as the person associated with the provided ggid.</p>
+     *
+     * @param ggid The ggid of the person whose department will be used to filter the staffing entries.
+     * @return A {@link List} of {@link ListadoBench} objects containing all staff in the same department.
+     */
+    @GetMapping("/ggid/{ggid}")
+    public List<ListadoBench> getStaffingByDepartment(@PathVariable String ggid) {
+        return service.getStaffingByDepartment(ggid);
+    }
 }

@@ -30,6 +30,7 @@ public class StaffingDataImportDto {
 	private String vcColaboraciones;
 	private String vcProyectoAnterior;
 	private String vcMesesBench;
+	private String vcPracticeArea;
 
 	public int getId() {
 		return id;
@@ -214,5 +215,9 @@ public class StaffingDataImportDto {
 	public void setVcMesesBench(String vcMesesBench) {
 		this.vcMesesBench = vcMesesBench;
 	}
+
+	public String getVcPracticeArea() { return vcPracticeArea; }
+
+	public void setVcPracticeArea(String vcPracticeArea) { this.vcPracticeArea = vcPracticeArea; }
 
 }

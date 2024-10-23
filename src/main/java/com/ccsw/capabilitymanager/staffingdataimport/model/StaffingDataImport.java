@@ -95,6 +95,9 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 	@Column(name = "meses_bench")
 	private String mesesBench;
 
+	@Column(name = "practice_area")
+	private String practiceArea;
+
 
 	public int getId() {
 		return id;
@@ -311,6 +314,14 @@ public class StaffingDataImport implements Comparable<StaffingDataImport> {
 
 	public void setMesesBench(String mesesBench) {
 		this.mesesBench = mesesBench;
+	}
+
+	public String getPracticeArea() {
+		return practiceArea;
+	}
+
+	public void setPracticeArea(String practiceArea) {
+		this.practiceArea = practiceArea;
 	}
 
 	@Override

@@ -57,6 +57,45 @@ public class JdbcViewListadoBenchRepositoryImpl implements ViewListadoBenchRepos
         return jdbcTemplate.query(query, this::mapRowToDataFormation);
     }
 
+    @Override
+    public Collection<ListadoBench> getStaffingByDepartment(String ggid) {
+        String query = "SELECT " +
+                "stf.Id AS id, " +
+                "stf.SAGA AS saga, " +
+                "stf.GGID AS ggid, " +
+                "stf.nombre AS nombre, " +
+                "stf.apellidos AS apellidos, " +
+                "stf.practica AS practica, " +
+                "stf.grado AS grado, " +
+                "stf.categoria AS categoria, " +
+                "stf.centro AS centro, " +
+                "COALESCE(form.rol_L1, '') AS rol, " +
+                "stf.perfil_tecnico AS perfil, " +
+                "stf.primary_skill AS primarySkill, " +
+                "stf.fecha_incorporacion AS fIncorporacion, " +
+                "COALESCE(stf.asignacion, 0) AS porcentajeAsignacion, " +
+                "stf.cliente_actual AS clienteActual, " +
+                "stf.fecha_inicio_asignacion AS inicioAsignacion, " +
+                "stf.fecha_fin_asignacion AS finAsignacion, " +
+                "stf.fecha_disponibilidad AS fDisponibilidad, " +
+                "stf.posicion_proyecto_futuro AS posicionFuturo, " +
+                "stf.colaboraciones AS colaboraciones, " +
+                "stf.proyecto_anterior AS proyectoAnterior, " +
+                "stf.ingles_escrito AS inglesEscrito, " +
+                "stf.ingles_hablado AS inglesHablado, " +
+                "stf.jornada AS jornada, " +
+                "stf.meses_bench AS mesesBench, " +
+                "stf.status AS status, " +
+                "stf.practice_area AS practiceArea " +
+                "FROM staffing stf " +
+                "LEFT JOIN (SELECT SAGA, MAX(rol_L1) AS rol_L1 FROM formdata GROUP BY SAGA) form ON stf.SAGA = form.SAGA " +
+                "WHERE stf.practice_area = (SELECT department FROM personal.all_person WHERE global_employee_id = ?) " +
+                "AND stf.num_import_code_id = (SELECT MAX(id) FROM version_staffing) " +
+                "AND stf.status IN ('Disponible', 'TRI+BDCS', 'BDCS')";
+
+        return jdbcTemplate.query(query, new Object[]{ggid}, this::mapRowToDataFormation);
+    }
+
     public Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga) {
         String query = "SELECT " +
                 "stf.Id AS id, " +

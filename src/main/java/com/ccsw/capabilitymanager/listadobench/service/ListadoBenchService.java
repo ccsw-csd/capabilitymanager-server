@@ -11,4 +11,6 @@ public interface ListadoBenchService {
     List<ListadoBench> getListadoPersonasBench();
 
     Optional<List<ListadoBench>> getEmpleadoPorSaga(String saga);  // Nuevo método
+
+    List<ListadoBench> getStaffingByDepartment(String ggid);
 }

@@ -306,15 +306,13 @@ public class DataImportServiceImpl implements DataImportService {
 			String inglesHablado = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_INGLES_HABLADO.getPosition());
 			String jornada = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_JORNADA.getPosition());
 			String vcProfileMesesBench = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_MESES_BENCH.getPosition());
-			String ultimoCampo = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PRACTICE_AREA.getPosition());
+			String practiceArea = utilsServiceImpl.getStringValue(currentRow, Constants.StaffingDatabasePos.COL_PRACTICE_AREA.getPosition());
 
 			Map<String, String> noNulables = new HashMap<>();
 	        noNulables.put(saga, "Saga");
 	        noNulables.put(ggid, "Ggid");
 	        noNulables.put(centro, "Centro");
 	        noNulables.put(nombre, "Nombre");
-	        noNulables.put(ultimoCampo, "No llegan todos los campos");
-
 
 		       // Verificar si alguno de los campos es nulo o está vacío
             for (Map.Entry<String, String> entry : noNulables.entrySet()) {
@@ -354,6 +352,7 @@ public class DataImportServiceImpl implements DataImportService {
 			data.setInglesHablado(inglesHablado);
 			data.setJornada(jornada);
 			data.setMesesBench(vcProfileMesesBench);
+			data.setPracticeArea(practiceArea);
 
 			staffingDataImportList.add(data);
 			currentRow = sheet.getRow(i);
